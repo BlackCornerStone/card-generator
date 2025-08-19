@@ -18,7 +18,7 @@
         }
         
         .card {
-            display: inline-block;
+            display: inline-flex;
             width: 3.5in;
             height: 2.5in;
             background-color: white;
@@ -31,26 +31,27 @@
             break-inside: avoid;
             font-size: 9px;
             position: relative;
-            display: flex;
         }
         
         .card-left {
-            flex: 1;
+            width: 120px;
+            display: flex;
+            flex-direction: column;
             padding-right: 8px;
         }
         
         .card-right {
-            width: 120px;
+            flex: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
         }
         
         .card-image {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 80px;
             border-radius: 4px;
             object-fit: cover;
+            margin-bottom: 8px;
         }
         
         .landscape-name {
@@ -74,13 +75,13 @@
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 4px;
+            gap: 6px;
             flex: 1;
         }
         
         .stat-group {
             background: #f8f9fa;
-            padding: 6px;
+            padding: 8px;
             border-radius: 4px;
             border: 1px solid #dee2e6;
         }
