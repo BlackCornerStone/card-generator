@@ -1,29 +1,29 @@
 Realm,Type,Landscape,[Visibility in Day] Clear,[Visibility in Day] Murky,[Visibility in Day] None,[Visibility in Full Moon] Clear,[Visibility in Full Moon] Murky,[Visibility in Full Moon] None,[Visibility in No Moon] Clear,[Visibility in No Moon] Murky,[Visibility in No Moon] None,[Survival of Prepared] Shelter,[Survival of Prepared] Food,[Survival of Prepared] Medicine,[Survival of Unprepared] Shelter,[Survival of Unprepared] Food,[Survival of Unprepared] Medicine,Terrain
-Creation,City,City Ruins / Empty,-,-,-,0,3,6,0,3,6,Auto (Sur 1+),1,3,1,1 (-2d),6,Difficult
-Creation,City,City Crowded,10,-,50,0,3,6,0,3,6,Auto (Sur 1+),1,1,1,1 (-2d),1,Extreme
-Creation,Wilderness,Forest,-,20,40,0,3,6,0,3,6,Auto (Sur 1+),1,2,1,1 (-2d),8,Difficult
-Creation,Wilderness,Jungle,-,10,20,0,3,6,0,3,6,Auto (Sur 1+),1,6,1,1 (-2d),9,Difficult
-Creation,Wilderness,Grassland,-,-,-,25,50,100,25,50,100,Auto (Sur 1+),2,7,2,2 (-2d),10,Open
-Creation,Wilderness,Dry Savanna,-,-,-,25,50,100,25,50,100,Auto (Sur 1+),3,8,3,3 (-2d),11,Open
-Creation,Wilderness,Desert,-,-,-,50,100,200,50,100,200,Auto (Sur 1+),4,9,4 (-3d),4 (-2d),12,Open
-Creation,Wilderness,Blasted Wasteland,-,-,-,50,100,200,50,100,200,Auto (Sur 1+),5,10,5 (-3d),5 (-2d),13,Open
-Autochthonia ,Civilization,Polis,0,50,100,,,,,,,2,1 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),1 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Difficult
-Autochthonia ,Civilization,Town,0,25,50,,,,,,,2,2 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),5 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Difficult
-Autochthonia ,Civilization,Cave,0,25,50,,,,,,,2,2 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),5 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Open
-Autochthonia ,Civilization,Tunel,0,25,50,,,,,,,2,2 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),5 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Open
-Autochthonia ,Reaches,System of Small Tunels,0,5,10,,,,,,,2,3 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),6 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Difficult
-Autochthonia ,Reaches,Cave,0,10,20,,,,,,,2,3 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),6 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Open
-Autochthonia ,Reaches,Highway tunel,0,25,50,,,,,,,2,3 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),6 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Open
-Autochthonia ,Reaches,Factory,0,1,2,,,,,,,2,3 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),6 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Extreme
-Autochthonia ,Far Reaches,System of Small Tunels,0,5,10,,,,,,,2,4 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),7 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Difficult
-Autochthonia ,Far Reaches,Cave,0,10,20,,,,,,,2,4 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),7 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Open
-Autochthonia ,Far Reaches,Highway tunel,0,25,50,,,,,,,2,4 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),7 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Open
-Autochthonia ,Far Reaches,Factory,0,1,2,,,,,,,2,4 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),7 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Extreme
-Autochthonia ,Blight Zone,System of Small Tunels,0,5,10,,,,,,,3,5 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),8 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Difficult
-Autochthonia ,Blight Zone,Cave,0,10,20,,,,,,,3,5 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),8 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Open
-Autochthonia ,Blight Zone,Highway tunel,0,25,50,,,,,,,3,5 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),8 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Open
-Autochthonia ,Blight Zone,Factory,0,1,2,,,,,,,5,5 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),8 (Sur 2+) (lacking Survival 5+ or a specialty in Conduit Tapping => -2hits),-,-,-,Extreme
-Autochthonia ,Blight Zone,System of Small Tunels,0,0,0,,,,,,,5,-,-,-,-,-,Difficult
-Autochthonia ,Blight Zone,Cave,0,10,20,,,,,,,5,-,-,-,-,-,Open
-Autochthonia ,Blight Zone,Highway tunel,0,10,20,,,,,,,5,-,-,-,-,-,Open
-Autochthonia ,Blight Zone,Factory,0,0,0,,,,,,,5,-,-,-,-,-,Extreme
+Creation,City,City Ruins / Empty,-,-,-,0,3,6,0,3,6,Auto,1,3,1,1,6,Difficult
+Creation,City,City Crowded,10,-,50,0,3,6,0,3,6,Auto,1,1,1,1,1,Extreme
+Creation,Wilderness,Forest,-,20,40,0,3,6,0,3,6,Auto,1,2,1,1,8,Difficult
+Creation,Wilderness,Jungle,-,10,20,0,3,6,0,3,6,Auto,1,6,1,1,9,Difficult
+Creation,Wilderness,Grassland,-,-,-,25,50,100,25,50,100,Auto,2,7,2,2,10,Open
+Creation,Wilderness,Dry Savanna,-,-,-,25,50,100,25,50,100,Auto,3,8,3,3,11,Open
+Creation,Wilderness,Desert,-,-,-,50,100,200,50,100,200,Auto,4,9,4,4,12,Open
+Creation,Wilderness,Blasted Wasteland,-,-,-,50,100,200,50,100,200,Auto,5,10,5,5,13,Open
+Autochthonia,Civilization,Polis,0,50,100,,,,,,,2,1,1,-,-,-,Difficult
+Autochthonia,Civilization,Town,0,25,50,,,,,,,2,2,5,-,-,-,Difficult
+Autochthonia,Civilization,Cave,0,25,50,,,,,,,2,2,5,-,-,-,Open
+Autochthonia,Civilization,Tunel,0,25,50,,,,,,,2,2,5,-,-,-,Open
+Autochthonia,Reaches,System of Small Tunels,0,5,10,,,,,,,2,3,6,-,-,-,Difficult
+Autochthonia,Reaches,Cave,0,10,20,,,,,,,2,3,6,-,-,-,Open
+Autochthonia,Reaches,Highway tunel,0,25,50,,,,,,,2,3,6,-,-,-,Open
+Autochthonia,Reaches,Factory,0,1,2,,,,,,,2,3,6,-,-,-,Extreme
+Autochthonia,Far Reaches,System of Small Tunels,0,5,10,,,,,,,2,4,7,-,-,-,Difficult
+Autochthonia,Far Reaches,Cave,0,10,20,,,,,,,2,4,7,-,-,-,Open
+Autochthonia,Far Reaches,Highway tunel,0,25,50,,,,,,,2,4,7,-,-,-,Open
+Autochthonia,Far Reaches,Factory,0,1,2,,,,,,,2,4,7,-,-,-,Extreme
+Autochthonia,Blight Zone,System of Small Tunels,0,5,10,,,,,,,3,5,8,-,-,-,Difficult
+Autochthonia,Blight Zone,Cave,0,10,20,,,,,,,3,5,8,-,-,-,Open
+Autochthonia,Blight Zone,Highway tunel,0,25,50,,,,,,,3,5,8,-,-,-,Open
+Autochthonia,Blight Zone,Factory,0,1,2,,,,,,,5,5,8,-,-,-,Extreme
+Autochthonia,Blight Zone,System of Small Tunels,0,0,0,,,,,,,5,-,-,-,-,-,Difficult
+Autochthonia,Blight Zone,Cave,0,10,20,,,,,,,5,-,-,-,-,-,Open
+Autochthonia,Blight Zone,Highway tunel,0,10,20,,,,,,,5,-,-,-,-,-,Open
+Autochthonia,Blight Zone,Factory,0,0,0,,,,,,,5,-,-,-,-,-,Extreme

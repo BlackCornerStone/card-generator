@@ -119,6 +119,14 @@
             word-break: break-word;
         }
         
+        .stat-comment {
+            color: #999;
+            font-size: 7px;
+            font-style: italic;
+            display: block;
+            margin-top: 1px;
+        }
+        
         .terrain-badge {
             padding: 2px 6px;
             border-radius: 10px;
@@ -191,6 +199,18 @@
                                             {% if not loop.last %} | {% endif %}
                                         {% endfor %}
                                     </div>
+                                    
+                                    {% if landscape.Realm == 'Creation' %}
+                                        {% if groupName == 'Survival of Prepared' %}
+                                            <div class="stat-comment">Auto survival for prepared characters with Survival 1+</div>
+                                        {% elseif groupName == 'Survival of Unprepared' and landscape.Type == 'Wilderness' %}
+                                            <div class="stat-comment">Unprepared characters take damage penalties</div>
+                                        {% endif %}
+                                    {% elseif landscape.Realm starts with 'Autochthonia' %}
+                                        {% if groupName starts with 'Survival' %}
+                                            <div class="stat-comment">Requires Survival 2+ or Conduit Tapping specialty; lack causes -2 successes</div>
+                                        {% endif %}
+                                    {% endif %}
                                 </div>
                             {% endif %}
                         {% endif %}
