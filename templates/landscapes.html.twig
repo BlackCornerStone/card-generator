@@ -24,12 +24,12 @@
             background-color: white;
             border: 2px solid #333;
             border-radius: 8px;
-            padding: 12px;
+            padding: 8px;
             margin: 8px;
             vertical-align: top;
             page-break-inside: avoid;
             break-inside: avoid;
-            font-size: 10px;
+            font-size: 9px;
             position: relative;
         }
         
@@ -81,10 +81,10 @@
         }
         
         .stat-row {
-            display: flex;
-            justify-content: space-between;
+            display: block;
             margin: 2px 0;
             font-size: 8px;
+            line-height: 1.2;
         }
         
         .stat-label {
@@ -93,8 +93,6 @@
         
         .stat-value {
             color: #666;
-            text-align: right;
-            max-width: 60%;
             word-break: break-word;
         }
         
@@ -134,78 +132,23 @@
         {% for landscape in cards %}
         <div class="card">
             <div class="landscape-name">{{ landscape.Landscape }}</div>
-            <div class="realm">{{ landscape.Realm }}</div>
-            
+            <div class="realm">{{ landscape.Realm }}{% if landscape.Type %} - {{ landscape.Type }}{% endif %}</div>
+
             <div class="stats-grid">
-                {% if landscape['Visibility in Day'] %}
-                <div class="stat-group">
-                    <h3>Visibility in Day</h3>
-                    {% for key, value in landscape['Visibility in Day'] %}
-                    <div class="stat-row">
-                        <span class="stat-label">{{ key }}:</span>
-                        <span class="stat-value {{ value == '-' or value == '' ? 'empty-value' : '' }}">
-                            {{ value == '-' or value == '' ? 'N/A' : value }}
-                        </span>
+                {% for groupName, groupData in landscape %}
+                    {% if groupData is iterable %}
+                    <div class="stat-group">
+                        <h3>{{ groupName }}</h3>
+                        <div class="stat-row">
+                            {% for key, value in groupData %}
+                                <span class="stat-label">{{ key }}:</span>
+                                <span class="stat-value {{ value == '-' or value == '' ? 'empty-value' : '' }}">{{ value == '-' or value == '' ? '-' : value }}</span>
+                                {% if not loop.last %} | {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
-                {% if landscape['Visibility in Full Moon'] %}
-                <div class="stat-group">
-                    <h3>Visibility in Full Moon</h3>
-                    {% for key, value in landscape['Visibility in Full Moon'] %}
-                    <div class="stat-row">
-                        <span class="stat-label">{{ key }}:</span>
-                        <span class="stat-value {{ value == '-' or value == '' ? 'empty-value' : '' }}">
-                            {{ value == '-' or value == '' ? 'N/A' : value }}
-                        </span>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
-                {% if landscape['Visibility in No Moon'] %}
-                <div class="stat-group">
-                    <h3>Visibility in No Moon</h3>
-                    {% for key, value in landscape['Visibility in No Moon'] %}
-                    <div class="stat-row">
-                        <span class="stat-label">{{ key }}:</span>
-                        <span class="stat-value {{ value == '-' or value == '' ? 'empty-value' : '' }}">
-                            {{ value == '-' or value == '' ? 'N/A' : value }}
-                        </span>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
-                {% if landscape['Survival of Prepared'] %}
-                <div class="stat-group">
-                    <h3>Survival of Prepared</h3>
-                    {% for key, value in landscape['Survival of Prepared'] %}
-                    <div class="stat-row">
-                        <span class="stat-label">{{ key }}:</span>
-                        <span class="stat-value {{ value == '-' or value == '' ? 'empty-value' : '' }}">
-                            {{ value == '-' or value == '' ? 'N/A' : value }}
-                        </span>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
-                {% if landscape['Survival of Unprepared'] %}
-                <div class="stat-group">
-                    <h3>Survival of Unprepared</h3>
-                    {% for key, value in landscape['Survival of Unprepared'] %}
-                    <div class="stat-row">
-                        <span class="stat-label">{{ key }}:</span>
-                        <span class="stat-value {{ value == '-' or value == '' ? 'empty-value' : '' }}">
-                            {{ value == '-' or value == '' ? 'N/A' : value }}
-                        </span>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
+                    {% endif %}
+                {% endfor %}
             </div>
             
             <div class="terrain-badge terrain-{{ landscape.Terrain|lower }}">
