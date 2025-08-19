@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landscape Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .landscape-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .landscape-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .landscape-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .realm {
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .stat-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .stat-group h3 {
+            margin: 0 0 10px 0;
+            color: #495057;
+            font-size: 16px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            padding: 2px 0;
+        }
+        .stat-label {
+            font-weight: 500;
+        }
+        .stat-value {
+            color: #666;
+        }
+        .terrain-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .terrain-open { background: #e8f5e8; color: #2d5a2d; }
+        .terrain-difficult { background: #fff3cd; color: #856404; }
+        .terrain-extreme { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Landscape Data Template</h1>
+        
+        <!-- Example landscape card - this would be generated from CSV data -->
+        <div class="landscape-card">
+            <div class="landscape-header">
+                <div class="landscape-name">{{landscape_name}}</div>
+                <div class="realm">{{realm}}</div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-group">
+                    <h3>Visibility in Day</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Clear:</span>
+                        <span class="stat-value">{{visibility_day_clear}}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Murky:</span>
+                        <span class="stat-value">{{visibility_day_murky}}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">None:</span>
+                        <span class="stat-value">{{visibility_day_none}}</span>
+                    </div>
+                </div>
+                
+                <div class="stat-group">
+                    <h3>Visibility in Full Moon</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Clear:</span>
+                        <span class="stat-value">{{visibility_moon_clear}}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Murky:</span>
+                        <span class="stat-value">{{visibility_moon_murky}}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">None:</span>
+                        <span class="stat-value">{{visibility_moon_none}}</span>
+                    </div>
+                </div>
+                
+                <div class="stat-group">
+                    <h3>Survival - Prepared</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Shelter:</span>
+                        <span class="stat-value">{{survival_prep_shelter}}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Food:</span>
+                        <span class="stat-value">{{survival_prep_food}}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Medicine:</span>
+                        <span class="stat-value">{{survival_prep_medicine}}</span>
+                    </div>
+                </div>
+                
+                <div class="stat-group">
+                    <h3>Survival - Unprepared</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Shelter:</span>
+                        <span class="stat-value">{{survival_unprep_shelter}}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Food:</span>
+                        <span class="stat-value">{{survival_unprep_food}}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Medicine:</span>
+                        <span class="stat-value">{{survival_unprep_medicine}}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="terrain-badge terrain-{{terrain_class}}">
+                Terrain: {{terrain}}
+            </div>
+        </div>
+        
+        <!-- Additional cards would be generated here from CSV data -->
+        
+    </div>
+    
+    <script>
+        // JavaScript to populate template with CSV data would go here
+        // Example function to process CSV data:
+        function populateTemplate(csvData) {
+            // Parse CSV and create landscape cards
+            // This would replace the placeholder {{variable}} with actual data
+        }
+    </script>
+</body>
+</html>
