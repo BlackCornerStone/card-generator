@@ -31,37 +31,51 @@
             break-inside: avoid;
             font-size: 9px;
             position: relative;
+            display: flex;
+        }
+        
+        .card-left {
+            flex: 1;
+            padding-right: 8px;
+        }
+        
+        .card-right {
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-image {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 4px;
+            object-fit: cover;
         }
         
         .landscape-name {
-            position: absolute;
-            top: 8px;
-            left: 8px;
             font-size: 12px;
             font-weight: bold;
             color: #2c3e50;
-            max-width: 60%;
+            margin-bottom: 4px;
         }
         
         .realm {
-            position: absolute;
-            top: 8px;
-            right: 8px;
             background: #3498db;
             color: white;
             padding: 2px 5px;
             border-radius: 8px;
             font-size: 8px;
-            max-width: 35%;
             text-align: center;
+            display: inline-block;
+            margin-bottom: 8px;
         }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            height: calc(100% - 40px);
-            margin-top: 25px;
+            grid-template-columns: 1fr;
+            gap: 4px;
+            flex: 1;
         }
         
         .stat-group {
@@ -97,13 +111,12 @@
         }
         
         .terrain-badge {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
             padding: 2px 6px;
             border-radius: 10px;
             font-size: 8px;
             font-weight: bold;
+            margin-top: auto;
+            display: inline-block;
         }
         
         .terrain-open { 
@@ -131,28 +144,36 @@
     <div class="grid">
         {% for landscape in cards %}
         <div class="card">
-            <div class="landscape-name">{{ landscape.Landscape }}</div>
-            <div class="realm">{{ landscape.Realm }}{% if landscape.Type %} - {{ landscape.Type }}{% endif %}</div>
+            <div class="card-left">
+                <div class="landscape-name">{{ landscape.Landscape }}</div>
+                <div class="realm">{{ landscape.Realm }}{% if landscape.Type %} - {{ landscape.Type }}{% endif %}</div>
 
-            <div class="stats-grid">
-                {% for groupName, groupData in landscape %}
-                    {% if groupData is iterable %}
-                    <div class="stat-group">
-                        <h3>{{ groupName }}</h3>
-                        <div class="stat-row">
-                            {% for key, value in groupData %}
-                                <span class="stat-label">{{ key }}:</span>
-                                <span class="stat-value {{ value == '-' or value == '' ? 'empty-value' : '' }}">{{ value == '-' or value == '' ? '-' : value }}</span>
-                                {% if not loop.last %} | {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
-                {% endfor %}
+                {% if landscape.ImageFile %}
+                    <img src="{{ landscape.ImageFile }}" alt="{{ landscape.Landscape }}" class="card-image">
+                {% endif %}
             </div>
             
-            <div class="terrain-badge terrain-{{ landscape.Terrain|lower }}">
-                {{ landscape.Terrain }}
+            <div class="card-right">
+                <div class="stats-grid">
+                    {% for groupName, groupData in landscape %}
+                        {% if groupData is iterable %}
+                            <div class="stat-group">
+                                <h3>{{ groupName }}</h3>
+                                <div class="stat-row">
+                                    {% for key, value in groupData %}
+                                        <span class="stat-label">{{ key }}:</span>
+                                        <span class="stat-value {{ value == '-' or value == '' ? 'empty-value' : '' }}">{{ value == '-' or value == '' ? '-' : value }}</span>
+                                        {% if not loop.last %} | {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="terrain-badge terrain-{{ landscape.Terrain|lower }}">
+                    {{ landscape.Terrain }} Terrain
+                </div>
             </div>
         </div>
         {% endfor %}

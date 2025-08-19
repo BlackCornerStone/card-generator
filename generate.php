@@ -35,6 +35,14 @@ function preprocessCardData($card) {
         }
     }
     
+    // Add image filename based on landscape name
+    if (!empty($processed['Landscape'])) {
+        $filename = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($processed['Landscape']));
+        $filename = preg_replace('/_+/', '_', $filename);
+        $filename = trim($filename, '_');
+        $processed['ImageFile'] = __DIR__ . '/images/' . $filename . '.png';
+    }
+    
     return $processed;
 }
 
