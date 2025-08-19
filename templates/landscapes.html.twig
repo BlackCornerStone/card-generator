@@ -61,15 +61,23 @@
             margin-bottom: 4px;
         }
         
-        .realm {
-            background: #3498db;
+        .badge {
             color: white;
             padding: 2px 5px;
             border-radius: 8px;
             font-size: 8px;
             text-align: center;
             display: inline-block;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+            margin-right: 4px;
+        }
+        
+        .realm-badge {
+            background: #3498db;
+        }
+        
+        .type-badge {
+            background: #9b59b6;
         }
         
         .stats-grid {
@@ -116,7 +124,7 @@
             border-radius: 10px;
             font-size: 8px;
             font-weight: bold;
-            margin-top: auto;
+            margin-top: 4px;
             display: inline-block;
         }
         
@@ -147,33 +155,46 @@
         <div class="card">
             <div class="card-left">
                 <div class="landscape-name">{{ landscape.Landscape }}</div>
-                <div class="realm">{{ landscape.Realm }}{% if landscape.Type %} - {{ landscape.Type }}{% endif %}</div>
+                <div>
+                    <div class="badge realm-badge">{{ landscape.Realm }}</div>
+                    {% if landscape.Type %}
+                        <div class="badge type-badge">{{ landscape.Type }}</div>
+                    {% endif %}
+                </div>
 
                 {% if landscape.ImageFile %}
                     <img src="{{ landscape.ImageFile }}" alt="{{ landscape.Landscape }}" class="card-image">
                 {% endif %}
+                
+                <div class="terrain-badge terrain-{{ landscape.Terrain|lower }}">
+                    {{ landscape.Terrain }} Terrain
+                </div>
             </div>
             
             <div class="card-right">
                 <div class="stats-grid">
                     {% for groupName, groupData in landscape %}
                         {% if groupData is iterable %}
-                            <div class="stat-group">
-                                <h3>{{ groupName }}</h3>
-                                <div class="stat-row">
-                                    {% for key, value in groupData %}
-                                        <span class="stat-label">{{ key }}:</span>
-                                        <span class="stat-value {{ value == '-' or value == '' ? 'empty-value' : '' }}">{{ value == '-' or value == '' ? '-' : value }}</span>
-                                        {% if not loop.last %} | {% endif %}
-                                    {% endfor %}
+                            {% set displayedValues = [] %}
+                            {% for key, value in groupData %}
+                                {% if value != '-' and value != '' %}
+                                    {% set displayedValues = displayedValues|merge([{key: key, value: value}]) %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if displayedValues|length > 0 %}
+                                <div class="stat-group">
+                                    <h3>{{ groupName }}</h3>
+                                    <div class="stat-row">
+                                        {% for item in displayedValues %}
+                                            <span class="stat-label">{{ item.key }}:</span>
+                                            <span class="stat-value">{{ item.value }}</span>
+                                            {% if not loop.last %} | {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
-                </div>
-
-                <div class="terrain-badge terrain-{{ landscape.Terrain|lower }}">
-                    {{ landscape.Terrain }} Terrain
                 </div>
             </div>
         </div>
