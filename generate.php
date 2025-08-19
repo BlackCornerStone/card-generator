@@ -10,13 +10,32 @@ use Dompdf\Options;
 function loadCardsFromCSV($filename) {
     $cards = [];
     if (($handle = fopen($filename, "r")) !== FALSE) {
-        $header = fgetcsv($handle, 1000, ";");
-        while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-            $cards[] = array_combine($header, $data);
+        $header = fgetcsv($handle, 1000, ",");
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            $card = array_combine($header, $data);
+            $cards[] = preprocessCardData($card);
         }
         fclose($handle);
     }
     return $cards;
+}
+
+function preprocessCardData($card) {
+    $processed = [];
+    
+    foreach ($card as $key => $value) {
+        if (preg_match('/^\[(.+?)\]\s*(.+)$/', $key, $matches)) {
+            // Column has bracket format [Group] Subkey
+            $groupName = $matches[1];
+            $subKey = $matches[2];
+            $processed[$groupName][$subKey] = $value;
+        } else {
+            // Regular column without brackets
+            $processed[$key] = $value;
+        }
+    }
+    
+    return $processed;
 }
 
 if ($argc < 2) {
