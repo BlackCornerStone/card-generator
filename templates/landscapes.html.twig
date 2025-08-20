@@ -200,19 +200,6 @@
                                             {% if not loop.last %} | {% endif %}
                                         {% endfor %}
                                     </div>
-
-                                    {% if landscape.Realm == 'Creation' %}
-                                        {% if groupName == 'Survival of Prepared' %}
-                                            <div class="stat-comment">Auto survival for prepared characters with Survival 1+</div>
-                                        {% elseif groupName == 'Survival of Unprepared' and landscape.Type == 'Wilderness' %}
-                                            <div class="stat-comment">Unprepared characters take damage penalties</div>
-                                        {% endif %}
-                                    {% elseif landscape.Realm starts with 'Autochthonia' %}
-                                        {% if groupName starts with 'Survival' %}
-                                            <div class="stat-comment">Requires Survival 2+ or Conduit Tapping specialty; lack causes -2 successes</div>
-                                        {% endif %}
-                                    {% endif %}
-
                             {% endif %}
                         {% endfor %}
 
@@ -222,8 +209,8 @@
                     </div>
 
                     <div class="stat-group">
-                    {% for groupName, groupData in landscape|filter((groupData, groupName) => groupName starts with 'Survival') %}
-                        {% if groupData is iterable %}
+                        <h3>Survival</h3>
+                        {% for groupName, groupData in landscape|filter((groupData, groupName) => groupName starts with 'Survival') %}
                             {% set displayedValues = [] %}
                             {% for key, value in groupData %}
                                 {% if value != '-' and value != '' %}
@@ -231,30 +218,25 @@
                                 {% endif %}
                             {% endfor %}
                             {% if displayedValues|length > 0 %}
-
-                                    <h3>{{ groupName }}</h3>
-                                    <div class="stat-row">
-                                        {% for item in displayedValues %}
-                                            <span class="stat-label">{{ item.key }}:</span>
-                                            <span class="stat-value">{{ item.value }}</span>
-                                            {% if not loop.last %} | {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                    
-                                    {% if landscape.Realm == 'Creation' %}
-                                        {% if groupName == 'Survival of Prepared' %}
-                                            <div class="stat-comment">Auto survival for prepared characters with Survival 1+</div>
-                                        {% elseif groupName == 'Survival of Unprepared' and landscape.Type == 'Wilderness' %}
-                                            <div class="stat-comment">Unprepared characters take damage penalties</div>
-                                        {% endif %}
-                                    {% elseif landscape.Realm starts with 'Autochthonia' %}
-                                        {% if groupName starts with 'Survival' %}
-                                            <div class="stat-comment">Requires Survival 5+ or Conduit Tapping specialty; lack causes -2 external pen.</div>
-                                        {% endif %}
-                                    {% endif %}
+                                <div class="stat-row">
+                                    <strong>{{ groupName }}</strong>
+                                    {% for item in displayedValues %}
+                                        <span class="stat-label">{{ item.key }}:</span>
+                                        <span class="stat-value">{{ item.value }}</span>
+                                        {% if not loop.last %} | {% endif %}
+                                    {% endfor %}
+                                </div>
                             {% endif %}
+                        {% endfor %}
+
+                        {% if landscape.Realm == 'Creation' %}
+                            <div class="stat-comment">Prepared: Automatic shelter and food for prepared characters with Survival 1+</div>
+                            {% if landscape.Type == 'Wilderness' %}
+                                <div class="stat-comment">Unprepared: Take damage penalties in wilderness areas</div>
+                            {% endif %}
+                        {% elseif landscape.Realm starts with 'Autochthonia' %}
+                            <div class="stat-comment">Requires Survival 5+ or Conduit Tapping specialty; lack causes -2 health</div>
                         {% endif %}
-                    {% endfor %}
                     </div>
                 </div>
             </div>
