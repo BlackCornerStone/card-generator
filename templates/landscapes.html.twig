@@ -181,7 +181,48 @@
             
             <div class="card-right">
                 <div class="stats-grid">
-                    {% for groupName, groupData in landscape %}
+                    <div class="stat-group">
+                        <h3>Visibility</h3>
+                        {% for groupName, groupData in landscape|filter((groupData, groupName) => groupName starts with 'Visibility') %}
+                            {% set displayedValues = [] %}
+                            {% for key, value in groupData %}
+                                {% if value != '-' and value != '' and value != 0 %}
+                                    {% set displayedValues = displayedValues|merge([{key: key, value: value}]) %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if displayedValues|length > 0 %}
+
+                                    <div class="stat-row">
+                                        <strong>{{ groupName }}</strong>
+                                        {% for item in displayedValues %}
+                                            <span class="stat-label">{{ item.key }}:</span>
+                                            <span class="stat-value">{{ item.value }}</span>
+                                            {% if not loop.last %} | {% endif %}
+                                        {% endfor %}
+                                    </div>
+
+                                    {% if landscape.Realm == 'Creation' %}
+                                        {% if groupName == 'Survival of Prepared' %}
+                                            <div class="stat-comment">Auto survival for prepared characters with Survival 1+</div>
+                                        {% elseif groupName == 'Survival of Unprepared' and landscape.Type == 'Wilderness' %}
+                                            <div class="stat-comment">Unprepared characters take damage penalties</div>
+                                        {% endif %}
+                                    {% elseif landscape.Realm starts with 'Autochthonia' %}
+                                        {% if groupName starts with 'Survival' %}
+                                            <div class="stat-comment">Requires Survival 2+ or Conduit Tapping specialty; lack causes -2 successes</div>
+                                        {% endif %}
+                                    {% endif %}
+
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="stat-comment">Murky = -1 external pen. (-1 hit)</div>
+                        <div class="stat-comment">None = -2 external pen. (-2 hit), limit for ranged attacks</div>
+                        <div class="stat-comment">More = -2 external pen. (-2 hit)</div>
+                    </div>
+
+                    <div class="stat-group">
+                    {% for groupName, groupData in landscape|filter((groupData, groupName) => groupName starts with 'Survival') %}
                         {% if groupData is iterable %}
                             {% set displayedValues = [] %}
                             {% for key, value in groupData %}
@@ -190,7 +231,7 @@
                                 {% endif %}
                             {% endfor %}
                             {% if displayedValues|length > 0 %}
-                                <div class="stat-group">
+
                                     <h3>{{ groupName }}</h3>
                                     <div class="stat-row">
                                         {% for item in displayedValues %}
@@ -208,13 +249,13 @@
                                         {% endif %}
                                     {% elseif landscape.Realm starts with 'Autochthonia' %}
                                         {% if groupName starts with 'Survival' %}
-                                            <div class="stat-comment">Requires Survival 2+ or Conduit Tapping specialty; lack causes -2 successes</div>
+                                            <div class="stat-comment">Requires Survival 5+ or Conduit Tapping specialty; lack causes -2 external pen.</div>
                                         {% endif %}
                                     {% endif %}
-                                </div>
                             {% endif %}
                         {% endif %}
                     {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
