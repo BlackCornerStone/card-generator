@@ -40,7 +40,14 @@ function preprocessCardData($card) {
         $filename = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($processed['Landscape']));
         $filename = preg_replace('/_+/', '_', $filename);
         $filename = trim($filename, '_');
-        $processed['ImageFile'] = __DIR__ . '/images/' . $filename . '.png';
+        $imagePath = __DIR__ . '/images/' . $filename . '.png';
+        
+        // For PDF generation, convert to base64 to avoid path issues
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $processed['ImageFile'] = 'data:image/png;base64,' . $imageData;
+            $processed['ImagePath'] = $imagePath; // Keep original path for HTML
+        }
     }
     
     return $processed;
