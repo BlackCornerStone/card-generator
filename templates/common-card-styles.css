@@ -4,13 +4,15 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 20px 8px 20px 20px;
     background-color: #f5f5f5;
 }
 
 /* Grid Layout */
 .grid {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     width: 100%;
 }
 
@@ -20,7 +22,7 @@ body {
     border: 2px solid #333;
     border-radius: 8px;
     padding: 8px;
-    margin: 8px;
+    margin: 0; /* rely on .grid gap for spacing to avoid extra right-edge margin */
     vertical-align: top;
     page-break-inside: avoid;
     break-inside: avoid;
@@ -53,6 +55,9 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 1; /* ensure content sits above .card-background */
 }
 
 .card-header {
@@ -116,14 +121,8 @@ body {
     z-index: 0; /* ensure it's above the card background but below content */
 }
 
-/* Ensure content sits above background by default */
-.card-content {
-    position: relative;
-    z-index: 1;
-}
-
+/* Content sits above background by default via .card-content; .with-background further elevates */
 .card-content.with-background {
-    position: relative;
     z-index: 2;
 }
 
@@ -235,6 +234,12 @@ body {
     padding: 8px;
     border-radius: 4px;
     border: 1px solid #dee2e6;
+    display: inline-block;
+    /* Shrink to fit content while not exceeding container */
+    width: fit-content;
+    max-width: 100%;
+    /* In CSS Grid, prevent stretching to full track width */
+    justify-self: start;
 }
 
 .stat-group.transparent {
