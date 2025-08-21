@@ -12,6 +12,9 @@ function loadCardsFromCSV($filename) {
     if (($handle = fopen($filename, "r")) !== FALSE) {
         $header = fgetcsv($handle, 1000, ",");
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            // Skip empty lines or malformed rows
+            if ($data === null || $data === [null]) { continue; }
+            if (count($data) !== count($header)) { continue; }
             $card = array_combine($header, $data);
             $cards[] = preprocessCardData($card);
         }
@@ -57,6 +60,7 @@ function preprocessCardData($card) {
 $supportedCardTypes = [
     'landscapes',
     'weather',
+    'travel-times',
 ];
 
 try {

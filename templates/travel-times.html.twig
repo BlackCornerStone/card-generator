@@ -1,0 +1,43 @@
+{% extends "card-base.html.twig" %}
+
+{% block title %}Travel Time Cards{% endblock %}
+
+{% block card_title %}{{ card.Mode }}{% endblock %}
+
+{% block card_badges %}{% endblock %}
+
+{% block card_classes %}size-medium{% endblock %}
+
+{% block card_body %}
+<div class="card-body">
+    <div class="stats-grid">
+        <div class="stat-group">
+            <h3>Distance by time unit [miles]</h3>
+            {% if card.Hourly is defined and card.Hourly != '' %}
+            <div class="stat-row">
+                <span class="stat-label">Hourly:</span>
+                <span class="stat-value">{{ card.Hourly }}</span>
+            </div>
+            {% endif %}
+            {% if card.Daily is defined and card.Daily != '' %}
+            <div class="stat-row">
+                <span class="stat-label">Daily:</span>
+                <span class="stat-value">{{ card.Daily }}</span>
+            </div>
+            {% endif %}
+            {% if card.Weekly is defined and card.Weekly != '' %}
+            <div class="stat-row">
+                <span class="stat-label">Weekly:</span>
+                <span class="stat-value">{{ card.Weekly }}</span>
+            </div>
+            {% endif %}
+            {% if card.Monthly is defined and card.Monthly != '' %}
+            <div class="stat-row">
+                <span class="stat-label">Monthly:</span>
+                <span class="stat-value">{{ card.Monthly }}</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
