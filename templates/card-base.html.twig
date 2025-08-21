@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cards{% endblock %}</title>
+    <link rel="stylesheet" href="../templates/common-card-styles.css">
+    {% block additional_styles %}{% endblock %}
+</head>
+<body>
+    {% block macros %}{% endblock %}
+    
+    <div class="grid">
+        {% block card_loop %}
+            {% for card in cards %}
+                {% block card_container %}
+                    <div class="card {% block card_classes %}{% endblock %}">
+                        {% block card_background %}{% endblock %}
+                        
+                        {% block card_content_wrapper %}
+                            <div class="card-content {% block card_content_classes %}{% endblock %}">
+                                {% block card_header %}
+                                    <div class="card-header {% block card_header_classes %}{% endblock %}">
+                                        {% block card_title %}{% endblock %}
+                                        {% block card_badges %}{% endblock %}
+                                    </div>
+                                {% endblock %}
+                                
+                                {% block card_image %}{% endblock %}
+                                
+                                {% block card_body %}
+                                    <div class="card-body">
+                                        {% block card_left %}{% endblock %}
+                                        {% block card_right %}{% endblock %}
+                                    </div>
+                                {% endblock %}
+                                
+                                {% block card_stats %}{% endblock %}
+                                
+                                {% block card_notes %}{% endblock %}
+                                
+                                {% block card_footer %}{% endblock %}
+                            </div>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            {% endfor %}
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,350 @@
+/* Common Card Generator Styles */
+
+/* Base Typography */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+/* Grid Layout */
+.grid {
+    display: block;
+    width: 100%;
+}
+
+/* Base Card Styles */
+.card {
+    background-color: white;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 8px;
+    vertical-align: top;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    font-size: 9px;
+    position: relative;
+}
+
+/* Card Size Variants */
+.card.size-small {
+    display: inline-block;
+    width: 1.75in;
+    height: 2.5in;
+}
+
+.card.size-medium {
+    display: inline-flex;
+    width: 3.5in;
+    height: 2.5in;
+}
+
+.card.size-playing {
+    display: inline-block;
+    width: 2in;
+    height: 3in;
+    padding: 12px;
+}
+
+/* Card Layout Components */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-header {
+    margin-bottom: 8px;
+}
+
+.card-body {
+    display: flex;
+    flex: 1;
+}
+
+.card-left {
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    padding-right: 8px;
+}
+
+.card-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Background Images */
+.card-background {
+    position: absolute;
+    top: 6px;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    border-radius: 4px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+.card-content.with-background {
+    position: relative;
+    z-index: 2;
+}
+
+.header-with-background {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px 6px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+}
+
+/* Typography Styles */
+.card-title {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.card-title.day {
+    background-color: white;
+    color: #2c3e50;
+    border: 1px solid #ddd;
+}
+
+.card-title.night {
+    background-color: black;
+    color: white;
+}
+
+.card-title.default {
+    color: #2c3e50;
+}
+
+/* Badge System */
+.badge {
+    color: white;
+    padding: 2px 5px;
+    border-radius: 8px;
+    font-size: 8px;
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    white-space: nowrap;
+}
+
+.badge.small {
+    padding: 2px 4px;
+    border-radius: 6px;
+    font-size: 7px;
+}
+
+/* Badge Color Variants */
+.badge.primary { background: #3498db; }
+.badge.secondary { background: #9b59b6; }
+.badge.success { background: #27ae60; }
+.badge.danger { background: #e74c3c; }
+.badge.warning { background: #f39c12; }
+.badge.info { background: #17a2b8; }
+
+/* Terrain Badge Colors */
+.terrain-open { 
+    background: #e8f5e8; 
+    color: #2d5a2d; 
+}
+
+.terrain-difficult { 
+    background: #fff3cd; 
+    color: #856404; 
+}
+
+.terrain-extreme { 
+    background: #f8d7da; 
+    color: #721c24; 
+}
+
+/* Icon Styles */
+.icon {
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+/* Stats and Data Display */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    flex: 1;
+}
+
+.stats-grid.two-column {
+    grid-template-columns: 1fr 1fr;
+}
+
+.stat-group {
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+.stat-group.transparent {
+    background: rgba(248, 249, 250, 0.9);
+    backdrop-filter: blur(2px);
+}
+
+.stat-group h3 {
+    margin: 0 0 4px 0;
+    color: #495057;
+    font-size: 9px;
+    font-weight: bold;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 2px;
+}
+
+.stat-row {
+    display: block;
+    margin: 2px 0;
+    font-size: 8px;
+    line-height: 1.2;
+}
+
+.stat-column {
+    display: table;
+    width: 100%;
+    margin: 2px 0;
+    font-size: 8px;
+}
+
+.stat-column > * {
+    display: table-cell;
+    padding-right: 6px;
+    vertical-align: top;
+}
+
+.stat-label {
+    font-weight: 500;
+}
+
+.stat-value {
+    color: #666;
+    word-break: break-word;
+}
+
+.stat-comment {
+    color: #999;
+    font-size: 7px;
+    font-style: italic;
+    display: block;
+    margin-top: 1px;
+}
+
+/* Images */
+.card-image {
+    width: 100%;
+    border-radius: 4px;
+    object-fit: cover;
+    margin-bottom: 8px;
+}
+
+.card-image.small {
+    height: 60px;
+}
+
+.card-image.medium {
+    height: 80px;
+}
+
+/* Note Section */
+.note-section {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    padding: 6px;
+    margin-top: 4px;
+    font-size: 7px;
+    line-height: 1.3;
+}
+
+.note-title {
+    font-weight: bold;
+    color: #856404;
+    margin-bottom: 2px;
+}
+
+/* Utility Classes */
+.empty-value {
+    color: #ccc;
+    font-style: italic;
+}
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 12px; }
+
+.p-1 { padding: 4px; }
+.p-2 { padding: 8px; }
+.p-3 { padding: 12px; }
+
+/* Flex Utilities */
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.flex-1 { flex: 1; }
+.justify-between { justify-content: space-between; }
+.align-center { align-items: center; }
+
+/* Playing Card Specific Utilities */
+.absolute { position: absolute; }
+.relative { position: relative; }
+
+.top-2 { top: 8px; }
+.left-2 { left: 8px; }
+.bottom-2 { bottom: 8px; }
+.right-2 { right: 8px; }
+
+.text-sm { font-size: 12px; }
+.text-lg { font-size: 18px; line-height: 1; }
+.text-6xl { font-size: 72px; line-height: 1; }
+
+.font-bold { font-weight: bold; }
+.leading-none { line-height: 1; }
+
+.text-red-600 { color: #dc2626; }
+.text-black { color: #000000; }
+
+.rotate-180 { transform: rotate(180deg); }
+
+.center-symbol { 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+}
+
+/* Suit Icon Styles */
+.suit-icon {
+    font-family: "Segoe UI Symbol", "Symbola", "DejaVu Sans", "Arial Unicode MS", Arial, sans-serif;
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Realm-specific Card Colors */
+.card.creation {
+    background-color: #e8f5e8;
+}
+
+.card.autochthonia {
+    background-color: #fff3e0;
+}

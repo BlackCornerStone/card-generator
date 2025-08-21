@@ -1,324 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landscape Cards</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        
-        .grid {
-            display: block;
-            width: 100%;
-        }
-        
-        .card {
-            display: inline-flex;
-            width: 3.5in;
-            height: 2.5in;
-            background-color: white;
-            border: 2px solid #333;
-            border-radius: 8px;
-            padding: 8px;
-            margin: 8px;
-            vertical-align: top;
-            page-break-inside: avoid;
-            break-inside: avoid;
-            font-size: 9px;
-            position: relative;
-        }
-        
-        .card-background {
-            position: absolute;
-            top: 6px;
-            left: 12px;
-            right: 12px;
-            bottom: 12px;
-            border-radius: 4px;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: 1;
-        }
-        
-        .card-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-        
-        .card-header {
-            display: block;
-            margin-bottom: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 4px 6px;
-            border-radius: 4px;
-            backdrop-filter: blur(2px);
-            text-align: left;
-        }
-        
-        .card-body {
-            display: flex;
-            flex: 1;
-        }
-        
-        .card.creation {
-            background-color: #e8f5e8;
-        }
-        
-        .card.autochthonia {
-            background-color: #fff3e0;
-        }
-        
-        .card-left {
-            width: 120px;
-            display: flex;
-            flex-direction: column;
-            padding-right: 8px;
-        }
-        
-        .card-right {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .landscape-name {
-            font-size: 12px;
-            font-weight: bold;
-            color: #2c3e50;
-            display: inline-block;
-            width: auto;
-        }
-        
-        .header-badges {
-            display: inline-flex;
-            gap: 2px;
-            flex-wrap: wrap;
-            width: auto;
-            float: right;
-        }
-        
-        .badge {
-            color: white;
-            padding: 2px 4px;
-            border-radius: 6px;
-            font-size: 7px;
-            text-align: center;
-            white-space: nowrap;
-            display: inline-block;
-            width: auto;
-        }
-        
-        .realm-badge {
-            background: #3498db;
-        }
-        
-        .type-badge {
-            background: #9b59b6;
-        }
-        
-        .terrain-badge {
-            padding: 2px 4px;
-            border-radius: 6px;
-            font-size: 7px;
-            font-weight: bold;
-            display: inline-block;
-            width: auto;
-        }
-        
-        .stats-grid {
-            display: block;
-            width: auto;
-            text-align: right;
-        }
-        
-        .stat-group {
-            background: rgba(248, 249, 250, 0.9);
-            padding: 6px;
-            border-radius: 4px;
-            border: 1px solid #dee2e6;
-            backdrop-filter: blur(2px);
-            display: inline-block;
-            width: auto;
-            margin: 3px 0;
-            max-width: 200px;
-            text-align: left;
-        }
-        
-        .stat-group h3 {
-            margin: 0 0 4px 0;
-            color: #495057;
-            font-size: 9px;
-            font-weight: bold;
-            border-bottom: 1px solid #dee2e6;
-            padding-bottom: 2px;
-        }
-        
-        .stat-row {
-            display: block;
-            margin: 2px 0;
-            font-size: 8px;
-            line-height: 1.2;
-        }
-        
-        .stat-column {
-            display: table;
-            width: 100%;
-            margin: 2px 0;
-            font-size: 8px;
-        }
-        
-        .stat-column > * {
-            display: table-cell;
-            padding-right: 6px;
-            vertical-align: top;
-        }
-        
-        .stat-label {
-            font-weight: 500;
-        }
-        
-        .stat-value {
-            color: #666;
-            word-break: break-word;
-        }
-        
-        .stat-comment {
-            color: #999;
-            font-size: 7px;
-            font-style: italic;
-            display: block;
-            margin-top: 1px;
-        }
-        
-        
-        .terrain-open { 
-            background: #e8f5e8; 
-            color: #2d5a2d; 
-        }
-        
-        .terrain-difficult { 
-            background: #fff3cd; 
-            color: #856404; 
-        }
-        
-        .terrain-extreme { 
-            background: #f8d7da; 
-            color: #721c24; 
-        }
-        
-        .empty-value {
-            color: #ccc;
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
-    <div class="grid">
-        {% for landscape in cards %}
-        <div class="card {{ landscape.Realm|lower }}">
-            {% if landscape.ImageFile %}
-                <div class="card-background" style="background-image: url('{{ landscape.ImageFile }}')"></div>
-            {% endif %}
-            <div class="card-content">
-                <div class="card-header">
-                    <div class="landscape-name">{{ landscape.Landscape }}</div>
-                    <div class="header-badges">
-                        <div class="badge realm-badge">{{ landscape.Realm }}</div>
-                        {% if landscape.Type %}
-                            <div class="badge type-badge">{{ landscape.Type }}</div>
+{% extends "card-base.html.twig" %}
+
+{% block title %}Landscape Cards{% endblock %}
+
+{% block card_title %}{{ card.Landscape }}{% endblock %}
+
+{% block card_badges %}
+    <div class="badge primary small">{{ card.Realm }}</div>
+    {% if card.Type %}
+        <div class="badge secondary small">{{ card.Type }}</div>
+    {% endif %}
+    <div class="badge terrain-{{ card.Terrain|lower }} small">{{ card.Terrain }} Terrain</div>
+{% endblock %}
+
+{% block card_classes %}size-medium {{ card.Realm|lower }}{% endblock %}
+{% block card_background %}
+    {% if card.ImageFile %}
+        <div class="card-background" style="background-image: url('{{ card.ImageFile }}')"></div>
+    {% endif %}
+{% endblock %}
+
+{% block card_right %}
+        <div class="stats-grid">
+            <div class="stat-group transparent">
+                <h3>Visibility reach [y]</h3>
+                {% for groupName, groupData in card|filter((groupData, groupName) => groupName starts with 'Visibility') %}
+                    {% set displayedValues = [] %}
+                    {% for key, value in groupData %}
+                        {% if value != '-' and value != '' and value != 0 %}
+                            {% set displayedValues = displayedValues|merge([{key: key, value: value}]) %}
                         {% endif %}
-                        <div class="badge terrain-badge terrain-{{ landscape.Terrain|lower }}">{{ landscape.Terrain }} Terrain</div>
-                    </div>
-                </div>
-                
-                <div class="card-body">
-                    <div class="card-left">
-                    </div>
-                    
-                    <div class="card-right">
-                <div class="stats-grid">
-                    <div class="stat-group">
-                        <h3>Visibility reach [y]</h3>
-                        {% for groupName, groupData in landscape|filter((groupData, groupName) => groupName starts with 'Visibility') %}
-                            {% set displayedValues = [] %}
-                            {% for key, value in groupData %}
-                                {% if value != '-' and value != '' and value != 0 %}
-                                    {% set displayedValues = displayedValues|merge([{key: key, value: value}]) %}
-                                {% endif %}
+                    {% endfor %}
+                    {% if displayedValues|length > 0 %}
+                        <div class="stat-row">
+                            {% if groupName == 'Visibility in Day' %}
+                                <strong class="stat-label">Day:</strong>
+                            {% elseif groupName == 'Visibility in Full Moon' %}
+                                <strong class="stat-label">Full Moon:</strong>
+                            {% elseif groupName == 'Visibility in No Moon' %}
+                                <strong class="stat-label">No Moon:</strong>
+                            {% endif %}
+                            {% for item in displayedValues %}
+                                <span class="stat-label">{{ item.key }}:</span>
+                                <span class="stat-value">{{ item.value }}</span>
+                                {% if not loop.last %} | {% endif %}
                             {% endfor %}
-                            {% if displayedValues|length > 0 %}
-
-                                    <div class="stat-row">
-                                        {% if groupName == 'Visibility in Day' %}
-                                            <strong class="stat-label">Day:</strong>
-                                        {% elseif groupName == 'Visibility in Full Moon' %}
-                                            <strong class="stat-label">Full Moon:</strong>
-                                        {% elseif groupName == 'Visibility in No Moon' %}
-                                            <strong class="stat-label">No Moon:</strong>
-                                        {% endif %}
-                                        {% for item in displayedValues %}
-                                            <span class="stat-label">{{ item.key }}:</span>
-                                            <span class="stat-value">{{ item.value }}</span>
-                                            {% if not loop.last %} | {% endif %}
-                                        {% endfor %}
-                                    </div>
-                            {% endif %}
-                        {% endfor %}
-
-                        <div class="stat-comment">Murky = -1 external pen. (-1 hit)</div>
-                        <div class="stat-comment">None = -2 external pen. (-2 hit)</div>
-                        <div class="stat-comment">More = -2 external pen. (-2 hit)<br>+ no ranged attacks</div>
-                    </div>
-
-                    <div class="stat-group">
-                        <h3>Survival difficulty</h3>
-                        {% for groupName, groupData in landscape|filter((groupData, groupName) => groupName starts with 'Survival') %}
-                            {% set displayedValues = [] %}
-                            {% for key, value in groupData %}
-                                {% if value != '-' and value != '' %}
-                                    {% set displayedValues = displayedValues|merge([{key: key, value: value}]) %}
-                                {% endif %}
-                            {% endfor %}
-                            {% if displayedValues|length > 0 %}
-                                <div class="stat-row">
-                                    {% if groupName == 'Survival of Prepared' %}
-                                        <strong class="stat-label">Prepared</strong>
-                                    {% elseif groupName == 'Survival of Unprepared' %}
-                                        <strong class="stat-label">Unprepared</strong>
-                                    {% endif %}
-                                    {% for item in displayedValues %}
-                                        <span class="stat-label">{{ item.key }}:</span>
-                                        <span class="stat-value">{{ item.value }}</span>
-                                        {% if not loop.last %} | {% endif %}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-
-                        {% if landscape.Realm == 'Creation' %}
-                            <div class="stat-comment">Prepared: Automatic shelter and food for prepared characters with Survival 1+</div>
-                            {% if landscape.Type == 'Wilderness' %}
-                                <div class="stat-comment">Unprepared: Take damage penalties in wilderness areas</div>
-                            {% endif %}
-                        {% elseif landscape.Realm starts with 'Autochthonia' %}
-                            <div class="stat-comment">Requires Survival 5+ or Conduit Tapping specialty; lack causes -2 health</div>
-                        {% endif %}
-                    </div>
                         </div>
-                    </div>
-                </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="stat-comment">Murky = -1 external pen. (-1 hit)</div>
+                <div class="stat-comment">None = -2 external pen. (-2 hit)</div>
+                <div class="stat-comment">More = -2 external pen. (-2 hit)<br>+ no ranged attacks</div>
+            </div>
+
+            <div class="stat-group transparent">
+                <h3>Survival difficulty</h3>
+                {% for groupName, groupData in card|filter((groupData, groupName) => groupName starts with 'Survival') %}
+                    {% set displayedValues = [] %}
+                    {% for key, value in groupData %}
+                        {% if value != '-' and value != '' %}
+                            {% set displayedValues = displayedValues|merge([{key: key, value: value}]) %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if displayedValues|length > 0 %}
+                        <div class="stat-row">
+                            {% if groupName == 'Survival of Prepared' %}
+                                <strong class="stat-label">Prepared</strong>
+                            {% elseif groupName == 'Survival of Unprepared' %}
+                                <strong class="stat-label">Unprepared</strong>
+                            {% endif %}
+                            {% for item in displayedValues %}
+                                <span class="stat-label">{{ item.key }}:</span>
+                                <span class="stat-value">{{ item.value }}</span>
+                                {% if not loop.last %} | {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% if card.Realm == 'Creation' %}
+                    <div class="stat-comment">Prepared: Automatic shelter and food for prepared characters with Survival 1+</div>
+                    {% if card.Type == 'Wilderness' %}
+                        <div class="stat-comment">Unprepared: Take damage penalties in wilderness areas</div>
+                    {% endif %}
+                {% elseif card.Realm starts with 'Autochthonia' %}
+                    <div class="stat-comment">Requires Survival 5+ or Conduit Tapping specialty; lack causes -2 health</div>
+                {% endif %}
             </div>
         </div>
-        {% endfor %}
-    </div>
-</body>
-</html>
+{% endblock %}
