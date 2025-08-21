@@ -50,7 +50,7 @@
 
                 <div class="stat-comment">Murky = -1 external pen. (-1 hit)</div>
                 <div class="stat-comment">None = -2 external pen. (-2 hit)</div>
-                <div class="stat-comment">More = -2 external pen. (-2 hit)<br>+ no ranged attacks</div>
+                <div class="stat-comment">More = None + no ranged attacks</div>
             </div>
 
             <div class="stat-group transparent">
@@ -79,7 +79,7 @@
                 {% endfor %}
 
                 {% if card.Realm == 'Creation' %}
-                    <div class="stat-comment">Prepared: Automatic shelter and food for prepared characters with Survival 1+</div>
+                    <div class="stat-comment">Prepared with Survival 1+: Automatic shelter and food</div>
                     {% if card.Type == 'Wilderness' %}
                         <div class="stat-comment">Unprepared: Take damage penalties in wilderness areas</div>
                     {% endif %}
