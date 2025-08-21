@@ -35,7 +35,7 @@ function preprocessCardData($card) {
         }
     }
     
-    // Add image filename based on landscape name
+    // Add image filename based on landscape name (if present)
     if (!empty($processed['Landscape'])) {
         $filename = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($processed['Landscape']));
         $filename = preg_replace('/_+/', '_', $filename);
@@ -53,54 +53,60 @@ function preprocessCardData($card) {
     return $processed;
 }
 
-if ($argc < 2) {
-    echo "Usage: php generate.php <card_type>\n";
-    echo "Example: php generate.php playing\n";
-    exit(1);
-}
-
-$cardType = $argv[1];
-$templateFile = "templates/{$cardType}.html.twig";
-$dataFile = "data/{$cardType}.csv";
-
-if (!file_exists($templateFile)) {
-    echo "Error: Template file '{$templateFile}' not found.\n";
-    exit(1);
-}
-
-if (!file_exists($dataFile)) {
-    echo "Error: Data file '{$dataFile}' not found.\n";
-    exit(1);
-}
+// Always generate all supported card types in one run (hardcoded list)
+$supportedCardTypes = [
+    'landscapes',
+    'weather',
+];
 
 try {
+    // Ensure output directory exists
+    if (!is_dir('output')) {
+        mkdir('output', 0777, true);
+    }
+
     $loader = new FilesystemLoader('templates');
     $twig = new Environment($loader);
-    
-    $cards = loadCardsFromCSV($dataFile);
-    
-    $html = $twig->render("{$cardType}.html.twig", ['cards' => $cards]);
-    
-    // Save HTML file
-    file_put_contents("output/{$cardType}.html", $html);
-    echo "{$cardType} cards HTML generated successfully at output/{$cardType}.html\n";
-    
-    // Generate PDF from HTML
-    $options = new Options();
-    $options->set('defaultFont', 'Arial');
-    $options->set('isRemoteEnabled', true);
-    
-    $dompdf = new Dompdf($options);
-    $dompdf->loadHtml($html, 'UTF-8');
-    $dompdf->setPaper('A4', 'portrait');
-    $dompdf->setPaper('A4', 'landscape');
-    $dompdf->render();
-    
-    $output = $dompdf->output();
-    file_put_contents("output/{$cardType}.pdf", $output);
-    
-    echo "{$cardType} cards PDF generated successfully at output/{$cardType}.pdf\n";
-    
+
+    foreach ($supportedCardTypes as $cardType) {
+        $templateFile = "templates/{$cardType}.html.twig";
+        $dataFile = "data/{$cardType}.csv";
+
+        if (!file_exists($templateFile)) {
+            echo "Skip: Template file '{$templateFile}' not found.\n";
+            continue;
+        }
+        if (!file_exists($dataFile)) {
+            echo "Skip: Data file '{$dataFile}' not found.\n";
+            continue;
+        }
+
+        $cards = loadCardsFromCSV($dataFile);
+        $html = $twig->render("{$cardType}.html.twig", ['cards' => $cards]);
+
+        // Save HTML file
+        file_put_contents("output/{$cardType}.html", $html);
+        echo "{$cardType} cards HTML generated successfully at output/{$cardType}.html\n";
+
+        // Generate PDF from HTML
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $options->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html, 'UTF-8');
+        // Keep existing behavior; last setPaper wins (landscape)
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        $output = $dompdf->output();
+        file_put_contents("output/{$cardType}.pdf", $output);
+        echo "{$cardType} cards PDF generated successfully at output/{$cardType}.pdf\n";
+    }
+
+    echo "All generation tasks completed.\n";
+
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage() . "\n";
 }
