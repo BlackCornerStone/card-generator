@@ -56,7 +56,30 @@ body {
 }
 
 .card-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     margin-bottom: 8px;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+/* Header background variants (moved from title) */
+.card-header.day {
+    background-color: white;
+    color: #2c3e50;
+    border: 1px solid #ddd;
+}
+
+.card-header.night {
+    background-color: black;
+    color: white;
+}
+
+.card-header.default {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+    border: 1px solid #ddd;
 }
 
 .card-body {
@@ -88,7 +111,13 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: -1;
+    z-index: 0; /* ensure it's above the card background but below content */
+}
+
+/* Ensure content sits above background by default */
+.card-content {
+    position: relative;
+    z-index: 1;
 }
 
 .card-content.with-background {
@@ -107,25 +136,16 @@ body {
 .card-title {
     font-size: 12px;
     font-weight: bold;
-    margin-bottom: 4px;
-    padding: 4px;
+    margin: 0;
+    padding: 0;
     border-radius: 4px;
+    flex: 1;
 }
 
-.card-title.day {
-    background-color: white;
-    color: #2c3e50;
-    border: 1px solid #ddd;
-}
-
-.card-title.night {
-    background-color: black;
-    color: white;
-}
-
-.card-title.default {
-    color: #2c3e50;
-}
+/* Title no longer carries background variants; header does */
+.card-title.day { }
+.card-title.night { }
+.card-title.default { }
 
 /* Badge System */
 .badge {
@@ -135,9 +155,14 @@ body {
     font-size: 8px;
     text-align: center;
     display: inline-block;
-    margin-bottom: 4px;
+    margin-bottom: 0;
     margin-right: 4px;
     white-space: nowrap;
+}
+
+/* Align badges to the right within the header */
+.card-header > .badge:first-of-type {
+    margin-left: auto;
 }
 
 .badge.small {

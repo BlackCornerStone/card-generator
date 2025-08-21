@@ -20,8 +20,10 @@
                         {% block card_content_wrapper %}
                             <div class="card-content {% block card_content_classes %}{% endblock %}">
                                 {% block card_header %}
-                                    <div class="card-header {% block card_header_classes %}{% endblock %}">
-                                        {% block card_title %}{% endblock %}
+                                    <div class="card-header {% block card_header_classes %}{% endblock %} {% block card_title_bg_class %}default{% endblock %}" {% block card_title_style %}{% endblock %}>
+                                        <div class="card-title">
+                                            {% block card_title %}{% endblock %}
+                                        </div>
                                         {% block card_badges %}{% endblock %}
                                     </div>
                                 {% endblock %}
