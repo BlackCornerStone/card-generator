@@ -62,6 +62,8 @@ body {
     margin-bottom: 8px;
     padding: 4px;
     border-radius: 4px;
+    /* Ensure header font-size matches title so icons sized with em align to title height */
+    font-size: 12px;
 }
 
 /* Header background variants (moved from title) */
@@ -199,6 +201,21 @@ body {
 .icon {
     font-size: 16px;
     margin-right: 4px;
+}
+
+/* Title Icon inside header/title area */
+.title-icon {
+    /* Make the icon square and the same height as the title line */
+    height: 1em;      /* em is now relative to .card-header (12px) */
+    width: 1em;       /* square */
+    display: inline-block;
+    vertical-align: middle;
+    object-fit: contain; /* keep aspect without cropping */
+}
+
+/* Slight spacing when multiple icons appear */
+.title-icon + .title-icon {
+    margin-left: 2px;
 }
 
 /* Stats and Data Display */

@@ -6,6 +6,12 @@
 
 {% block card_badges %}
     {% if card.Time == 'Day' %}☀️{% else %}🌙{% endif %}
+    {% if card['Athletics penalty'] != '' %}
+        {% for i in 1..card['Athletics penalty']|abs %}
+            <img src="../images/ath-penalty.svg" alt="Athletics penalty" class="title-icon"/>
+        {% endfor %}
+    {% endif %}
+
 {% endblock %}
 
 {% block card_classes %}
