@@ -21,8 +21,24 @@
                     <th>Weekly</th>
                     <th>Monthly</th>
                 </tr>
-                {% for i in range(1, 10) %}
-                    <tr>
+                {% for i in range(1, 11) %}
+                    {% set name = null %}
+                    {% if i == 8 %}
+                        {% set name = 'open' %}
+                    {% elseif i == 6 %}
+                        {% set name = 'difficult' %}
+                    {% elseif i == 4 %}
+                        {% set name = 'extreme' %}
+                    {% endif %}
+                    {% set rowClass = '' %}
+                    {% if name %}
+                        {% set rowClass = 'terrain-' ~ name %}
+
+{#                        <tr class="{{ rowClass }}">#}
+{#                            <td colspan="5">{{ name }} Terrain</td>#}
+{#                        </tr>#}
+                    {% endif %}
+                    <tr class="{{ rowClass }}">
                         <td>{{ i }}/8</td>
                         <td>{{ card.Hourly is defined ? (card.Hourly * i / 8)|round(0) : '' }}</td>
                         <td>{{ card.Daily is defined ? (card.Daily * i / 8)|round(0) : '' }}</td>
