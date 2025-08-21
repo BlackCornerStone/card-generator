@@ -19,7 +19,7 @@
         
         .card {
             display: inline-flex;
-            width: 3.5in;
+            width: 1.75in;
             height: 2.5in;
             background-color: white;
             border: 2px solid #333;
@@ -57,8 +57,20 @@
         .weather-name {
             font-size: 12px;
             font-weight: bold;
-            color: #2c3e50;
             margin-bottom: 4px;
+            padding: 4px;
+            border-radius: 4px;
+        }
+        
+        .weather-name.day {
+            background-color: white;
+            color: #2c3e50;
+            border: 1px solid #ddd;
+        }
+        
+        .weather-name.night {
+            background-color: black;
+            color: white;
         }
         
         .badge {
@@ -72,8 +84,9 @@
             margin-right: 4px;
         }
         
-        .time-badge {
-            background: #e74c3c;
+        .time-icon {
+            font-size: 16px;
+            margin-right: 4px;
         }
         
         .location-badge {
@@ -154,10 +167,12 @@
         {% for weather in cards %}
         <div class="card">
             <div class="card-left">
-                <div class="weather-name">{{ weather.Weather }}</div>
+                <div class="weather-name {% if weather.Time %}{{ weather.Time|lower }}{% endif %}">{{ weather.Weather }}</div>
                 <div>
                     {% if weather.Time %}
-                        <div class="badge time-badge">{{ weather.Time }}</div>
+                        <span class="time-icon">
+                            {% if weather.Time == 'Day' %}☀️{% else %}🌙{% endif %}
+                        </span>
                     {% endif %}
                     {% if weather.Location %}
                         <div class="badge location-badge">{{ weather.Location }}</div>

@@ -55,14 +55,13 @@
         }
         
         .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            display: block;
             margin-bottom: 8px;
             background: rgba(255, 255, 255, 0.9);
             padding: 4px 6px;
             border-radius: 4px;
             backdrop-filter: blur(2px);
+            text-align: left;
         }
         
         .card-body {
@@ -95,13 +94,16 @@
             font-size: 12px;
             font-weight: bold;
             color: #2c3e50;
-            flex: 1;
+            display: inline-block;
+            width: auto;
         }
         
         .header-badges {
-            display: flex;
+            display: inline-flex;
             gap: 2px;
             flex-wrap: wrap;
+            width: auto;
+            float: right;
         }
         
         .badge {
@@ -111,6 +113,8 @@
             font-size: 7px;
             text-align: center;
             white-space: nowrap;
+            display: inline-block;
+            width: auto;
         }
         
         .realm-badge {
@@ -126,13 +130,14 @@
             border-radius: 6px;
             font-size: 7px;
             font-weight: bold;
+            display: inline-block;
+            width: auto;
         }
         
         .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 6px;
-            flex: 1;
+            display: block;
+            width: auto;
+            text-align: right;
         }
         
         .stat-group {
@@ -141,6 +146,11 @@
             border-radius: 4px;
             border: 1px solid #dee2e6;
             backdrop-filter: blur(2px);
+            display: inline-block;
+            width: auto;
+            margin: 3px 0;
+            max-width: 200px;
+            text-align: left;
         }
         
         .stat-group h3 {
@@ -160,11 +170,16 @@
         }
         
         .stat-column {
-            display: grid;
-            grid-template-columns: auto repeat(6, auto);
-            gap: 4px;
-            align-items: baseline;
+            display: table;
+            width: 100%;
             margin: 2px 0;
+            font-size: 8px;
+        }
+        
+        .stat-column > * {
+            display: table-cell;
+            padding-right: 6px;
+            vertical-align: top;
         }
         
         .stat-label {
@@ -221,7 +236,7 @@
                         {% if landscape.Type %}
                             <div class="badge type-badge">{{ landscape.Type }}</div>
                         {% endif %}
-                        <div class="badge terrain-badge terrain-{{ landscape.Terrain|lower }}">{{ landscape.Terrain }}</div>
+                        <div class="badge terrain-badge terrain-{{ landscape.Terrain|lower }}">{{ landscape.Terrain }} Terrain</div>
                     </div>
                 </div>
                 
@@ -260,8 +275,8 @@
                         {% endfor %}
 
                         <div class="stat-comment">Murky = -1 external pen. (-1 hit)</div>
-                        <div class="stat-comment">None = -2 external pen. (-2 hit), limit for ranged attacks</div>
-                        <div class="stat-comment">More = -2 external pen. (-2 hit)</div>
+                        <div class="stat-comment">None = -2 external pen. (-2 hit)</div>
+                        <div class="stat-comment">More = -2 external pen. (-2 hit)<br>+ no ranged attacks</div>
                     </div>
 
                     <div class="stat-group">
