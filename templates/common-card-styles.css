@@ -222,18 +222,38 @@ body {
     display: grid;
     grid-template-columns: 1fr;
     gap: 6px;
-    flex: 1;
+    /* Do not grow to fill the available space; keep minimal height */
+    flex: 0 0 auto;
+    align-self: flex-start; /* avoid being stretched by parent flex container */
+    height: auto;
 }
 
 .stats-grid.two-column {
     grid-template-columns: 1fr 1fr;
 }
 
+/* Align stats to the right on medium cards */
+.stats-grid {
+    justify-items: end; /* place items to the right edge of the grid cell */
+}
 .stat-group {
-    background: #f8f9fa;
+    justify-self: end; /* ensure the stat-group hugs the right side */
+    text-align: right; /* right-align text within the group */
+}
+.stat-row,
+.stat-column,
+.stat-comment,
+.stat-value,
+.stat-label,
+.stat-group h3 {
+    text-align: right;
+}
+
+.stat-group {
+    background: rgba(248, 249, 250, 0.6);
     padding: 8px;
     border-radius: 4px;
-    border: 1px solid #dee2e6;
+    border: 1px solid rgba(222, 226, 230, 0.6);
     display: inline-block;
     /* Shrink to fit content while not exceeding container */
     width: fit-content;
@@ -243,7 +263,7 @@ body {
 }
 
 .stat-group.transparent {
-    background: rgba(248, 249, 250, 0.9);
+    background: rgba(248, 249, 250, 0.5);
     backdrop-filter: blur(2px);
 }
 
