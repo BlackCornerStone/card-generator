@@ -5,20 +5,26 @@
 {% block card_title %}{{ card.Weather }}{% endblock %}
 
 {% block card_badges %}
-    {% if card.Time == 'Day' %}☀️{% else %}🌙{% endif %}
+    {% if card.Time == 'Day' %}
+        ☀️
+    {% elseif card.Time == 'Night' %}
+        🌙
+    {% elseif card.Time == 'Autochthonia' %}
+        ⚙️
+    {% else %}
+        ?
+    {% endif %}
     {% if card['Athletics penalty'] != '' %}
         {% for i in 1..card['Athletics penalty']|abs %}
             <img src="../images/ath-penalty.svg" alt="Athletics penalty" class="title-icon"/>
         {% endfor %}
     {% endif %}
-
 {% endblock %}
-
 {# Set header background/text based on time to invert colors at night #}
 {% block card_title_bg_class %}{% if card.Time == 'Day' %}day{% else %}night{% endif %}{% endblock %}
 
 {% block card_classes %}
-    {% if card.Note|length < 100 %}size-small{% else %}size-medium{% endif %}
+    {% if card.Note|length < 500 %}size-small{% else %}size-medium{% endif %}
     {{ card.Weather|lower }}
 {% endblock %}
 

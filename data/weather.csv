@@ -36,3 +36,25 @@ Day,Hurricane,-3,"Clear 0, Murky 0",2B/min,1,,
 Night,Hurricane,-3,"Clear 10, Murky 30",2B/min,2,,
 Day,Severe storm,-2,"Clear 10, Murky 30",1B/h,1,,
 Night,Severe storm,-2,"Clear 0, Murky 10",1B/h,1,,
+Autochthonia,Extreme Pressure,,,3B/action,3,"Some areas rapidly fluctuate in atmospheric pressure, abruptly crushing or bursting those caught in the shift. Other areas wall off different pressure zones with invisible electrostatic barriers so that anyone crossing them experiences the differential. However it happens, the effect is a one-time or recurring hazard as appropriate.",
+Autochthonia,Lightning Arcs,,,5B/action,4L,"DDV <6
+
+Sizzling bolts of energy spark from various machines, stunning or frying anything caught in their path.",
+Autochthonia,Heavy Lightning Arcs,,,10B/action,5L,"DDV <6
+
+Sizzling bolts of energy spark from various machines, stunning or frying anything caught in their path.",
+Autochthonia,Steam Jets,,,2L/action,3L,"DDV <4 if possible
+
+Geysers of steam vent the pneumatic pressure of titanic engines, either in singular bursts or constant jets. Smaller plumes can be avoided.",
+Autochthonia,Crushing/Slicing Machinery,,,5L/action,4L,"DDV/PDV <5
+
+Whirling blades and grinding gears are among the many mechanical elements that can tear a man asunder.",
+Autochthonia,Caustic Chemicals sprays,,,5L/action,4L,"DDV/PDV <5
+
+Sprays of pressurized acid sometimes leak from defective reservoirs, while other cisterns hold entire lakes of corrosive chemicals. Spurts can be avoided; immersion not so much.",
+Autochthonia,Hypercold,,,1L/action,5L,"Some regions can freeze a man solid in seconds and shatter his corpse like blown glass. This may be due to cryogen exposure or the ambient temperature necessary for accelerated neuroconductivity
+
+no artificial soak",
+Autochthonia,Serious Hypercold,,,3L/action,5L,"Some regions can freeze a man solid in seconds and shatter his corpse like blown glass. This may be due to cryogen exposure or the ambient temperature necessary for accelerated neuroconductivity
+
+no artificial soak",
