@@ -12,8 +12,14 @@ body {
 .grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
     width: 100%;
+    /* Use margin-based spacing for broad engine support (fallback for flex gap) */
+    margin: -4px;
+}
+
+/* Create consistent gaps between cards inside the grid */
+.grid > .card {
+    margin: 4px;
 }
 
 /* Base Card Styles */
@@ -43,11 +49,10 @@ body {
     height: 2.5in;
 }
 
-.card.size-playing {
-    display: inline-block;
-    width: 2in;
-    height: 3in;
-    padding: 12px;
+.card.size-big {
+    display: inline-flex;
+    width: 3.5in;
+    height: 2.5in;
 }
 
 /* Card Layout Components */
@@ -237,9 +242,32 @@ body {
     justify-items: end; /* place items to the right edge of the grid cell */
 }
 .stat-group {
-    justify-self: end; /* ensure the stat-group hugs the right side */
     text-align: right; /* right-align text within the group */
+    background: rgba(248, 249, 250, 0.6);
+    padding: 8px;
+    margin-right: 4px;
+    border-radius: 4px;
+    border: 1px solid rgba(222, 226, 230, 0.6);
+    /*display: inline-block;*/
+    /* Shrink to fit content while not exceeding container */
+    width: fit-content;
+    max-width: 100%;
+    /* In CSS Grid, prevent stretching to full track width */
+    /*justify-self: start;*/
 }
+
+.stat-group-left {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+}
+
+.stat-group-right {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
 .stat-row,
 .stat-column,
 .stat-comment,
@@ -247,19 +275,6 @@ body {
 .stat-label,
 .stat-group h3 {
     text-align: right;
-}
-
-.stat-group {
-    background: rgba(248, 249, 250, 0.6);
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid rgba(222, 226, 230, 0.6);
-    display: inline-block;
-    /* Shrink to fit content while not exceeding container */
-    width: fit-content;
-    max-width: 100%;
-    /* In CSS Grid, prevent stretching to full track width */
-    justify-self: start;
 }
 
 .stat-group.transparent {
@@ -296,17 +311,17 @@ body {
     vertical-align: top;
 }
 
-.stat-label {
+.stat-value {
     font-weight: 500;
 }
 
-.stat-value {
+.stat-label {
     color: #666;
     word-break: break-word;
 }
 
 .stat-comment {
-    color: #999;
+    color: #333333;
     font-size: 7px;
     font-style: italic;
     display: block;
@@ -414,4 +429,19 @@ body {
 
 .card.autochthonia {
     background-color: #fff3e0;
+}
+
+/* Stats grid modifiers for big-card */
+.card.size-big .stats-grid.fixed-2 {
+    /* two columns for stat blocks with 40:60 ratio */
+    grid-template-columns: 40% 60%;
+    column-gap: 6px;
+    justify-content: start; /* rely on column-gap for spacing */
+}
+
+.stats-grid.align-bottom {
+    /* push the entire grid to the bottom of the right column */
+    margin-top: auto;
+    align-self: stretch; /* take full width of the right panel */
+    align-items: end;     /* align items to the bottom within their grid cell */
 }

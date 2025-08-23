@@ -32,8 +32,13 @@
                                 
                                 {% block card_body %}
                                     <div class="card-body">
+                                        <div class="stats-grid stat-grid-left align-bottom">
                                         {% block card_left %}{% endblock %}
+                                        </div>
+
+                                        <div class="stats-grid stat-grid-right align-bottom">
                                         {% block card_right %}{% endblock %}
+                                        </div>
                                     </div>
                                 {% endblock %}
                                 

@@ -12,80 +12,76 @@
     <div class="badge terrain-{{ card.Terrain|lower }} small">{{ card.Terrain }} Terrain</div>
 {% endblock %}
 
-{% block card_classes %}size-medium {{ card.Realm|lower }}{% endblock %}
+{% block card_classes %}size-big {{ card.Realm|lower }}{% endblock %}
 {% block card_background %}
     {% if card.ImageFile %}
         <div class="card-background" style="background-image: url('{{ card.ImageFile }}')"></div>
     {% endif %}
 {% endblock %}
 
+{% block card_left %}
+    <div class="stat-group transparent">
+        <h3>Visibility reach [y]</h3>
+        {% for groupName, groupData in card|filter((groupData, groupName) => groupName starts with 'Visibility') %}
+            {% set displayedValues = [] %}
+            {% for key, value in groupData %}
+                {% if value != '-' and value != '' and value != 0 %}
+                    {% set displayedValues = displayedValues|merge([{key: key, value: value}]) %}
+                {% endif %}
+            {% endfor %}
+            {% if displayedValues|length > 0 %}
+                <div class="stat-row">
+                    {% if groupName == 'Visibility in Day' %}
+                        <strong class="stat-label">Day:</strong>
+                    {% elseif groupName == 'Visibility in Full Moon' %}
+                        <strong class="stat-label">F. Moon:</strong>
+                    {% elseif groupName == 'Visibility in No Moon' %}
+                        <strong class="stat-label">No Moon:</strong>
+                    {% endif %}
+                    {% for item in displayedValues %}
+                        <span class="stat-label">{{ item.key }}:</span>
+                        <span class="stat-value">{{ item.value }}</span>
+                        {% if not loop.last %} | {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <div class="stat-comment">Murky = -1 external pen. (-1 hit)</div>
+        <div class="stat-comment">None = -2 external pen. (-2 hit)</div>
+        <div class="stat-comment">More = None + no ranged attacks</div>
+    </div>
+{% endblock %}
+
 {% block card_right %}
-        <div class="stats-grid">
-            <div class="stat-group transparent">
-                <h3>Visibility reach [y]</h3>
-                {% for groupName, groupData in card|filter((groupData, groupName) => groupName starts with 'Visibility') %}
-                    {% set displayedValues = [] %}
-                    {% for key, value in groupData %}
-                        {% if value != '-' and value != '' and value != 0 %}
-                            {% set displayedValues = displayedValues|merge([{key: key, value: value}]) %}
-                        {% endif %}
-                    {% endfor %}
-                    {% if displayedValues|length > 0 %}
-                        <div class="stat-row">
-                            {% if groupName == 'Visibility in Day' %}
-                                <strong class="stat-label">Day:</strong>
-                            {% elseif groupName == 'Visibility in Full Moon' %}
-                                <strong class="stat-label">Full Moon:</strong>
-                            {% elseif groupName == 'Visibility in No Moon' %}
-                                <strong class="stat-label">No Moon:</strong>
-                            {% endif %}
-                            {% for item in displayedValues %}
-                                <span class="stat-label">{{ item.key }}:</span>
-                                <span class="stat-value">{{ item.value }}</span>
-                                {% if not loop.last %} | {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-
-                <div class="stat-comment">Murky = -1 external pen. (-1 hit)</div>
-                <div class="stat-comment">None = -2 external pen. (-2 hit)</div>
-                <div class="stat-comment">More = None + no ranged attacks</div>
-            </div>
-
-            <div class="stat-group transparent">
-                <h3>Survival difficulty</h3>
-                {% for groupName, groupData in card|filter((groupData, groupName) => groupName starts with 'Survival') %}
-                    {% set displayedValues = [] %}
-                    {% for key, value in groupData %}
-                        {% if value != '-' and value != '' %}
-                            {% set displayedValues = displayedValues|merge([{key: key, value: value}]) %}
-                        {% endif %}
-                    {% endfor %}
-                    {% if displayedValues|length > 0 %}
-                        <div class="stat-row">
-                            {% if groupName == 'Survival of Prepared' %}
-                                <strong class="stat-label">Prepared</strong>
-                            {% elseif groupName == 'Survival of Unprepared' %}
-                                <strong class="stat-label">Unprepared</strong>
-                            {% endif %}
-                            {% for item in displayedValues %}
-                                <span class="stat-label">{{ item.key }}:</span>
-                                <span class="stat-value">{{ item.value }}</span>
-                                {% if not loop.last %} | {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-
-                {% if card.Realm == 'Creation' %}
-                    <div class="stat-comment">Prepared with Survival 1+: Automatic shelter and food</div>
-                    {% if card.Type == 'Wilderness' %}
-                        <div class="stat-comment">Unprepared: Take damage penalties in wilderness areas</div>
-                    {% endif %}
-                {% elseif card.Realm starts with 'Autochthonia' %}
-                    <div class="stat-comment">Requires Survival 5+ or Conduit Tapping specialty; lack causes -2 health</div>
+    <div class="stat-group transparent">
+        <h3>Survival difficulty</h3>
+        {% for groupName, groupData in card|filter((groupData, groupName) => groupName starts with 'Survival') %}
+            <div class="stat-row">
+                {% if groupName == 'Survival of Prepared' %}
+                    <strong>Prep.:</strong>
+                {% elseif groupName == 'Survival of Unprepared' %}
+                    <strong>Unprep.:</strong>
+                {% endif %}
+                {% if groupData.Shelter|length > 0 %}
+                    <span class="stat-label">*Shelter:</span>
+                    <span class="stat-value">{{ groupData.Shelter }}</span>
+                {% endif %}
+                {% if groupData.Food|length > 0 %}
+                    <span class="stat-label">*Food:</span>
+                    <span class="stat-value">{{ groupData.Food }}</span>
+                {% endif %}
+                {% if groupData.Medicine|length > 0 %}
+                    <span class="stat-label">Med.:</span>
+                    <span class="stat-value">{{ groupData.Medicine }}</span>
                 {% endif %}
             </div>
-        </div>
+        {% endfor %}
+
+        {% if card.Realm == 'Creation' %}
+            <div class="stat-comment">* Prepared with Sur 1+: Automatic</div>
+        {% elseif card.Realm starts with 'Autochthonia' %}
+            <div class="stat-comment">Requires Survival 5+ or Conduit Tapping specialty; lack causes -2 health</div>
+        {% endif %}
+    </div>
 {% endblock %}
