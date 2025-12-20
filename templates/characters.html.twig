@@ -42,6 +42,10 @@
 
 <div class="grid">
   {% for card in cards %}
+  {% set max_rating = max(5, card.Essence) %}
+  {% set max_essence = max(5, card.Essence) %}
+  {% set max_willpower = 10 %}
+  {% set max_virtue = 5 %}
   <div class="card">
     <div class="card-body">
       <div class="stats-grid">
@@ -49,35 +53,33 @@
           <div class="section-title">Core</div>
           <div class="kv">
             <div class="k">Essence</div>
-            <div class="v">{{ R.dots(card.Essence, 5) }}</div>
+            <div class="v">{{ R.dots(card.Essence, max_essence) }}</div>
             <div class="k">Willpower</div>
-            <div class="v">{{ R.dots(card.Willpower, 10) }}</div>
+            <div class="v">{{ R.dots(card.Willpower, max_willpower) }}</div>
           </div>
 
-          <div class="section-title">Attributes</div>
+          <div class="section-title">Attributes & Virtues  <span class="pill">dots</span></div>
           <div class="kv" style="margin-bottom:6px;">
             <div class="k"><strong>Physical</strong></div><div></div>
-            <div class="k">Strength</div><div class="v">{{ R.dots(card.Attributes.Strength, 5) }}</div>
-            <div class="k">Dexterity</div><div class="v">{{ R.dots(card.Attributes.Dexterity, 5) }}</div>
-            <div class="k">Stamina</div><div class="v">{{ R.dots(card.Attributes.Stamina, 5) }}</div>
+            <div class="k">Strength</div><div class="v">{{ R.dots(card.Attributes.Strength, max_rating) }}</div>
+            <div class="k">Dexterity</div><div class="v">{{ R.dots(card.Attributes.Dexterity, max_rating) }}</div>
+            <div class="k">Stamina</div><div class="v">{{ R.dots(card.Attributes.Stamina, max_rating) }}</div>
 
             <div class="k"><strong>Social</strong></div><div></div>
-            <div class="k">Charisma</div><div class="v">{{ R.dots(card.Attributes.Charisma, 5) }}</div>
-            <div class="k">Manipulation</div><div class="v">{{ R.dots(card.Attributes.Manipulation, 5) }}</div>
-            <div class="k">Appearance</div><div class="v">{{ R.dots(card.Attributes.Appearance, 5) }}</div>
+            <div class="k">Charisma</div><div class="v">{{ R.dots(card.Attributes.Charisma, max_rating) }}</div>
+            <div class="k">Manipulation</div><div class="v">{{ R.dots(card.Attributes.Manipulation, max_rating) }}</div>
+            <div class="k">Appearance</div><div class="v">{{ R.dots(card.Attributes.Appearance, max_rating) }}</div>
 
             <div class="k"><strong>Mental</strong></div><div></div>
-            <div class="k">Perception</div><div class="v">{{ R.dots(card.Attributes.Perception, 5) }}</div>
-            <div class="k">Intelligence</div><div class="v">{{ R.dots(card.Attributes.Intelligence, 5) }}</div>
-            <div class="k">Wits</div><div class="v">{{ R.dots(card.Attributes.Wits, 5) }}</div>
-          </div>
+            <div class="k">Perception</div><div class="v">{{ R.dots(card.Attributes.Perception, max_rating) }}</div>
+            <div class="k">Intelligence</div><div class="v">{{ R.dots(card.Attributes.Intelligence, max_rating) }}</div>
+            <div class="k">Wits</div><div class="v">{{ R.dots(card.Attributes.Wits, max_rating) }}</div>
 
-          <div class="section-title">Virtues</div>
-          <div class="kv">
-            <div class="k">Compassion</div><div class="v">{{ R.dots(card.Virtues.Compassion, 5) }}</div>
-            <div class="k">Conviction</div><div class="v">{{ R.dots(card.Virtues.Conviction, 5) }}</div>
-            <div class="k">Temperance</div><div class="v">{{ R.dots(card.Virtues.Temperance, 5) }}</div>
-            <div class="k">Valor</div><div class="v">{{ R.dots(card.Virtues.Valor, 5) }}</div>
+            <div class="k"><strong>Virtues</strong></div><div></div>
+            <div class="k">Compassion</div><div class="v">{{ R.dots(card.Virtues.Compassion, max_virtue) }}</div>
+            <div class="k">Conviction</div><div class="v">{{ R.dots(card.Virtues.Conviction, max_virtue) }}</div>
+            <div class="k">Temperance</div><div class="v">{{ R.dots(card.Virtues.Temperance, max_virtue) }}</div>
+            <div class="k">Valor</div><div class="v">{{ R.dots(card.Virtues.Valor, max_virtue) }}</div>
           </div>
         </div>
 
@@ -88,7 +90,7 @@
               {% if val is not same as('') %}
                 <div class="ability">
                   <span>{{ name }}</span>
-                  <span>{{ R.dots(val, 5) }}</span>
+                  <span>{{ R.dots(val, max_rating) }}</span>
                 </div>
               {% endif %}
             {% endfor %}
@@ -97,5 +99,11 @@
       </div>
     </div>
     </div>
+
+  <div class="card">
+    <div class="card-body">
+
+    </div>
+  </div>
   {% endfor %}
 </div>
