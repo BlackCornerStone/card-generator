@@ -5,26 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Characters{% endblock %}</title>
   <link rel="stylesheet" href="../templates/common-card-styles.css">
-
-  <style>
-    /* Character specific tweaks */
-    .character-card.card.size-big { min-height: 520px; }
-    .section-title { font-weight: 700; font-size: 12px; margin: 6px 0 4px; text-transform: uppercase; letter-spacing: .03em; }
-    .rating { display: inline-block; font-family: serif; font-size: 12px; letter-spacing: 1px; }
-    .rating .filled { color: #111; }
-    .rating .empty { color: #bbb; }
-    .kv { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: center; }
-    .kv .k { color: #444; font-size: 11px; }
-    .kv .v { font-weight: 600; font-size: 11px; }
-    .abilities { columns: 2; column-gap: 16px; font-size: 11px; }
-    .abilities .ability { break-inside: avoid; display: flex; justify-content: space-between; margin: 2px 0; }
-    .pill { display:inline-block; padding:2px 6px; border-radius:10px; background:#eee; color:#333; font-size:11px; margin-left:6px; }
-    /* 4-column layout for attributes & virtues */
-    .kv4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 12px; align-items: start; }
-    .kv4 .col { break-inside: avoid; }
-    .kv4 .subtitle { font-weight: 700; font-size: 11px; margin: 2px 0 4px; }
-    .kv4 .kv { margin-bottom: 6px; }
-  </style>
 </head>
 <body>
 
@@ -38,96 +18,58 @@
   </span>
 {% endmacro %}
 
+{% macro columnBlockStats(title, data, stats, maxRatings) %}
+  {% import _self as R %}
+  <div class="stat-group col">
+    <h3>{{ title }}</h3>
+    <div class="stat-row">
+      {% for statName in stats %}
+        <div class="stat-label">{{ statName }}</div>
+        <div class="stat-value">{{ R.dots(data[statName], maxRatings) }}</div>
+      {% endfor %}
+    </div>
+  </div>
+{% endmacro %}
+
 {% import _self as R %}
 
-{#{% block card_badges %}#}
-{#  {% if card.Caste %}<div class="badge primary small">{{ card.Caste }}</div>{% endif %}#}
-{#  {% if card.Concept %}<div class="badge secondary small">{{ card.Concept }}</div>{% endif %}#}
-{#{% endblock %}#}
+{% set WoundPenalties = [0, -1, -2, -4] %}
 
 <div class="grid">
   {% for card in cards %}
+  {% for WoundPenalty in WoundPenalties %}
   {% set max_rating = max(5, card.Essence) %}
   {% set max_essence = max(5, card.Essence) %}
   {% set max_willpower = 10 %}
   {% set max_virtue = 5 %}
-  <div class="card">
-    <div class="card-body">
-      <div class="stats-grid">
-        <div class="stat-group">
-          <div class="section-title">Core</div>
-          <div class="kv">
-            <div class="k">Essence</div>
-            <div class="v">{{ R.dots(card.Essence, max_essence) }}</div>
-            <div class="k">Willpower</div>
-            <div class="v">{{ R.dots(card.Willpower, max_willpower) }}</div>
-          </div>
-
-          <div class="section-title">Attributes & Virtues  <span class="pill">dots</span></div>
-          <div class="kv4">
-            <div class="col">
-              <div class="subtitle">Physical</div>
-              <div class="kv">
-                <div class="k">Strength</div><div class="v">{{ R.dots(card.Attributes.Strength, max_rating) }}</div>
-                <div class="k">Dexterity</div><div class="v">{{ R.dots(card.Attributes.Dexterity, max_rating) }}</div>
-                <div class="k">Stamina</div><div class="v">{{ R.dots(card.Attributes.Stamina, max_rating) }}</div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="subtitle">Social</div>
-              <div class="kv">
-                <div class="k">Charisma</div><div class="v">{{ R.dots(card.Attributes.Charisma, max_rating) }}</div>
-                <div class="k">Manipulation</div><div class="v">{{ R.dots(card.Attributes.Manipulation, max_rating) }}</div>
-                <div class="k">Appearance</div><div class="v">{{ R.dots(card.Attributes.Appearance, max_rating) }}</div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="subtitle">Mental</div>
-              <div class="kv">
-                <div class="k">Perception</div><div class="v">{{ R.dots(card.Attributes.Perception, max_rating) }}</div>
-                <div class="k">Intelligence</div><div class="v">{{ R.dots(card.Attributes.Intelligence, max_rating) }}</div>
-                <div class="k">Wits</div><div class="v">{{ R.dots(card.Attributes.Wits, max_rating) }}</div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="subtitle">Virtues</div>
-              <div class="kv">
-                <div class="k">Compassion</div><div class="v">{{ R.dots(card.Virtues.Compassion, max_virtue) }}</div>
-                <div class="k">Conviction</div><div class="v">{{ R.dots(card.Virtues.Conviction, max_virtue) }}</div>
-                <div class="k">Temperance</div><div class="v">{{ R.dots(card.Virtues.Temperance, max_virtue) }}</div>
-                <div class="k">Valor</div><div class="v">{{ R.dots(card.Virtues.Valor, max_virtue) }}</div>
-              </div>
-            </div>
-          </div>
+  <div class="card size-big">
+    <div class="card-content">
+      <div class="card-header default">
+        <div class="card-title">
+          {{ card.Name }}
+          {% for i in WoundPenalty..0 %}
+            <span class="filled">🩸</span>
+          {% endfor %}
         </div>
+        {% if card.Caste %}<div class="badge primary">{{ card.Caste }}</div>{% endif %}
+        {% if card.Concept %}<div class="badge secondary">{{ card.Concept }}</div>{% endif %}
+      </div>
 
-        <div class="stat-group">
-          <div class="section-title">Abilities <span class="pill">dots</span></div>
-          <div class="abilities">
-            {% for name, val in card.Abilities %}
-              {% if val is not same as('') %}
-                <div class="ability">
-                  <span>{{ name }}</span>
-                  <span>{{ R.dots(val, max_rating) }}</span>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
+      <div class="card-body">
+        <div class="grid grid-3">
+          {{ R.columnBlockStats("Core", card, ["Essence", "Willpower"], 10) }}
+          {{ R.columnBlockStats("Physical", card.Attributes, ["Strength", "Dexterity", "Stamina"], max_rating) }}
+          {{ R.columnBlockStats("Social", card.Attributes, ["Charisma", "Manipulation", "Appearance"], max_rating) }}
+          {{ R.columnBlockStats("Mental", card.Attributes, ["Perception", "Intelligence", "Wits"], max_rating) }}
+          {{ R.columnBlockStats("Virtues", card.Virtues, ["Compassion", "Conviction", "Temperance", "Valor"], max_virtue) }}
+          {{ R.columnBlockStats("Dawn", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
+          {{ R.columnBlockStats("Night", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
+          {{ R.columnBlockStats("Eclipse", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
+          {{ R.columnBlockStats("Twilight", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
         </div>
       </div>
-    </div>
-    </div>
-
-  <div class="card">
-    <div class="card-body">
-
     </div>
   </div>
-
-    <div class="card">
-      <div class="card-body">
-
-      </div>
-    </div>
+  {% endfor %}
   {% endfor %}
 </div>

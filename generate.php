@@ -73,12 +73,13 @@ function preprocessCardData($card) {
 
 // Always generate all supported card types in one run (hardcoded list)
 $supportedCardTypes = [
-    'landscapes' => null,
-    'weather' => null,
-    'travel-times' => null,
+    //'landscapes' => null,
+    //'weather' => null,
+    //'travel-times' => null,
     'characters' => 'characters',
     'attacks' => 'characters',
     'defences' => 'characters',
+    'social-combat' => 'characters',
 ];
 
 $additionalDatasets = [
