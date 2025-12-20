@@ -1,0 +1,6 @@
+{characters} Character;Name;BSoak;LSoak;BHard;LHard;Mobility
+Righteous Dawn;Unarmored; ; ; ; ;
+Silken Whisper;Chain-shirt;2;5;0;1;-1
+Emerald Sage;Chain-shirt;2|5|7;5|5|10;0|0|0;0|0|0;-1|0|-1
+Emerald Sage;Iron Kettle;2|5|7;5|5|10;0|0|0;0|0|0;-1|0|-1
+Emerald Sage;Chain-shirt+Iron Kettle;2|5|7;5|5|10;0|0|0;0|0|0;-1|0|-1

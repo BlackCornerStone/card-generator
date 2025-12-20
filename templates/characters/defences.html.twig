@@ -3,66 +3,12 @@
 {% import 'characters/_characters_macros.html.twig' as R %}
 
 {% block card_body %}
-
-      <div class="stats-grid">
-        <div class="stat-group">
-          <div class="section-title">Core</div>
-          <div class="kv">
-            <div class="k">Essence</div>
-            <div class="v">{{ R.dots(card.Essence, max_essence) }}</div>
-            <div class="k">Willpower</div>
-            <div class="v">{{ R.dots(card.Willpower, max_willpower) }}</div>
-          </div>
-
-          <div class="kv4">
-            <div class="col">
-              <div class="subtitle">Physical</div>
-              <div class="kv">
-                <div class="k">Strength</div><div class="v">{{ R.dots(card.Attributes.Strength, max_rating) }}</div>
-                <div class="k">Dexterity</div><div class="v">{{ R.dots(card.Attributes.Dexterity, max_rating) }}</div>
-                <div class="k">Stamina</div><div class="v">{{ R.dots(card.Attributes.Stamina, max_rating) }}</div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="subtitle">Social</div>
-              <div class="kv">
-                <div class="k">Charisma</div><div class="v">{{ R.dots(card.Attributes.Charisma, max_rating) }}</div>
-                <div class="k">Manipulation</div><div class="v">{{ R.dots(card.Attributes.Manipulation, max_rating) }}</div>
-                <div class="k">Appearance</div><div class="v">{{ R.dots(card.Attributes.Appearance, max_rating) }}</div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="subtitle">Mental</div>
-              <div class="kv">
-                <div class="k">Perception</div><div class="v">{{ R.dots(card.Attributes.Perception, max_rating) }}</div>
-                <div class="k">Intelligence</div><div class="v">{{ R.dots(card.Attributes.Intelligence, max_rating) }}</div>
-                <div class="k">Wits</div><div class="v">{{ R.dots(card.Attributes.Wits, max_rating) }}</div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="subtitle">Virtues</div>
-              <div class="kv">
-                <div class="k">Compassion</div><div class="v">{{ R.dots(card.Virtues.Compassion, max_virtue) }}</div>
-                <div class="k">Conviction</div><div class="v">{{ R.dots(card.Virtues.Conviction, max_virtue) }}</div>
-                <div class="k">Temperance</div><div class="v">{{ R.dots(card.Virtues.Temperance, max_virtue) }}</div>
-                <div class="k">Valor</div><div class="v">{{ R.dots(card.Virtues.Valor, max_virtue) }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="stat-group">
-          <div class="section-title">Abilities <span class="pill">dots</span></div>
-          <div class="abilities">
-            {% for name, val in card.Abilities %}
-              {% if val is not same as('') %}
-                <div class="ability">
-                  <span>{{ name }}</span>
-                  <span>{{ R.dots(val, max_rating) }}</span>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-      </div>
+    {% set DDVDicePool = card.Dexterity + card.Dodge + card.Essence + WoundPenalty %}
+    {% set DDV = max(1, DDVDicePool/2 + 1) %}
+    {% for armor in card.Armors %}
+        {{ dump(armor) }}
+        <hr>
+    {% endfor %}
+    <h3>Defences</h3>
+    <strong>Dodge DV {{ DDV }}</strong>
 {% endblock %}

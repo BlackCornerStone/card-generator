@@ -14,6 +14,13 @@
 
 <div class="grid">
   {% for card in cards %}
+
+    {% if card.Character is not null %}
+      {% set CharacterName = card.Character.Name %}
+    {% else %}
+      {% set CharacterName = card.Name %}
+    {% endif %}
+
   {% for WoundPenalty in WoundPenalties %}
   {% set max_rating = max(5, card.Essence) %}
   {% set max_essence = max(5, card.Essence) %}
@@ -21,16 +28,24 @@
   {% set max_virtue = 5 %}
   <div class="card size-big">
     <div class="card-content">
+
       <div class="card-header default">
         <div class="card-title">
-          {{ card.Name }}
-          {% for i in WoundPenalty..0 %}
+          {{ CharacterName }}
+
+          {% for i in (0..WoundPenalty|abs)|filter(v => v > 0) %}
             <span class="filled">🩸</span>
           {% endfor %}
         </div>
         {% if card.Caste %}<div class="badge primary">{{ card.Caste }}</div>{% endif %}
         {% if card.Concept %}<div class="badge secondary">{{ card.Concept }}</div>{% endif %}
       </div>
+
+      {% if card.Character is not null %}
+        <div class="card-header default">
+          <div class="card-title">{{ card.Name }}</div>
+        </div>
+      {% endif %}
 
       <div class="card-body">
         {% block card_body %}{% endblock %}

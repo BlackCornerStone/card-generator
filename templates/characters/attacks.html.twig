@@ -1,0 +1,38 @@
+{% extends "characters/characters-base.html.twig" %}
+
+{% import 'characters/_characters_macros.html.twig' as R %}
+
+{% block card_body %}
+    {% set Dash = max(2, card.Dexterity + 6 + WoundPenalty) %}
+    {% set Move = max(1, card.Dexterity + WoundPenalty) %}
+    {% set JoinBattle = max(1, card.Wits + card.Awareness + WoundPenalty) %}
+
+    <table class="speed-table">
+        <tr>
+            <th>Action</th>
+            <th>Detail</th>
+            <th>Speed</th>
+            <th>DV</th>
+        </tr>
+        <tr>
+            <th>Dash</th> <td>{{ Dash }}y, no parry</td> <td>3</td> <td>-2</td>
+        </tr>
+        <tr>
+            <th>Move</th> <td>{{ Move }}y</td> <td>1</td> <td>0</td>
+        </tr>
+        {% for armor in card.Armors %}
+            <tr>
+                <th>Move in {{ armor.name }}</th> <td>{{ max(1, card.Dexterity + WoundPenalty + armor.Mobility) }}y</td> <td>1</td> <td>0</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th>Join Battle</th> <td>{{ JoinBattle }}d</td> <td>0</td> <td>+hits</td>
+        </tr>
+        {% for weapon in card.Weapons %}
+            <tr>
+                <th>Attack by {{ weapon.name }}</th> <td></td> <td>{{ weapon.Speed }}</td> <td>-1</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

@@ -12,10 +12,10 @@ function loadCardsFromCSV($filename, bool $debug = false) {
     $line = 0;
     if (($handle = fopen($filename, "r")) !== FALSE) {
         // Expect semicolon-delimited CSV files
-        $header = fgetcsv($handle, 1000, ";");
+        $header = fgetcsv($handle, 2000, ";");
 
         if ($debug) { var_dump($header); }
-        while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+        while (($data = fgetcsv($handle, 2000, ";")) !== FALSE) {
             $line++;
             if ($debug) { var_dump($data); }
             // Skip empty lines or malformed rows
@@ -26,21 +26,25 @@ function loadCardsFromCSV($filename, bool $debug = false) {
             if (count($data) !== count($header)) {
                 echo sprintf("Line %s has unexpected number of columns. Header has %s, line %s. Skipping.\n",
                 $line, count($header), count($data));
+                //var_dump($data);
                 continue;
             }
             $card = array_combine($header, $data);
 
             if ($debug) { var_dump($card); }
-            $cards[] = preprocessCardData($card);
+
+            $processed = groupCardData($line, $card);
+            replaceLinks($line, $processed);
+            replaceImagesInCardData($processed);
+            $cards[$processed['Name'] ?? $line] = $processed;
         }
         fclose($handle);
     }
     return $cards;
 }
-
-function preprocessCardData($card) {
+function groupCardData(int $line, array $card): array {
     $processed = [];
-    
+
     foreach ($card as $key => $value) {
         if (preg_match('/^\[(.+?)\]\s*(.+)$/', $key, $matches)) {
             // Column has bracket format [Group] Subkey
@@ -52,7 +56,54 @@ function preprocessCardData($card) {
             $processed[$key] = $value;
         }
     }
-    
+
+    // Process groups with asterisk suffix - explode values into arrays
+    foreach ($processed as $groupName => $groupData) {
+        if (is_array($groupData) && substr($groupName, -1) === '*') {
+            $cleanGroupName = substr($groupName, 0, -1);
+            $explodedGroup = [];
+
+            foreach ($groupData as $subKey => $value) {
+                if ($value !== null || trim($value) !== '') {
+                    $items = explode('|', $value);
+                    foreach ($items as $index => $item) {
+                        $explodedGroup[$cleanGroupName][$index][$subKey] = trim($item);
+                    }
+                }
+            }
+
+            unset($processed[$groupName]);
+            $processed[$cleanGroupName] = $explodedGroup;
+        }
+    }
+
+    return $processed;
+}
+
+function replaceLinks(int $line, array &$processed): array {
+    $loadedLinks = [];
+
+    foreach ($processed as $key => $value) {
+        if (preg_match('/^\{(.+?)\}\s*(.+)$/', $key, $matches)) {
+            // Column has bracket format [Group] Subkey
+            $groupName = $matches[1];
+            $subKey = $matches[2];
+
+            if (!isset($loadedLinks[$groupName])) {
+                $linksFile = "data/{$groupName}.csv";
+                $loadedLinks[$groupName] = loadCardsFromCSV($linksFile, true);
+            }
+            $processed[$subKey] = $loadedLinks[$groupName][$value] ?? "404:".$value;
+        } else {
+            // Regular column without brackets
+            $processed[$key] = $value;
+        }
+    }
+
+    return $processed;
+}
+
+function replaceImagesInCardData(&$processed) {
     // Add image filename based on landscape name (if present)
     if (!empty($processed['Landscape'])) {
         $filename = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($processed['Landscape']));
@@ -67,8 +118,6 @@ function preprocessCardData($card) {
             $processed['ImagePath'] = $imagePath; // Keep original path for HTML
         }
     }
-    
-    return $processed;
 }
 
 // Always generate all supported card types in one run (hardcoded list)
@@ -77,14 +126,16 @@ $supportedCardTypes = [
     //'weather' => null,
     //'travel-times' => null,
     'characters/characters' => 'characters',
-    'characters/attacks' => 'characters',
-    'characters/defences' => 'characters',
+    'characters/attacks' => 'weapons',
+    'characters/defences' => 'armors',
     'characters/social-combat' => 'characters',
 ];
 
 // dataFile => anotherDataFile[]
 $additionalDatasets = [
-    'characters' => ['procedures'],
+    'characters/attacks' => ['characters'],
+    'characters/defences' => ['characters'],
+    'characters/social-combat' => ['characters'],
 ];
 
 try {
@@ -94,7 +145,11 @@ try {
     }
 
     $loader = new FilesystemLoader('templates');
-    $twig = new Environment($loader);
+    // Enable Twig debug to allow using {{ dump() }} in templates
+    $twig = new Environment($loader, [
+        'debug' => true,
+    ]);
+    $twig->addExtension(new \Twig\Extension\DebugExtension());
 
     foreach ($supportedCardTypes as $cardType => $dataSourceFilename) {
         if ($dataSourceFilename === null) {
