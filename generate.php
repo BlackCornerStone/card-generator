@@ -7,16 +7,30 @@ use Twig\Loader\FilesystemLoader;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-function loadCardsFromCSV($filename) {
+function loadCardsFromCSV($filename, bool $debug = false) {
     $cards = [];
+    $line = 0;
     if (($handle = fopen($filename, "r")) !== FALSE) {
         // Expect semicolon-delimited CSV files
         $header = fgetcsv($handle, 1000, ";");
+
+        if ($debug) { var_dump($header); }
         while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+            $line++;
+            if ($debug) { var_dump($data); }
             // Skip empty lines or malformed rows
-            if ($data === null || $data === [null]) { continue; }
-            if (count($data) !== count($header)) { continue; }
+            if ($data === null || $data === [null]) {
+                echo "Line $line is empty or malformed. Skipping.\n";
+                continue;
+            }
+            if (count($data) !== count($header)) {
+                echo sprintf("Line %s has unexpected number of columns. Header has %s, line %s. Skipping.\n",
+                $line, count($header), count($data));
+                continue;
+            }
             $card = array_combine($header, $data);
+
+            if ($debug) { var_dump($card); }
             $cards[] = preprocessCardData($card);
         }
         fclose($handle);
@@ -59,9 +73,11 @@ function preprocessCardData($card) {
 
 // Always generate all supported card types in one run (hardcoded list)
 $supportedCardTypes = [
-    'landscapes',
-    'weather',
-    'travel-times',
+    //'landscapes' => [],
+    //'weather' => [],
+    //'travel-times' => [],
+    'characters' => [],
+    //'characters' => ['procedures'],
 ];
 
 try {
@@ -73,7 +89,7 @@ try {
     $loader = new FilesystemLoader('templates');
     $twig = new Environment($loader);
 
-    foreach ($supportedCardTypes as $cardType) {
+    foreach ($supportedCardTypes as $cardType => $anotherDataSets) {
         $templateFile = "templates/{$cardType}.html.twig";
         $dataFile = "data/{$cardType}.csv";
 
@@ -86,8 +102,13 @@ try {
             continue;
         }
 
-        $cards = loadCardsFromCSV($dataFile);
-        $html = $twig->render("{$cardType}.html.twig", ['cards' => $cards]);
+        $templateData = ['cards' => loadCardsFromCSV($dataFile)];
+
+        foreach ($anotherDataSets as $datasetName) {
+            $templateData[$datasetName] = loadCardsFromCSV("data/{$datasetName}.csv");
+        }
+
+        $html = $twig->render("{$cardType}.html.twig", $templateData);
 
         // Save HTML file
         file_put_contents("output/{$cardType}.html", $html);
