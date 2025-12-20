@@ -73,11 +73,16 @@ function preprocessCardData($card) {
 
 // Always generate all supported card types in one run (hardcoded list)
 $supportedCardTypes = [
-    //'landscapes' => [],
-    //'weather' => [],
-    //'travel-times' => [],
-    'characters' => [],
-    //'characters' => ['procedures'],
+    'landscapes' => null,
+    'weather' => null,
+    'travel-times' => null,
+    'characters' => 'characters',
+    'attacks' => 'characters',
+    'defences' => 'characters',
+];
+
+$additionalDatasets = [
+    'characters' => ['procedures'],
 ];
 
 try {
@@ -89,9 +94,14 @@ try {
     $loader = new FilesystemLoader('templates');
     $twig = new Environment($loader);
 
-    foreach ($supportedCardTypes as $cardType => $anotherDataSets) {
+    foreach ($supportedCardTypes as $cardType => $dataSourceFilename) {
+        if ($dataSourceFilename === null) {
+            $dataSourceFilename = $cardType;
+        }
+
+        $anotherDataSets = $additionalDatasets[$cardType] ?? [];
         $templateFile = "templates/{$cardType}.html.twig";
-        $dataFile = "data/{$cardType}.csv";
+        $dataFile = "data/{$dataSourceFilename}.csv";
 
         if (!file_exists($templateFile)) {
             echo "Skip: Template file '{$templateFile}' not found.\n";
