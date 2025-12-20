@@ -76,12 +76,13 @@ $supportedCardTypes = [
     //'landscapes' => null,
     //'weather' => null,
     //'travel-times' => null,
-    'characters' => 'characters',
-    'attacks' => 'characters',
-    'defences' => 'characters',
-    'social-combat' => 'characters',
+    'characters/characters' => 'characters',
+    'characters/attacks' => 'characters',
+    'characters/defences' => 'characters',
+    'characters/social-combat' => 'characters',
 ];
 
+// dataFile => anotherDataFile[]
 $additionalDatasets = [
     'characters' => ['procedures'],
 ];

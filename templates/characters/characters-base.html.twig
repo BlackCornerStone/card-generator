@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Characters{% endblock %}</title>
+  <link rel="stylesheet" href="../../templates/common-card-styles.css">
+</head>
+<body>
+
+{% import 'characters/_characters_macros.html.twig' as R %}
+
+{% set WoundPenalties = [0, -1, -2, -4] %}
+
+<div class="grid">
+  {% for card in cards %}
+  {% for WoundPenalty in WoundPenalties %}
+  {% set max_rating = max(5, card.Essence) %}
+  {% set max_essence = max(5, card.Essence) %}
+  {% set max_willpower = 10 %}
+  {% set max_virtue = 5 %}
+  <div class="card size-big">
+    <div class="card-content">
+      <div class="card-header default">
+        <div class="card-title">
+          {{ card.Name }}
+          {% for i in WoundPenalty..0 %}
+            <span class="filled">🩸</span>
+          {% endfor %}
+        </div>
+        {% if card.Caste %}<div class="badge primary">{{ card.Caste }}</div>{% endif %}
+        {% if card.Concept %}<div class="badge secondary">{{ card.Concept }}</div>{% endif %}
+      </div>
+
+      <div class="card-body">
+        {% block card_body %}{% endblock %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% endfor %}
+</div>

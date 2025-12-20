@@ -1,36 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Characters{% endblock %}</title>
-  <link rel="stylesheet" href="../templates/common-card-styles.css">
-</head>
-<body>
+{% extends "characters/characters-base.html.twig" %}
 
-{% macro dots(val, max) %}
-  {% set v = (val is defined and val is not same as(false) and val is not same as('')) ? (val) : 0 %}
-  {% set m = max is defined ? max : 5 %}
-  <span class="rating">
-    {% for i in 1..m %}
-      {% if i <= v %}<span class="filled">●</span>{% else %}<span class="empty">○</span>{% endif %}
-    {% endfor %}
-  </span>
-{% endmacro %}
+{% import 'characters/_characters_macros.html.twig' as R %}
 
-{% import _self as R %}
-
-<div class="grid">
-  {% for card in cards %}
-  {% set max_rating = max(5, card.Essence) %}
-  {% set max_essence = max(5, card.Essence) %}
-  {% set max_willpower = 10 %}
-  {% set max_virtue = 5 %}
-  <div class="card size-big">
-    <div class="card-content">
-      <div class="card-header default">
-        <div class="card-title">{{ card.Name }}</div>
-      </div>
+{% block card_body %}
 
       <div class="stats-grid">
         <div class="stat-group">
@@ -93,7 +65,4 @@
           </div>
         </div>
       </div>
-    </div>
-    </div>
-  {% endfor %}
-</div>
+{% endblock %}
