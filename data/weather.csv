@@ -1,41 +1,41 @@
-Time,Weather,Athletics penalty,Visibility,[Hazard] Damage,[Hazard] Trauma,Note,Location
-Day,Sunny,,,,,Clear sky,
-Night,Peaceful Fullmoon,,,,,Clear sky,
-Night,No Moon,,,,,Clear sky,
-Day,Blistering Heat,,,1B/h,1,,
-Night,Blistering Heat,,,1B/h,1,,
-Day,Numbing Cold,,,1B/h,1,,
-Night,Numbing Cold,,,1B/h,1,,
-Day,Severe Sandstorm,-1,,1L/min,2,,
-Night,Severe Sandstorm,-1,,1L/min,2,,
-Day,Severe Blizzard,-1,,1L/min,2,,
-Night,Severe Blizzard,-1,,1L/min,2,,
-Day,Supernatural Sandstorm,-2,,2L/min,2,,
-Night,Supernatural Sandstorm,-2,,2L/min,2,,
-Day,Supernatural Blizzard,-2,,2L/min,2,,
-Night,Supernatural Blizzard,-2,,2L/min,2,,
-Day,Frozen Fog,-2,Murky 20,2L/min,5,"Armor and most Charms give no protection at all: only natural soak applies, or Charms that specifically protect against temperature extremes, such as Hardship-Surviving Mendicant Spirit. The pox Elemental Adaptation: Air renders a creature immune to frozen fog. Sufficiently warm, heavy clothing also protects against frozen fog, though a person must keep moving to avoid being encased in ice. The clothing necessary to protect against this damage adds one to the maneuver penalty and fatigue value of the character due to its bulk.",This threat extends from Gethamane to the Pole of Air itself.
-Night,Frozen Fog,-2,Murky 20,2L/min,5,"Armor and most Charms give no protection at all: only natural soak applies, or Charms that specifically protect against temperature extremes, such as Hardship-Surviving Mendicant Spirit. The pox Elemental Adaptation: Air renders a creature immune to frozen fog. Sufficiently warm, heavy clothing also protects against frozen fog, though a person must keep moving to avoid being encased in ice. The clothing necessary to protect against this damage adds one to the maneuver penalty and fatigue value of the character due to its bulk.",This threat extends from Gethamane to the Pole of Air itself.
-Day,Silent Wind of Malfeas,-1,,6A/action,5L,,
-Night,Silent Wind of Malfeas,-1,,6A/action,5L,,
-Day,Acid Rain,,,3L/action,3,,
-Night,Acid Rain,,,3L/action,3,,
-Day,Fog,,"Clear 10, Murky 30",,,,
-Night,Fog,,"Clear 0, Murky 3",,,,
-Day,Peaceful Rain,,"Clear 10, Murky 20",,,,
-Night,Peaceful Rain,,"Clear 0, Murky 0",,,,
-Day,Peaceful Snow,,"Clear 0, Murky 20",,,,
-Night,Peaceful Snow,,"Clear 0, Murky 0",,,,
-Day,Gale,-1,,,,,
-Night,Gale,-1,,,,,
-Day,Gale with Rain,-1,"Clear 0, Murky 30",,,,
-Night,Gale with Rain,-1,"Clear 0, Murky 0",,,,
-Day,Gale with Snow,-1,"Clear 0, Murky 20",,,,
-Night,Gale with Snow,-1,"Clear 0, Murky 0",,,,
-Day,Hurricane,-3,"Clear 0, Murky 0",2B/min,1,,
-Night,Hurricane,-3,"Clear 10, Murky 30",2B/min,2,,
-Day,Severe storm,-2,"Clear 10, Murky 30",1B/h,1,,
-Night,Severe storm,-2,"Clear 0, Murky 10",1B/h,1,,
+Time;Weather;Athletics penalty;Visibility;[Hazard] Damage;[Hazard] Trauma;Note;Location
+Day;Sunny;;;;;Clear sky;
+Night;Peaceful Fullmoon;;;;;Clear sky;
+Night;No Moon;;;;;Clear sky;
+Day;Blistering Heat;;;1B/h;1;;
+Night;Blistering Heat;;;1B/h;1;;
+Day;Numbing Cold;;;1B/h;1;;
+Night;Numbing Cold;;;1B/h;1;;
+Day;Severe Sandstorm;-1;;1L/min;2;;
+Night;Severe Sandstorm;-1;;1L/min;2;;
+Day;Severe Blizzard;-1;;1L/min;2;;
+Night;Severe Blizzard;-1;;1L/min;2;;
+Day;Supernatural Sandstorm;-2;;2L/min;2;;
+Night;Supernatural Sandstorm;-2;;2L/min;2;;
+Day;Supernatural Blizzard;-2;;2L/min;2;;
+Night;Supernatural Blizzard;-2;;2L/min;2;;
+Day;Frozen Fog;-2;Murky 20;2L/min;5;"Armor and most Charms give no protection at all: only natural soak applies; or Charms that specifically protect against temperature extremes; such as Hardship-Surviving Mendicant Spirit. The pox Elemental Adaptation: Air renders a creature immune to frozen fog. Sufficiently warm; heavy clothing also protects against frozen fog; though a person must keep moving to avoid being encased in ice. The clothing necessary to protect against this damage adds one to the maneuver penalty and fatigue value of the character due to its bulk.";This threat extends from Gethamane to the Pole of Air itself.
+Night;Frozen Fog;-2;Murky 20;2L/min;5;"Armor and most Charms give no protection at all: only natural soak applies; or Charms that specifically protect against temperature extremes; such as Hardship-Surviving Mendicant Spirit. The pox Elemental Adaptation: Air renders a creature immune to frozen fog. Sufficiently warm; heavy clothing also protects against frozen fog; though a person must keep moving to avoid being encased in ice. The clothing necessary to protect against this damage adds one to the maneuver penalty and fatigue value of the character due to its bulk.";This threat extends from Gethamane to the Pole of Air itself.
+Day;Silent Wind of Malfeas;-1;;6A/action;5L;;
+Night;Silent Wind of Malfeas;-1;;6A/action;5L;;
+Day;Acid Rain;;;3L/action;3;;
+Night;Acid Rain;;;3L/action;3;;
+Day;Fog;;"Clear 10; Murky 30";;;;
+Night;Fog;;"Clear 0; Murky 3";;;;
+Day;Peaceful Rain;;"Clear 10; Murky 20";;;;
+Night;Peaceful Rain;;"Clear 0; Murky 0";;;;
+Day;Peaceful Snow;;"Clear 0; Murky 20";;;;
+Night;Peaceful Snow;;"Clear 0; Murky 0";;;;
+Day;Gale;-1;;;;;
+Night;Gale;-1;;;;;
+Day;Gale with Rain;-1;"Clear 0; Murky 30";;;;
+Night;Gale with Rain;-1;"Clear 0; Murky 0";;;;
+Day;Gale with Snow;-1;"Clear 0; Murky 20";;;;
+Night;Gale with Snow;-1;"Clear 0; Murky 0";;;;
+Day;Hurricane;-3;"Clear 0; Murky 0";2B/min;1;;
+Night;Hurricane;-3;"Clear 10; Murky 30";2B/min;2;;
+Day;Severe storm;-2;"Clear 10; Murky 30";1B/h;1;;
+Night;Severe storm;-2;"Clear 0; Murky 10";1B/h;1,,
 Autochthonia,Extreme Pressure,,,3B/action,3,"Some areas rapidly fluctuate in atmospheric pressure, abruptly crushing or bursting those caught in the shift. Other areas wall off different pressure zones with invisible electrostatic barriers so that anyone crossing them experiences the differential. However it happens, the effect is a one-time or recurring hazard as appropriate.",
 Autochthonia,Lightning Arcs,,,5B/action,4L,"DDV <6
 

@@ -10,8 +10,9 @@ use Dompdf\Options;
 function loadCardsFromCSV($filename) {
     $cards = [];
     if (($handle = fopen($filename, "r")) !== FALSE) {
-        $header = fgetcsv($handle, 1000, ",");
-        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        // Expect semicolon-delimited CSV files
+        $header = fgetcsv($handle, 1000, ";");
+        while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
             // Skip empty lines or malformed rows
             if ($data === null || $data === [null]) { continue; }
             if (count($data) !== count($header)) { continue; }

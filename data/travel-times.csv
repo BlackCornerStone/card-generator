@@ -1,15 +1,15 @@
-Mode,Hourly,Daily,Weekly,Monthly
-Foot/cart,3,15,75,250
-Drawn carriage,4,20,100,350
-"Horse, Single",6,30,150,500
-"Horse, Simple Relay",10,50,300,1000
-"Horse, Elaborate Relay",15,100,600,2000
-"Horse, Supernatural tireless",25,600,4200,15000
-"Upstream, Unassisted",2,25,100,300
-"Upstream, Assisted",3,30,120,360
-Downstream,4,50,200,600
-Coastal,6,100,400,1200
-Sailing,6,125,800,2400
-Light Rowing,8,175,1000,3000
-Hard Rowing,12,250,1200,4800
-"Tireless Rowing, Supernatural",15,360,2500,8800
+Mode;Hourly;Daily;Weekly;Monthly
+Foot/cart;3;15;75;250
+Drawn carriage;4;20;100;350
+"Horse; Single";6;30;150;500
+"Horse; Simple Relay";10;50;300;1000
+"Horse; Elaborate Relay";15;100;600;2000
+"Horse; Supernatural tireless";25;600;4200;15000
+"Upstream; Unassisted";2;25;100;300
+"Upstream; Assisted";3;30;120;360
+Downstream;4;50;200;600
+Coastal;6;100;400;1200
+Sailing;6;125;800;2400
+Light Rowing;8;175;1000;3000
+Hard Rowing;12;250;1200;4800
+"Tireless Rowing; Supernatural";15;360;2500;8800

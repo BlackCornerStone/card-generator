@@ -1,13 +1,13 @@
-Action,[Dices] Attributes,[Dices] Abilities,[Difficulty] Roll,[Difficulty] Cumulative,Interval weeks
-Grow Asset,"Charisma,Manipulation,Intelligence","Bureaucracy,Socialize,War","3 for simple projects, 4 for elaborate projects, 5 for ambitious projects.",3 + [Size + Reach] – Competence,4
-Attack Asset,"Charisma,Manipulation,Intelligence","Bureaucracy,Socialize,War",Competence of target organization,[Size + Reach + rating of targeted Asset] – Competence,4
-Cannibalize Asset,"Charisma,Manipulation",Bureaucracy,1,3 + [Size + Reach] – Competence,(Size + Reach) days
-Reallocate Asset,"Charisma,Manipulation,Intelligence","Bureaucracy,Socialize","3 for simple reallocation, 5 for long distances or complex restructuring","3 + [Size + Reach] – Competence) to reassign assets, (3 + [Reach x 2] – Competence) to move Assets",4
-Halt Project,"Charisma,Manipulation","Bureaucracy,Socialize,War",2,[Capital invested in the project + Size] – Competence,1
-Attack Project,"Charisma,Manipulation,Intelligence","Bureaucracy,Socialize,War",Competence of targeted organization,[Size + Reach] – Competence,4
-Contest Project,"Charisma,Manipulation","Bureaucracy,Socialize,War",One less than the contested action (minimum 1),-,Equal to contested project
-Replenish Capital,"Charisma,Manipulation,Intelligence",Bureaucracy,1-5,3 + [Size + Reach] – Competence,4
-Transfer Capital,"Charisma,Manipulation,Intelligence",Bureaucracy,1,-,(6 – Competence) weeks
-Protect Organization,"Charisma,Manipulation,Intelligence","Bureaucracy,Socialize,War",1,-,([Size + Reach] – Competence) weeks
-Shift Policy,"Charisma,Manipulation",Socialize,"3 for minor changes, 4 for moderate changes, 5 for significant changes",(Size + Reach),1
-Shift Structure,Intelligence,Bureaucracy,"4 for minor changes, 4 for moderate changes, 5 for significant changes",(Size + Reach),1
+Action;[Dices] Attributes;[Dices] Abilities;[Difficulty] Roll;[Difficulty] Cumulative;Interval weeks
+Grow Asset;"Charisma;Manipulation;Intelligence";"Bureaucracy;Socialize;War";"3 for simple projects; 4 for elaborate projects; 5 for ambitious projects.";3 + [Size + Reach] – Competence;4
+Attack Asset;"Charisma;Manipulation;Intelligence";"Bureaucracy;Socialize;War";Competence of target organization;[Size + Reach + rating of targeted Asset] – Competence;4
+Cannibalize Asset;"Charisma;Manipulation";Bureaucracy;1;3 + [Size + Reach] – Competence;(Size + Reach) days
+Reallocate Asset;"Charisma;Manipulation;Intelligence";"Bureaucracy;Socialize";"3 for simple reallocation; 5 for long distances or complex restructuring";"3 + [Size + Reach] – Competence) to reassign assets; (3 + [Reach x 2] – Competence) to move Assets";4
+Halt Project;"Charisma;Manipulation";"Bureaucracy;Socialize;War";2;[Capital invested in the project + Size] – Competence;1
+Attack Project;"Charisma;Manipulation;Intelligence";"Bureaucracy;Socialize;War";Competence of targeted organization;[Size + Reach] – Competence;4
+Contest Project;"Charisma;Manipulation";"Bureaucracy;Socialize;War";One less than the contested action (minimum 1);-;Equal to contested project
+Replenish Capital;"Charisma;Manipulation;Intelligence";Bureaucracy;1-5;3 + [Size + Reach] – Competence;4
+Transfer Capital;"Charisma;Manipulation;Intelligence";Bureaucracy;1;-;(6 – Competence) weeks
+Protect Organization;"Charisma;Manipulation;Intelligence";"Bureaucracy;Socialize;War";1;-;([Size + Reach] – Competence) weeks
+Shift Policy;"Charisma;Manipulation";Socialize;"3 for minor changes; 4 for moderate changes; 5 for significant changes";(Size + Reach);1
+Shift Structure;Intelligence;Bureaucracy;"4 for minor changes; 4 for moderate changes; 5 for significant changes";(Size + Reach);1
