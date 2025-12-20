@@ -1,0 +1,75 @@
+Action,Art,Degree,[Dices] Attributes,[Dices] Abilities,Difficulty,Interval,Description
+Compile Chart,The Art of Astrology,0,Wits,Occult,2,Hour,"This ritual requires access to star charts (Resources 2) and detailed personal information about the subject, or it automatically fails. Pertinent information may be obtained freely or uncovered through investigation. Success creates an astrological profile necessary for greater astrological rituals."
+Lesser Divination,The Art of Astrology,1,Intelligence,Occult,4,3 hours,
+Divination,The Art of Astrology,2,Intelligence,Occult,4,3 hours,
+Greater Divination,The Art of Astrology,3,Intelligence,Occult,4,3 hours,
+Demonsight,The Art of Demon Summoning,1,Perception,Occult,3,5 minutes,
+Summon [Species],The Art of Demon Summoning,2,Intelligence,Occult,5,6 hours,
+[Least Wonder],The Art of Enchantment,1,Intelligence,Occult,3,50 hours,
+[Lesser Wonder],The Art of Enchantment,2,Intelligence,Occult,4,100 hours,
+[Talisman],The Art of Enchantment,3,Intelligence,Occult,5,200 hours,
+Essence Sight,The Art of Geomancy,0,Perception,Occult,1,1 minute,
+Blessing,The Art of Geomancy,2,Intelligence,Occult,3,3 hours,
+Curse,The Art of Geomancy,2,Intelligence,Occult,3,3 hours,
+Stop Bleeding,Treat Wounds,,,Medicine,,,
+Surgery,Treat Wounds,,,Medicine,5+,(Difficulty*3) hours,
+Cure infection,Treat Wounds,,,Medicine,,,
+Fix disabling wounds,Treat Wounds,,,Medicine,,,
+Diagnose Patient,,,Perception,Medicine,"In the case of injuries, the difficulty is only 1 for external wounds and 2 for internal injuries (such as broken bones or internal bleeding).",5 minutes,
+Diagnose Illness,,,Perception,Medicine,"Illnesses are more variable, with a diagnosis difficulty based
+on the distinctiveness of the symptoms rather than the severity
+of the disease. For instance, the common cold, infected wounds
+and bubonic plague are all difficulty 1. Other examples include
+cholera and smallpox (difficulty 2) and yellow fever (difficulty
+3). Only extremely rare and/or magical illnesses should have a
+diagnosis difficulty greater than 3. If it is a Sickness effect without
+a stated difficulty to diagnose, the difficulty is the Essence of the
+character who caused the effect.",6 minutes,
+Craft Small Mundane Item,Mundane Craft,,"Dexterity,Perception,Intelligence",Craft,Resource Rating,"days equal to the difficulty for small items, though extremely
+simple trinkets worth Resources 1 might take only a few hours
+to make. Larger or higher-complexity items push the interval
+from days to weeks, as with most forged goods. Massive projects
+such as the construction of houses and ships take an interval of
+months and possibly years for larger structures such as palaces.
+Truly monumental tasks could theoretically take even longer,
+although the Storyteller is encouraged to break such enterprises
+into smaller, independently resolved tasks.",
+Craft Larger Mundane Item,Mundane Craft,,"Perception,Intelligence",Craft,Resource Rating,"days equal to the difficulty for small items, though extremely
+simple trinkets worth Resources 1 might take only a few hours
+to make. Larger or higher-complexity items push the interval
+from days to weeks, as with most forged goods. Massive projects
+such as the construction of houses and ships take an interval of
+months and possibly years for larger structures such as palaces.
+Truly monumental tasks could theoretically take even longer,
+although the Storyteller is encouraged to break such enterprises
+into smaller, independently resolved tasks.",
+Craft Artefact Rating 1,Artefact Craft,1,"Perception,Intelligence",Craft,3,season,"Craft 3, Lore 3, Occult 3"
+Craft Artefact Rating 2,Artefact Craft,1,"Perception,Intelligence",Craft,4,season,"Craft 3, Lore 3, Occult 3"
+Craft Artefact Rating 3,Artefact Craft,1,"Perception,Intelligence",Craft,5,season,"Craft 3, Lore 3, Occult 3"
+Craft Artefact Rating 4,Artefact Craft,2,"Perception,Intelligence",Craft,6,season,"Craft 6, Lore 6, Occult 6"
+Craft Artefact Rating 5,Artefact Craft,3,"Perception,Intelligence",Craft,7,season,"Craft 7, Lore 7, Occult 7"
+Attune Demense,,,,,,(Rating) hours,Rating*4 motes per hour
+Build Manse 1,Earth Craft,1,,,,,200 man-years
+Build Manse 2,Earth Craft,1,,,,,400 man-years
+Build Manse 3,Earth Craft,1,,,,,600 man-years
+Build Manse 4,Earth Craft,1,,,,,800 man-years
+Build Manse 5,Earth Craft,1,,,,,1000 man-years
+Design Manse 1,Manse Craft,1,Intelligence,"Craft,Lore,Occult",1,month,
+Design Manse 2,Manse Craft,1,Intelligence,"Craft,Lore,Occult",2,month,
+Design Manse 3,Manse Craft,1,Intelligence,"Craft,Lore,Occult",3,month,
+Design Manse 4,Manse Craft,2,Intelligence,"Craft,Lore,Occult",4,month,
+Design Manse 5,Manse Craft,3,Intelligence,"Craft,Lore,Occult",5,month,
+Alchemical Touchstone,The Art of Alchemy,0,Perception,Occult,1,action,
+Life’s Little Luxury Blends,The Art of Alchemy,0,Intelligence,Occult,1,hour,
+Blood-Staunching Compress,The Art of Alchemy,1,Intelligence,Occult,3,hour,
+Draught of Blessed Respite,The Art of Alchemy,1,Intelligence,Occult,2,hour,
+Eagle’s Eye Potion,The Art of Alchemy,1,Wits,Occult,3,hour,
+Hero’s Recovery,The Art of Alchemy,1,Intelligence,Occult,3,hour,
+(Type) Venom-Allaying Draught,The Art of Alchemy,1,Intelligence,Occult,2,hour,
+Wound-Cleansing Unguent,The Art of Alchemy,1,Intelligence,Occult,1,2 hours,
+Age-Staving Cordial,The Art of Alchemy,2,Intelligence,Occult,3,hour,
+Ardent Embrace Resin,The Art of Alchemy,2,Intelligence,Occult,2,hour,
+Final Vengeance,The Art of Alchemy,2,Wits,Occult,3,hour,
+,The Art of Alchemy,,,,,,
+,The Art of Alchemy,,,,,,
+,The Art of Alchemy,,,,,,
