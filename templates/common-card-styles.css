@@ -55,6 +55,12 @@ body {
     height: 2.5in;
 }
 
+.card.size-half-page {
+    display: flex;
+    width: 7.5in;
+    height: 5.2in;
+}
+
 /* Card Layout Components */
 .card-content {
     display: flex;

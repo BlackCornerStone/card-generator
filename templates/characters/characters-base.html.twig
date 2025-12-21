@@ -22,7 +22,7 @@
     {% endif %}
 
   {% for WoundPenalty in WoundPenalties %}
-  <div class="card size-big">
+  <div class="card {% block card_class %}size-big{% endblock %}">
     <div class="card-content">
       <div class="card-header default">
         <div class="card-title">{{ card.Name }}</div>
