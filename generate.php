@@ -91,7 +91,7 @@ function replaceLinks(int $line, array &$processed): array {
 
             if (!isset($loadedLinks[$groupName])) {
                 $linksFile = "data/{$groupName}.csv";
-                $loadedLinks[$groupName] = loadCardsFromCSV($linksFile, true);
+                $loadedLinks[$groupName] = loadCardsFromCSV($linksFile);
             }
             $processed[$subKey] = $loadedLinks[$groupName][$value] ?? "404:".$value;
         } else {

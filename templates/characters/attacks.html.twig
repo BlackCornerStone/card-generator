@@ -3,36 +3,52 @@
 {% import 'characters/_characters_macros.html.twig' as R %}
 
 {% block card_body %}
-    {% set Dash = max(2, card.Dexterity + 6 + WoundPenalty) %}
-    {% set Move = max(1, card.Dexterity + WoundPenalty) %}
-    {% set JoinBattle = max(1, card.Wits + card.Awareness + WoundPenalty) %}
+    {% set Dexterity = card.Character.Attributes.Dexterity %}
+    {% set Melee = card.Character.Abilities.Melee %}
+    {% set Awareness = card.Character.Attributes.Awareness %}
+    {% set Wits = card.Character.Attributes.Wits %}
 
-    <table class="speed-table">
-        <tr>
-            <th>Action</th>
-            <th>Detail</th>
-            <th>Speed</th>
-            <th>DV</th>
-        </tr>
-        <tr>
-            <th>Dash</th> <td>{{ Dash }}y, no parry</td> <td>3</td> <td>-2</td>
-        </tr>
-        <tr>
-            <th>Move</th> <td>{{ Move }}y</td> <td>1</td> <td>0</td>
-        </tr>
-        {% for armor in card.Armors %}
-            <tr>
-                <th>Move in {{ armor.name }}</th> <td>{{ max(1, card.Dexterity + WoundPenalty + armor.Mobility) }}y</td> <td>1</td> <td>0</td>
-            </tr>
-        {% endfor %}
-        <tr>
-            <th>Join Battle</th> <td>{{ JoinBattle }}d</td> <td>0</td> <td>+hits</td>
-        </tr>
-        {% for weapon in card.Weapons %}
-            <tr>
-                <th>Attack by {{ weapon.name }}</th> <td></td> <td>{{ weapon.Speed }}</td> <td>-1</td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% set Dash = max(2, Dexterity + 6 + WoundPenalty) %}
+    {% set Move = max(1, Dexterity + WoundPenalty) %}
+    {% set ParryDV = max(1, Dexterity + Melee + card.Defense + WoundPenalty) %}
+
+    <div class="stat-group col">
+        <h3>Parry DV {{ ParryDV }}</h3>
+        <div class="stat-row">
+            <div class="stat-label">{{ R.dots(ParryDV, ParryDV) }}</div>
+            <div class="stat-value">
+                <small>[DEX({{ Dexterity }}) + MEL({{ Melee }}) + Weapon({{ card.Defense }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-group col">
+        <h3>Actions</h3>
+        <div class="stat-row">
+            <div class="stat-label">Dash</div>
+            <div class="stat-value">{{ Dash }}y, no parry, 3 ticks, DV-2</div>
+            <div class="stat-label">
+                DEX({{ Dexterity }}) + 6 - Wound Penalty ({{ WoundPenalty }}), min 2
+            </div>
+        </div>
+
+        {% set JoinBattle = max(1, Awareness + Wits + WoundPenalty) %}
+        <div class="stat-row">
+            <div class="stat-label">Join Battle</div>
+            <div class="stat-value">{{ JoinBattle }}d</div>
+            <div class="stat-label">
+                WITS({{ Wits }}) + AWA({{ Awareness }}) - Wound Penalty ({{ WoundPenalty }}), min 1
+            </div>
+        </div>
+
+        {% set Accuracy = max(0, card.Accuracy + Melee + WoundPenalty) %}
+        <div class="stat-row">
+            <div class="stat-label">Attack</div>
+            <div class="stat-value">{{ Accuracy }}d, {{ card.Speed }} ticks, DV-1</div>
+            <div class="stat-label">
+                DEX({{ Dexterity }}) + MEL({{ Melee }}) - Wound Penalty ({{ WoundPenalty }})
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

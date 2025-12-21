@@ -19,3 +19,16 @@
     </div>
   </div>
 {% endmacro %}
+
+{% macro defense(title, value, explanation) %}
+  <div class="stat-group col">
+    <h3>{{ title }}</h3>
+    <div class="stat-row">
+      {% for statName in stats %}
+        <div class="stat-label">{{ value }}</div>
+        <div class="stat-value">{{ _self.dots(value, value) }}</div>
+        <div class="stat-value"><small>{{ explanation }}</small></div>
+      {% endfor %}
+    </div>
+  </div>
+{% endmacro %}

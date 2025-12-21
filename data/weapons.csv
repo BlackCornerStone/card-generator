@@ -1,4 +1,4 @@
 {characters} Character;Name;Speed;Defense;Accuracy;Rate
 Righteous Dawn;Knife;4;-1;1;2
-Silken Whisper;Knife;4|6;-1|-2;1|-1;2|1
-Silken Whisper;Hammer;4|6;-1|-2;1|-1;2|1
+Silken Whisper;Knife;4;-1;1;2
+Silken Whisper;Hammer;6;-2;-1;1
