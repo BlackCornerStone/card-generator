@@ -81,55 +81,71 @@
 
     <div class="stats-grid">
         <div class="stat-group">
-            <h3>Take Bashing Hit</h3>
-            {{ R.soak(BHard, BSoak) }}
-
+            <h3>Take Raw Hit</h3>
             <table class="speed-table">
                 <tr>
                     <th>Raw</th>
-                    <th>Pre S</th>
-                    <th>Post S</th>
-                    <th>Calc</th>
+                    <th>Fly</th>
                 </tr>
 
                 {% for raw in range(1, 20) %}
-                    {{ local.damageRow(raw, KnockDownLimit, StunLimit, card.BHard, card.BSoak) }}
+                    {% set fly = (raw/3)|round(0, 'floor') %}
+                    <tr class="">
+                        <td>
+                            {{ raw }}
+                            {% if raw > KnockDownLimit %}K{% endif %}
+                        </td>
+                        <td>{% if fly > 0 %}{{ fly }}y{% endif %}</td>
+                    </tr>
                 {% endfor %}
             </table>
         </div>
     </div>
     <div class="stats-grid">
         <div class="stat-group">
-            <h3>Take Lethal Hit</h3>
-            {{ R.soak(LHard, LSoak) }}
+            <h3>B: {{ R.soak(BHard, BSoak) }}</h3>
 
             <table class="speed-table">
                 <tr>
-                    <th>Raw</th>
                     <th>Pre S</th>
                     <th>Post S</th>
                     <th>Calc</th>
                 </tr>
+
                 {% for raw in range(1, 20) %}
-                    {{ local.damageRow(raw, KnockDownLimit, StunLimit, card.LHard, card.LSoak) }}
+                    {{ local.damageRow(raw, StunLimit, card.BHard, card.BSoak) }}
                 {% endfor %}
             </table>
         </div>
     </div>
     <div class="stats-grid">
         <div class="stat-group">
-            <h3>Take Aggravated Hit</h3>
-            {{ R.soak(AHard, ASoak) }}
+            <h3>L: {{ R.soak(LHard, LSoak) }}</h3>
 
             <table class="speed-table">
                 <tr>
-                    <th>Raw</th>
                     <th>Pre S</th>
                     <th>Post S</th>
                     <th>Calc</th>
                 </tr>
                 {% for raw in range(1, 20) %}
-                    {{ local.damageRow(raw, KnockDownLimit, StunLimit, card.AHard, card.ASoak) }}
+                    {{ local.damageRow(raw, StunLimit, card.LHard, card.LSoak) }}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="stats-grid">
+        <div class="stat-group">
+            <h3>A: {{ R.soak(AHard, ASoak) }}</h3>
+
+            <table class="speed-table">
+                <tr>
+                    <th>Pre S</th>
+                    <th>Post S</th>
+                    <th>Calc</th>
+                </tr>
+                {% for raw in range(1, 20) %}
+                    {{ local.damageRow(raw, StunLimit, card.AHard, card.ASoak) }}
                 {% endfor %}
             </table>
         </div>
@@ -137,7 +153,7 @@
 
 {% endblock %}
 
-{% macro damageRow(raw, KnockDownLimit, StunLimit, hard, soak) %}
+{% macro damageRow(raw, StunLimit, hard, soak) %}
     {% if raw > hard %}
         {% set preSoak = raw %}
     {% else %}
@@ -149,13 +165,9 @@
     {% else %}
         {% set postSoak = 1 %}
     {% endif %}
-    {% set guessedRealDMG = (postSoak/3)|round %}
+    {% set guessedRealDMG = (postSoak/3)|round(0, 'ceil') %}
 
     <tr class="">
-        <td>
-            {{ raw }}
-            {% if raw > KnockDownLimit %}K{% endif %}
-        </td>
         <td>{{ preSoak }}</td>
         <td>{{ postSoak }}</td>
         <td>
@@ -163,6 +175,4 @@
             {% if guessedRealDMG > StunLimit %}S diff {{ guessedRealDMG - StunLimit }}{% endif %}
         </td>
     </tr>
-    {% if raw == KnockDownLimit %}<tr><td colspan="2">Knock down</td></tr>{% endif %}
-{#    {% if guessedRealDMG == StunLimit %}<tr><td colspan="3"></td><td colspan="1">Stun</td></tr>{% endif %}#}
 {% endmacro %}
