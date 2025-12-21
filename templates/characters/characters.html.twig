@@ -12,17 +12,21 @@
 {% endblock %}
 
 {% block card_body %}
+  {% set max_rating = max(5, card.Essence) %}
+  {% set max_essence = max(5, card.Essence) %}
+  {% set max_willpower = 10 %}
+  {% set max_virtue = 5 %}
 
-<div class="grid grid-3">
-  {{ R.columnBlockStats("Core", card, ["Essence", "Willpower"], 10) }}
-  {{ R.columnBlockStats("Physical", card.Attributes, ["Strength", "Dexterity", "Stamina"], max_rating) }}
-  {{ R.columnBlockStats("Social", card.Attributes, ["Charisma", "Manipulation", "Appearance"], max_rating) }}
-  {{ R.columnBlockStats("Mental", card.Attributes, ["Perception", "Intelligence", "Wits"], max_rating) }}
-  {{ R.columnBlockStats("Virtues", card.Virtues, ["Compassion", "Conviction", "Temperance", "Valor"], max_virtue) }}
-  {{ R.columnBlockStats("Dawn", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
-  {{ R.columnBlockStats("Night", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
-  {{ R.columnBlockStats("Eclipse", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
-  {{ R.columnBlockStats("Twilight", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
-</div>
+  <div class="grid grid-3">
+    {{ R.columnBlockStats("Core", card, ["Essence", "Willpower"], 10) }}
+    {{ R.columnBlockStats("Physical", card.Attributes, ["Strength", "Dexterity", "Stamina"], max_rating) }}
+    {{ R.columnBlockStats("Social", card.Attributes, ["Charisma", "Manipulation", "Appearance"], max_rating) }}
+    {{ R.columnBlockStats("Mental", card.Attributes, ["Perception", "Intelligence", "Wits"], max_rating) }}
+    {{ R.columnBlockStats("Virtues", card.Virtues, ["Compassion", "Conviction", "Temperance", "Valor"], max_virtue) }}
+    {{ R.columnBlockStats("Dawn", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
+    {{ R.columnBlockStats("Night", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
+    {{ R.columnBlockStats("Eclipse", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
+    {{ R.columnBlockStats("Twilight", card.Abilities, ["Archery", "Thrown", "Martial Arts", "War", "Melee"], max_rating) }}
+  </div>
 
 {% endblock %}

@@ -28,9 +28,7 @@
         <div class="stat-row">
             <div class="stat-label">[DEX({{ Dexterity }}) + Dodge({{ Dodge }}) + Essence({{ Essence }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1</div>
         </div>
-    </div>
 
-    <div class="stat-group">
         <h3>Actions</h3>
         <div class="stat-row">
             <div class="stat-label">Move</div>
@@ -38,6 +36,40 @@
             <div class="stat-label">
                 [DEX({{ Dexterity }}) + Dodge({{ Dodge }}) + Essence({{ Essence }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1
             </div>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-group">
+            <h3>Take Bashing Hit</h3>
+            <table class="speed-table">
+                <tr>
+                    <th>Raw</th>
+                    <th>Pre S</th>
+                    <th>Post S</th>
+                    <th>Calc</th>
+                </tr>
+                {% for raw in range(1, 20) %}
+                    {% if raw > card.BHard %}
+                        {% set preSoak = raw %}
+                    {% else %}
+                        {% set preSoak = 0 %}
+                    {% endif %}
+
+                    {% if preSoak > card.BSoak %}
+                        {% set postSoak = preSoak - card.BSoak %}
+                    {% else %}
+                        {% set postSoak = 1 %}
+                    {% endif %}
+
+                    <tr class="">
+                        <td>{{ raw }}</td>
+                        <td>{{ preSoak }}</td>
+                        <td>{{ postSoak }}</td>
+                        <td>{{ (postSoak/3)|round }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
 
