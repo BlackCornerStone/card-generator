@@ -21,8 +21,10 @@
 {% block card_body %}
     {% set Dexterity = card.Character.Attributes.Dexterity %}
     {% set Melee = card.Character.Abilities.Melee %}
+    {% set MA = card.Character.Abilities["Martial Arts"] %}
     {% set Awareness = card.Character.Attributes.Awareness %}
     {% set Wits = card.Character.Attributes.Wits %}
+    {% set isRanged = true %}
 
     {% set Dash = max(2, Dexterity + 6 + WoundPenalty) %}
     {% set Move = max(1, Dexterity + WoundPenalty) %}
@@ -30,11 +32,28 @@
     {% set ParryDicepool = Dexterity + Melee %}
     {% set ParryDV = max(0, ParryDicepool/2 + card.Defense + WoundPenalty) %}
     {% set FullParryDV = max(0, ParryDicepool/2 + card.Defense) %}
+    <div class="stats-grid">
+        <div class="stat-group">
+            <h3>{{ R.shields(ParryDV, FullParryDV) }}</h3>
+            <div class="stat-row">
+                <div class="stat-label">[DEX({{ Dexterity }}) + MEL({{ Melee }}) + Acc({{ card.Defense }})]/2 - WP({{ WoundPenalty }}), min 1</div>
+            </div>
+        </div>
 
-    <div class="stat-group">
-        <h3>{{ R.shields(ParryDV, FullParryDV) }}</h3>
-        <div class="stat-row">
-            <div class="stat-label">[DEX({{ Dexterity }}) + MEL({{ Melee }}) + Weapon({{ card.Defense }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1</div>
+        <div class="stat-group">
+            <h3>Save Rolls</h3>
+            <div class="stat-row">
+                <div class="stat-label">Disarm</div>
+                <div class="stat-value">{{ Dexterity + Melee }}</div>
+            </div>
+        </div>
+
+        <div class="stat-group">
+            <h3>Grappling</h3>
+            <div class="stat-row">
+                <div class="stat-label">Grab</div>
+                <div class="stat-value">{{ max(Dexterity, Strength) + MA }}</div>
+            </div>
         </div>
     </div>
 
@@ -65,6 +84,34 @@
                 DEX({{ Dexterity }}) + MEL({{ Melee }}) - Wound Penalty ({{ WoundPenalty }})
             </div>
         </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-group">
+            <h3>Special Attacks</h3>
+            <div class="stat-row">
+                <div class="stat-label">Pull Blow</div>
+                <div class="stat-value">ext -1</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Showing Off</div>
+                <div class="stat-value">ext -1 to -4</div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Disarm</div>
+                {% if not isRanged %}
+                <div class="stat-value">ext -2</div>
+                {% else %}
+                <div class="stat-value">ext -4</div>
+                {% endif %}
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Fierce Blow</div>
+                <div class="stat-value">ext -1</div>
+            </div>
+        </div>
+
+
     </div>
 
 {% endblock %}

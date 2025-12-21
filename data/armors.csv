@@ -1,6 +1,3 @@
 {characters} Character;Name;BSoak;LSoak;BHard;LHard;Mobility
-Richard;Unarmored;0;0;0;0;0
-Mei Li;Unarmored;0;0;0;0;0
-Emerald Sage;Chain-shirt;2;5;0;0;-1
-Emerald Sage;Iron Kettle;5;5;0;0;0
-Emerald Sage;Chain-shirt+Iron Kettle;7;10;0;0;-1
+Richard;Unarmored1;0;0;0;0;0
+Mei Li;Unarmored2;0;0;0;0;0
