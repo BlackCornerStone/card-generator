@@ -19,35 +19,70 @@
 {% block card_body %}
     {% import _self as local %}
     {% set Dexterity = card.Character.Attributes.Dexterity %}
+    {% set Stamina = card.Character.Attributes.Stamina %}
+    {% set Athletics = card.Character.Abilities.Athletics %}
+    {% set Resistance = card.Character.Abilities.Resistance %}
     {% set Dodge = card.Character.Abilities.Dodge %}
     {% set Essence = card.Character.Essence %}
 
+    {% set KnockDownLimit = Stamina + Resistance + WoundPenalty %}
+    {% set StunLimit = Stamina + WoundPenalty %}
     {% set DDVDicePool = Dexterity + Dodge + Essence %}
     {% set DDV = max(0, DDVDicePool/2 + WoundPenalty) %}
     {% set FullDDV = max(0, DDVDicePool/2) %}
 
     <div class="stats-grid">
-    <div class="stat-group">
-        <h3>{{ R.shields(DDV, FullDDV) }}</h3>
-        <div class="stat-row">
-            <div class="stat-label">[DEX({{ Dexterity }}) + Dodge({{ Dodge }}) + Essence({{ Essence }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1</div>
-        </div>
-    </div>
         <div class="stat-group">
-        <h3>Actions</h3>
-        <div class="stat-row">
-            <div class="stat-label">Move</div>
-            <div class="stat-value">{{ max(1, Dexterity + WoundPenalty + card.Mobility) }}y per tick/DV(0)</div>
-            <div class="stat-label">
-                [DEX({{ Dexterity }}) + Dodge({{ Dodge }}) + Essence({{ Essence }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1
+            <h3>{{ R.shields(DDV, FullDDV) }}</h3>
+            <div class="stat-row">
+                <div class="stat-label">[DEX({{ Dexterity }}) + Dodge({{ Dodge }}) + Essence({{ Essence }})]/2 - Wound
+                    Penalty({{ WoundPenalty }}), min 1
+                </div>
+            </div>
+        </div>
+        <div class="stat-group">
+            <h3>Actions</h3>
+            <div class="stat-row">
+                <div class="stat-label">Move</div>
+                <div class="stat-value">{{ max(1, Dexterity + WoundPenalty + card.Mobility) }}y per tick/DV(0)</div>
+                <div class="stat-label">
+                    [DEX({{ Dexterity }}) + Dodge({{ Dodge }}) + Essence({{ Essence }})]/2 - Wound
+                    Penalty({{ WoundPenalty }}), min 1
+                </div>
+            </div>
+        </div>
+        <div class="stat-group">
+            <h3>Save Rolls</h3>
+            <div class="stat-row">
+                <div class="stat-label">Knockdown</div>
+                <div class="stat-value">{{ max(Dexterity, Stamina) + max(Resistance, Athletics) + WoundPenalty }} diff 2</div>
+                <div class="stat-label">
+                    DEX({{ Dexterity }})^STA({{ Stamina }}) + ATH({{ Athletics }})^RES({{ Resistance }}) - Wound
+                    Penalty({{ WoundPenalty }}), min 1
+                </div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-label">Stun</div>
+                <div class="stat-value">{{ Stamina + Resistance + WoundPenalty }} diff DMG</div>
+                <div class="stat-label">
+                    STA({{ Stamina }}) + RES({{ Resistance }} - Wound
+                    Penalty({{ WoundPenalty }}), min 1
+                </div>
             </div>
         </div>
     </div>
-    </div>
+
+    {% set BHard = card.BHard %}
+    {% set BSoak = card.BSoak + Stamina %}
+    {% set LHard = card.LHard %}
+    {% set LSoak = card.LSoak + Stamina/2 %}
+    {% set AHard = card.LHard %}
+    {% set ASoak = card.LSoak %}
 
     <div class="stats-grid">
         <div class="stat-group">
             <h3>Take Bashing Hit</h3>
+            {{ R.soak(BHard, BSoak) }}
 
             <table class="speed-table">
                 <tr>
@@ -58,7 +93,7 @@
                 </tr>
 
                 {% for raw in range(1, 20) %}
-                    {{ local.damageRow(raw, card.BHard, card.BSoak) }}
+                    {{ local.damageRow(raw, KnockDownLimit, StunLimit, card.BHard, card.BSoak) }}
                 {% endfor %}
             </table>
         </div>
@@ -66,6 +101,7 @@
     <div class="stats-grid">
         <div class="stat-group">
             <h3>Take Lethal Hit</h3>
+            {{ R.soak(LHard, LSoak) }}
 
             <table class="speed-table">
                 <tr>
@@ -75,7 +111,7 @@
                     <th>Calc</th>
                 </tr>
                 {% for raw in range(1, 20) %}
-                    {{ local.damageRow(raw, card.LHard, card.LSoak) }}
+                    {{ local.damageRow(raw, KnockDownLimit, StunLimit, card.LHard, card.LSoak) }}
                 {% endfor %}
             </table>
         </div>
@@ -83,6 +119,7 @@
     <div class="stats-grid">
         <div class="stat-group">
             <h3>Take Aggravated Hit</h3>
+            {{ R.soak(AHard, ASoak) }}
 
             <table class="speed-table">
                 <tr>
@@ -92,7 +129,7 @@
                     <th>Calc</th>
                 </tr>
                 {% for raw in range(1, 20) %}
-                    {{ local.damageRow(raw, card.AHard, card.ASoak) }}
+                    {{ local.damageRow(raw, KnockDownLimit, StunLimit, card.AHard, card.ASoak) }}
                 {% endfor %}
             </table>
         </div>
@@ -100,7 +137,7 @@
 
 {% endblock %}
 
-{% macro damageRow(raw, hard, soak) %}
+{% macro damageRow(raw, KnockDownLimit, StunLimit, hard, soak) %}
     {% if raw > hard %}
         {% set preSoak = raw %}
     {% else %}
@@ -112,11 +149,20 @@
     {% else %}
         {% set postSoak = 1 %}
     {% endif %}
+    {% set guessedRealDMG = (postSoak/3)|round %}
 
     <tr class="">
-        <td>{{ raw }}</td>
+        <td>
+            {{ raw }}
+            {% if raw > KnockDownLimit %}K{% endif %}
+        </td>
         <td>{{ preSoak }}</td>
         <td>{{ postSoak }}</td>
-        <td>{{ (postSoak/3)|round }}</td>
+        <td>
+            {{ guessedRealDMG }}
+            {% if guessedRealDMG > StunLimit %}S diff {{ guessedRealDMG - StunLimit }}{% endif %}
+        </td>
     </tr>
+    {% if raw == KnockDownLimit %}<tr><td colspan="2">Knock down</td></tr>{% endif %}
+{#    {% if guessedRealDMG == StunLimit %}<tr><td colspan="3"></td><td colspan="1">Stun</td></tr>{% endif %}#}
 {% endmacro %}

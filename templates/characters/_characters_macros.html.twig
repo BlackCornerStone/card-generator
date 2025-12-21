@@ -29,3 +29,13 @@
     {% endfor %}
   </span>
 {% endmacro %}
+
+{% macro soak(val, maxval) %}
+    {% set v = (val is defined and val is not same as(false) and val is not same as('')) ? (val) : 0 %}
+    {% set m = maxval is defined ? max(val, maxval) : val %}
+    <span class="rating shields">
+    {% for i in 1..m %}
+        {% if i <= v %}<span class="filled">🛡</span>{% else %}<span class="empty">⬜</span>{% endif %}
+    {% endfor %}
+  </span>
+{% endmacro %}
