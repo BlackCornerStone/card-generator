@@ -30,6 +30,12 @@
     <div class="card-content">
 
       <div class="card-header default">
+        <div class="card-title">{{ card.Name }}</div>
+        {% block badges %}{% endblock %}
+      </div>
+
+      {% if card.Character is not null %}
+      <div class="card-header default">
         <div class="card-title">
           {{ CharacterName }}
 
@@ -37,14 +43,7 @@
             <span class="filled">🩸</span>
           {% endfor %}
         </div>
-        {% if card.Caste %}<div class="badge primary">{{ card.Caste }}</div>{% endif %}
-        {% if card.Concept %}<div class="badge secondary">{{ card.Concept }}</div>{% endif %}
       </div>
-
-      {% if card.Character is not null %}
-        <div class="card-header default">
-          <div class="card-title">{{ card.Name }}</div>
-        </div>
       {% endif %}
 
       <div class="card-body">

@@ -2,7 +2,17 @@
 
 {% import 'characters/_characters_macros.html.twig' as R %}
 
-{% block title %}
+{% block badges %}
+    {% set Dexterity = card.Character.Attributes.Dexterity %}
+    {% set Dodge = card.Character.Abilities.Dodge %}
+    {% set Essence = card.Character.Essence %}
+
+    {% set DDVDicePool = Dexterity + Dodge + Essence %}
+    {% set DDV = max(0, DDVDicePool/2 + WoundPenalty) %}
+    {% set FullDDV = max(0, DDVDicePool/2) %}
+
+    <div class="badge primary">Dodge DV {{ DDV }}</div>
+{% endblock %}
 
 {% block card_body %}
     {% set Dexterity = card.Character.Attributes.Dexterity %}
@@ -10,19 +20,17 @@
     {% set Essence = card.Character.Essence %}
 
     {% set DDVDicePool = Dexterity + Dodge + Essence %}
-    {% set DDV = max(1, DDVDicePool/2 + WoundPenalty + 1) %}
+    {% set DDV = max(0, DDVDicePool/2 + WoundPenalty) %}
+    {% set FullDDV = max(0, DDVDicePool/2) %}
 
-    <div class="stat-group col">
-        <h3>Dodge DV {{ DDV }}</h3>
+    <div class="stat-group">
+        <h3>{{ R.shields(DDV, FullDDV) }}</h3>
         <div class="stat-row">
-            <div class="stat-label">{{ R.dots(DDV, DDV) }}</div>
-            <div class="stat-value">
-                <small>[DEX({{ Dexterity }}) + Dodge({{ Dodge }}) + Essence({{ Essence }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1</small>
-            </div>
+            <div class="stat-label">[DEX({{ Dexterity }}) + Dodge({{ Dodge }}) + Essence({{ Essence }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1</div>
         </div>
     </div>
 
-    <div class="stat-group col">
+    <div class="stat-group">
         <h3>Actions</h3>
         <div class="stat-row">
             <div class="stat-label">Move</div>

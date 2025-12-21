@@ -2,7 +2,7 @@
 
 {% import 'characters/_characters_macros.html.twig' as R %}
 
-{% block card_body %}
+{% block badges %}
     {% set Dexterity = card.Character.Attributes.Dexterity %}
     {% set Melee = card.Character.Abilities.Melee %}
     {% set Awareness = card.Character.Attributes.Awareness %}
@@ -12,17 +12,33 @@
     {% set Move = max(1, Dexterity + WoundPenalty) %}
     {% set ParryDV = max(1, Dexterity + Melee + card.Defense + WoundPenalty) %}
 
-    <div class="stat-group col">
-        <h3>Parry DV {{ ParryDV }}</h3>
+    {% set Accuracy = max(0, card.Accuracy + Melee + WoundPenalty) %}
+
+    <div class="badge primary">Parry DV {{ ParryDV }}</div>
+    <div class="badge secondary">Attack {{ Accuracy }}d10</div>
+{% endblock %}
+
+{% block card_body %}
+    {% set Dexterity = card.Character.Attributes.Dexterity %}
+    {% set Melee = card.Character.Abilities.Melee %}
+    {% set Awareness = card.Character.Attributes.Awareness %}
+    {% set Wits = card.Character.Attributes.Wits %}
+
+    {% set Dash = max(2, Dexterity + 6 + WoundPenalty) %}
+    {% set Move = max(1, Dexterity + WoundPenalty) %}
+
+    {% set ParryDicepool = Dexterity + Melee %}
+    {% set ParryDV = max(0, ParryDicepool/2 + card.Defense + WoundPenalty) %}
+    {% set FullParryDV = max(0, ParryDicepool/2 + card.Defense) %}
+
+    <div class="stat-group">
+        <h3>{{ R.shields(ParryDV, FullParryDV) }}</h3>
         <div class="stat-row">
-            <div class="stat-label">{{ R.dots(ParryDV, ParryDV) }}</div>
-            <div class="stat-value">
-                <small>[DEX({{ Dexterity }}) + MEL({{ Melee }}) + Weapon({{ card.Defense }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1</small>
-            </div>
+            <div class="stat-label">[DEX({{ Dexterity }}) + MEL({{ Melee }}) + Weapon({{ card.Defense }})]/2 - Wound Penalty({{ WoundPenalty }}), min 1</div>
         </div>
     </div>
 
-    <div class="stat-group col">
+    <div class="stat-group">
         <h3>Actions</h3>
         <div class="stat-row">
             <div class="stat-label">Dash</div>
