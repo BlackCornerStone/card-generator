@@ -30,13 +30,9 @@
                     {% elseif i == 4 %}
                         {% set name = 'extreme' %}
                     {% endif %}
-                    {% set rowClass = '' %}
+                    {% set rowClass = loop.index is odd ? 'odd' : 'even' %}
                     {% if name %}
-                        {% set rowClass = 'terrain-' ~ name %}
-
-{#                        <tr class="{{ rowClass }}">#}
-{#                            <td colspan="5">{{ name }} Terrain</td>#}
-{#                        </tr>#}
+                        {% set rowClass = rowClass ~ ' terrain-' ~ name %}
                     {% endif %}
                     <tr class="{{ rowClass }}">
                         <td>{{ i }}/8</td>

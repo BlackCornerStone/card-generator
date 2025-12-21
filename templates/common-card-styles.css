@@ -412,6 +412,15 @@ body {
 .text-red-600 { color: #dc2626; }
 .text-black { color: #000000; }
 
+.speed-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.speed-table tr.odd {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
 .rotate-180 { transform: rotate(180deg); }
 
 .center-symbol { 
