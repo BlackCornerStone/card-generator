@@ -11,6 +11,7 @@
 {% macro dots(val, max) %}
   {% set v = (val is defined and val is not same as(false) and val is not same as('')) ? (val) : 0 %}
   {% set m = max is defined ? max : 5 %}
+  {% set m = m|round(0, 'ceil') %}
   <span class="rating">
     {% for i in 1..m %}
       {% if i <= v %}<span class="filled">●</span>{% else %}<span class="empty">○</span>{% endif %}
