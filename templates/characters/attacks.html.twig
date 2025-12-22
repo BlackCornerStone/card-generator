@@ -5,17 +5,22 @@
 {% block badges %}
     {% set Dexterity = card.Character.Attributes.Dexterity %}
     {% set Melee = card.Character.Abilities.Melee %}
+    {% set MA = card.Character.Abilities["Martial Arts"] %}
     {% set Awareness = card.Character.Attributes.Awareness %}
     {% set Wits = card.Character.Attributes.Wits %}
+    {% set isRanged = true %}
 
     {% set Dash = max(2, Dexterity + 6 + WoundPenalty) %}
     {% set Move = max(1, Dexterity + WoundPenalty) %}
-    {% set ParryDV = max(1, Dexterity + Melee + card.Defense + WoundPenalty) %}
 
-    {% set Accuracy = max(0, card.Accuracy + Melee + WoundPenalty) %}
+    {% set ParryDicepool = Dexterity + Melee %}
+    {% set ParryDV = max(0, ParryDicepool/2 + card.Defense + WoundPenalty) %}
+    {% set FullParryDV = max(0, ParryDicepool/2 + card.Defense) %}
 
-    <div class="badge primary">Parry DV {{ ParryDV }}</div>
-    <div class="badge secondary">Attack {{ Accuracy }}d10</div>
+    {{ R.shields(ParryDV, FullParryDV) }}
+
+{#    <div class="badge primary">Parry DV {{ ParryDV }}</div>#}
+{#    <div class="badge secondary">Attack {{ Accuracy }}d10</div>#}
 {% endblock %}
 
 {% block card_body %}
@@ -34,57 +39,79 @@
     {% set FullParryDV = max(0, ParryDicepool/2 + card.Defense) %}
     <div class="stats-grid">
         <div class="stat-group">
-            <h3>{{ R.shields(ParryDV, FullParryDV) }}</h3>
+            <h3>Parry</h3>
             <div class="stat-row">
+                <div class="stat-title">{{ ParryDV }}</div>
                 <div class="stat-label">[DEX({{ Dexterity }}) + MEL({{ Melee }}) + Acc({{ card.Defense }})]/2 - WP({{ WoundPenalty }}), min 1</div>
             </div>
-        </div>
-
-        <div class="stat-group">
-            <h3>Save Rolls</h3>
-            <div class="stat-row">
-                <div class="stat-label">Disarm</div>
-                <div class="stat-value">{{ Dexterity + Melee }}</div>
-            </div>
-        </div>
-
-        <div class="stat-group">
             <h3>Grappling</h3>
             <div class="stat-row">
                 <div class="stat-label">Grab</div>
                 <div class="stat-value">{{ max(Dexterity, Strength) + MA }}</div>
             </div>
+
+            <h3>Disarm</h3>
+            <div class="stat-row">
+                <div class="stat-value">{{ Dexterity + Melee }}</div>
+                <div class="stat-label">DEX({{ Dexterity }}) + MEL({{ Melee }})</div>
+            </div>
+
+            <h3>Dash</h3>
+            <div class="stat-row">
+                <div class="stat-value">{{ Dash }}y, no parry, 3 ticks, DV-2</div>
+                <div class="stat-label">
+                    DEX({{ Dexterity }}) + 6 - Wound Penalty ({{ WoundPenalty }}), min 2
+                </div>
+            </div>
+
+            <h3>Join Battle</h3>
+            {% set JoinBattle = max(1, Awareness + Wits + WoundPenalty) %}
+            <div class="stat-row">
+                <div class="stat-value">{{ JoinBattle }}d</div>
+                <div class="stat-label">
+                    WITS({{ Wits }}) + AWA({{ Awareness }}) - Wound Penalty ({{ WoundPenalty }}), min 1
+                </div>
+            </div>
+
+            <h3>Attack</h3>
+            {% set Accuracy = max(0, card.Accuracy + Melee + WoundPenalty) %}
+            <div class="stat-row">
+                <div class="stat-value">{{ Accuracy }}d, {{ card.Speed }} ticks, DV-1</div>
+                <div class="stat-label">
+                    DEX({{ Dexterity }}) + MEL({{ Melee }}) - Wound Penalty ({{ WoundPenalty }})
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="stat-group">
-        <h3>Actions</h3>
-        <div class="stat-row">
-            <div class="stat-label">Dash</div>
-            <div class="stat-value">{{ Dash }}y, no parry, 3 ticks, DV-2</div>
-            <div class="stat-label">
-                DEX({{ Dexterity }}) + 6 - Wound Penalty ({{ WoundPenalty }}), min 2
-            </div>
-        </div>
+{#    <div class="stat-group">#}
+{#        <h3>Actions</h3>#}
+{#        <div class="stat-row">#}
+{#            <div class="stat-label">Dash</div>#}
+{#            <div class="stat-value">{{ Dash }}y, no parry, 3 ticks, DV-2</div>#}
+{#            <div class="stat-label">#}
+{#                DEX({{ Dexterity }}) + 6 - Wound Penalty ({{ WoundPenalty }}), min 2#}
+{#            </div>#}
+{#        </div>#}
 
-        {% set JoinBattle = max(1, Awareness + Wits + WoundPenalty) %}
-        <div class="stat-row">
-            <div class="stat-label">Join Battle</div>
-            <div class="stat-value">{{ JoinBattle }}d</div>
-            <div class="stat-label">
-                WITS({{ Wits }}) + AWA({{ Awareness }}) - Wound Penalty ({{ WoundPenalty }}), min 1
-            </div>
-        </div>
+{#        {% set JoinBattle = max(1, Awareness + Wits + WoundPenalty) %}#}
+{#        <div class="stat-row">#}
+{#            <div class="stat-label">Join Battle</div>#}
+{#            <div class="stat-value">{{ JoinBattle }}d</div>#}
+{#            <div class="stat-label">#}
+{#                WITS({{ Wits }}) + AWA({{ Awareness }}) - Wound Penalty ({{ WoundPenalty }}), min 1#}
+{#            </div>#}
+{#        </div>#}
 
-        {% set Accuracy = max(0, card.Accuracy + Melee + WoundPenalty) %}
-        <div class="stat-row">
-            <div class="stat-label">Attack</div>
-            <div class="stat-value">{{ Accuracy }}d, {{ card.Speed }} ticks, DV-1</div>
-            <div class="stat-label">
-                DEX({{ Dexterity }}) + MEL({{ Melee }}) - Wound Penalty ({{ WoundPenalty }})
-            </div>
-        </div>
-    </div>
+{#        {% set Accuracy = max(0, card.Accuracy + Melee + WoundPenalty) %}#}
+{#        <div class="stat-row">#}
+{#            <div class="stat-label">Attack</div>#}
+{#            <div class="stat-value">{{ Accuracy }}d, {{ card.Speed }} ticks, DV-1</div>#}
+{#            <div class="stat-label">#}
+{#                DEX({{ Dexterity }}) + MEL({{ Melee }}) - Wound Penalty ({{ WoundPenalty }})#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
     <div class="stats-grid">
         <div class="stat-group">

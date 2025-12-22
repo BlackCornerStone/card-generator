@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Characters{% endblock %}</title>
-  <link rel="stylesheet" href="../../templates/common-card-styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Characters{% endblock %}</title>
+    <link rel="stylesheet" href="../../templates/common-card-styles.css">
 </head>
 <body>
 
@@ -13,39 +13,34 @@
 {% set WoundPenalties = [0, -1, -2, -4] %}
 
 <div class="grid">
-  {% for card in cards %}
+    {% for card in cards %}
 
-    {% if card.Character is not null %}
-      {% set CharacterName = card.Character.Name %}
-    {% else %}
-      {% set CharacterName = card.Name %}
-    {% endif %}
+        {% if card.Character is not null %}
+            {% set CharacterName = card.Character.Name %}
+        {% else %}
+            {% set CharacterName = card.Name %}
+        {% endif %}
 
-  {% for WoundPenalty in WoundPenalties %}
-  <div class="card {% block card_class %}size-big{% endblock %}">
-    <div class="card-content">
-      <div class="card-header default">
-        <div class="card-title">{{ card.Name }}</div>
-        {% block badges %}{% endblock %}
-      </div>
+        {% for WoundPenalty in WoundPenalties %}
+            <div class="card {% block card_class %}size-big{% endblock %}">
+                <div class="card-content">
+                    <div class="card-header default">
+                        <div class="card-title">{{ card.Name }}</div>
+                        {% block badges %}{% endblock %}
+                    </div>
 
-      {% if card.Character is not null %}
-      <div class="card-header default">
-        <div class="card-title">
-          {{ CharacterName }}
+                    {% if card.Character is not null %}
+                        <div class="card-header default">
+                            <div class="card-title">{{ CharacterName }}</div>
+                            {% for i in (0..WoundPenalty|abs)|filter(v => v > 0) %}
+                                <span class="filled">🩸</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-          {% for i in (0..WoundPenalty|abs)|filter(v => v > 0) %}
-            <span class="filled">🩸</span>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
-
-      <div class="card-body">
-        {% block card_body %}{% endblock %}
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-  {% endfor %}
+                    <div class="card-body">{% block card_body %}{% endblock %}</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
 </div>

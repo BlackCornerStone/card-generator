@@ -1,0 +1,55 @@
+{% extends "characters/characters-base.html.twig" %}
+
+{% import 'characters/_characters_macros.html.twig' as R %}
+
+{% block badges %}
+{#    {% set Dexterity = card.Character.Attributes.Dexterity %}#}
+{#    {% set Melee = card.Character.Abilities.Melee %}#}
+{#    {% set Awareness = card.Character.Attributes.Awareness %}#}
+{#    {% set Wits = card.Character.Attributes.Wits %}#}
+
+{#    {% set Dash = max(2, Dexterity + 6 + WoundPenalty) %}#}
+{#    {% set Move = max(1, Dexterity + WoundPenalty) %}#}
+{#    {% set ParryDV = max(1, Dexterity + Melee + card.Defense + WoundPenalty) %}#}
+
+{#    {% set Accuracy = max(0, card.Accuracy + Melee + WoundPenalty) %}#}
+
+{#    <div class="badge primary">Parry DV {{ ParryDV }}</div>#}
+{#    <div class="badge secondary">Attack {{ Accuracy }}d10</div>#}
+{% endblock %}
+
+{% block card_body %}
+    {% set Dexterity = card.Attributes.Dexterity %}
+    {% set Melee = card.Abilities.Melee %}
+    {% set Awareness = card.Attributes.Awareness %}
+    {% set Wits = card.Attributes.Wits %}
+    {% set Stamina = card.Attributes.Wits %}
+    {% set Resistance = card.Attributes.Wits %}
+    {% set SteRes = Stamina + Resistance + WoundPenalty %}
+
+    <div class="stat-group">
+        <h3>Per Day</h3>
+
+        {% set Infected = SteRes %}
+        {% set DyingOnInfection = Stamina %}
+        <div class="stat-row">
+            <div class="stat-label">Infection</div>
+            <div class="stat-value">{{ JoinBattle }}d</div>
+            <div class="stat-label">
+                WITS({{ Wits }}) + AWA({{ Awareness }}) - Wound Penalty ({{ WoundPenalty }}), min 1
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-group">
+        <h3>Per Hour</h3>
+        <div class="stat-row">
+            <div class="stat-label">Dash</div>
+            <div class="stat-value">{{ Dash }}y, no parry, 3 ticks, DV-2</div>
+            <div class="stat-label">
+                DEX({{ Dexterity }}) + 6 - Wound Penalty ({{ WoundPenalty }}), min 2
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -13,7 +13,7 @@
     {% set DDV = max(0, DDVDicePool/2 + WoundPenalty) %}
     {% set FullDDV = max(0, DDVDicePool/2) %}
 
-    <div class="badge primary">Dodge DV {{ DDV }}</div>
+    {{ R.shields(DDV, FullDDV) }}
 {% endblock %}
 
 {% block card_body %}

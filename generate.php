@@ -126,6 +126,7 @@ $supportedCardTypes = [
     //'weather' => null,
     //'travel-times' => null,
     'characters/characters' => 'characters',
+    'characters/attrition' => 'characters',
     'characters/attacks' => 'weapons',
     'characters/defences' => 'armors',
     'characters/social-combat' => 'characters',
