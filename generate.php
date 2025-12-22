@@ -130,6 +130,8 @@ $supportedCardTypes = [
     'characters/attacks' => 'weapons',
     'characters/defences' => 'armors',
     'characters/social-combat' => 'characters',
+    // Mass combat units
+    'mass-combat/unit' => 'mass-combat-unit',
 ];
 
 // dataFile => anotherDataFile[]
@@ -137,6 +139,8 @@ $additionalDatasets = [
     'characters/attacks' => ['characters'],
     'characters/defences' => ['characters'],
     'characters/social-combat' => ['characters'],
+    // Mass combat unit needs access to NPCs and Characters
+    'mass-combat/unit' => ['npcs', 'characters'],
 ];
 
 try {
@@ -178,8 +182,16 @@ try {
 
         $html = $twig->render("{$cardType}.html.twig", $templateData);
 
+        // Ensure nested output directory exists for this card type
+        $outputHtmlPath = "output/{$cardType}.html";
+        $outputPdfPath = "output/{$cardType}.pdf";
+        $outputDirForType = dirname($outputHtmlPath);
+        if (!is_dir($outputDirForType)) {
+            mkdir($outputDirForType, 0777, true);
+        }
+
         // Save HTML file
-        file_put_contents("output/{$cardType}.html", $html);
+        file_put_contents($outputHtmlPath, $html);
         echo "{$cardType} cards HTML generated successfully at output/{$cardType}.html\n";
 
         // Generate PDF from HTML
@@ -195,7 +207,7 @@ try {
         $dompdf->render();
 
         $output = $dompdf->output();
-        file_put_contents("output/{$cardType}.pdf", $output);
+        file_put_contents($outputPdfPath, $output);
         echo "{$cardType} cards PDF generated successfully at output/{$cardType}.pdf\n";
     }
 

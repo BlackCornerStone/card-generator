@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass Combat Units</title>
+    <link rel="stylesheet" href="../../templates/common-card-styles.css">
+</head>
+<body>
+
+<div class="grid">
+    {% for card in cards %}
+
+        {% set npc = card.UnitSource %}
+        {% set Essence = npc.Essence|default(0) %}
+        {% set Attr = npc.Character.Attributes|default({}) %}
+        {% set Abil = npc.Character.Abilities|default({}) %}
+
+        {% set Str = Attr.Strength|default(0) %}
+        {% set Dex = Attr.Dexterity|default(0) %}
+        {% set Sta = Attr.Stamina|default(0) %}
+        {% set Mel = Abil.Melee|default(0) %}
+        {% set Dod = Abil.Dodge|default(0) %}
+
+        {# Placeholder derivations until rulebook formulas are provided #}
+        {% set BaseAttack = Dex + Mel + Essence %}
+        {% set BaseDefense = ((Dex + Dod + Essence) / 2)|round(0, 'floor') %}
+        {% set BaseSoak = Sta %}
+
+        <div class="card size-big">
+            <div class="card-content">
+                <div class="card-header default">
+                    <div class="card-title">{{ card.Name }}</div>
+                    {% if card.Unit.Size %}<div class="badge primary">Size {{ card.Unit.Size }}</div>{% endif %}
+                    {% if card.Unit.Drill %}<div class="badge secondary">Drill {{ card.Unit.Drill }}</div>{% endif %}
+                    {% if card.Unit.Might %}<div class="badge">Might {{ card.Unit.Might }}</div>{% endif %}
+                    {% if card.Unit.Morale %}<div class="badge">Morale {{ card.Unit.Morale }}</div>{% endif %}
+                </div>
+
+                <div class="card-body">
+                    <div class="stats-grid">
+                        <div class="stat-group">
+                            <h3>Overview</h3>
+                            <div class="stat-row">
+                                <div class="stat-label">Leader</div>
+                                <div class="stat-value">
+                                    {% if card.Leader is iterable %}
+                                        {{ card.Leader.Name }}{% if card.Leader.Caste %} — {{ card.Leader.Caste }}{% endif %}
+                                    {% else %}
+                                        {{ card.Leader }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Unit Source</div>
+                                <div class="stat-value">
+                                    {% if npc is iterable %}
+                                        {{ npc.Name }}
+                                    {% else %}
+                                        {{ npc }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if card.Notes %}
+                            <div class="stat-row">
+                                <div class="stat-label">Notes</div>
+                                <div class="stat-value">{{ card.Notes }}</div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="stat-group">
+                            <h3>Derived Base (from Unit Source)</h3>
+                            <div class="stat-row">
+                                <div class="stat-label">Attack</div>
+                                <div class="stat-value">{{ BaseAttack }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Defense</div>
+                                <div class="stat-value">{{ BaseDefense }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Soak</div>
+                                <div class="stat-value">{{ BaseSoak }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-group">
+                            <h3>Skirmish</h3>
+                            <div class="stat-row">
+                                <div class="stat-label">Attack</div>
+                                <div class="stat-value">{{ BaseAttack }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Defense</div>
+                                <div class="stat-value">{{ BaseDefense }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Soak</div>
+                                <div class="stat-value">{{ BaseSoak }}</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-group">
+                            <h3>Close</h3>
+                            <div class="stat-row">
+                                <div class="stat-label">Attack</div>
+                                <div class="stat-value">{{ BaseAttack }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Defense</div>
+                                <div class="stat-value">{{ BaseDefense }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Soak</div>
+                                <div class="stat-value">{{ BaseSoak }}</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-group">
+                            <h3>Formation 3</h3>
+                            <div class="stat-row">
+                                <div class="stat-label">Attack</div>
+                                <div class="stat-value">{{ BaseAttack }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Defense</div>
+                                <div class="stat-value">{{ BaseDefense }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Soak</div>
+                                <div class="stat-value">{{ BaseSoak }}</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-group">
+                            <h3>Formation 4</h3>
+                            <div class="stat-row">
+                                <div class="stat-label">Attack</div>
+                                <div class="stat-value">{{ BaseAttack }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Defense</div>
+                                <div class="stat-value">{{ BaseDefense }}</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label">Soak</div>
+                                <div class="stat-value">{{ BaseSoak }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

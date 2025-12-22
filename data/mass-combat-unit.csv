@@ -1,0 +1,2 @@
+Name;[Unit] Size;[Unit] Drill;[Unit] Might;[Unit] Morale;{npcs} UnitSource;{characters} Leader;Notes
+Bandit Spear Cohort;2;2;1;2;Bandit Spearmen;Richard;Example unit derived from Bandit Spearmen NPC.
