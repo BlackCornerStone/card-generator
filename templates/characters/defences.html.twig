@@ -24,7 +24,7 @@
     {% set FullDDV = max(0, DDVDicePool/2) %}
 
     {% set KnockDownLimit = Stamina + Resistance + WoundPenalty %}
-    {% set KnockDownDicepool = max(Dexterity, Stamina) + max(Resistance, Athletics) + WoundPenalty  %}
+    {% set KnockDownDicepool = max(Dexterity, Stamina) + max(Resistance, Athletics) + WoundPenalty %}
     {% embed 'characters/_roll.html.twig' with {'name': 'Knockdown resist', 'dice': KnockDownDicepool, 'difficulty': 2} %}
         {% block explanation %}
             DEX({{ Dexterity }})&uparrow;STA({{ Stamina }}) + ATH({{ Athletics }})&uparrow;RES({{ Resistance }}) - WP({{ WoundPenalty }}), min 1
@@ -39,42 +39,20 @@
         {% endblock %}
     {% endembed %}
 
-    <div class="stats-grid">
-        <div class="stat-group">
-            <h3>{{ R.shields(DDV, FullDDV) }}</h3>
-            <div class="stat-row">
-                <div class="stat-label">[DEX({{ Dexterity }}) + DOD({{ Dodge }}) + ESS({{ Essence }})]/2 - WP({{ WoundPenalty }}), min 1
-                </div>
-            </div>
-        </div>
-        <div class="stat-group">
-            <h3>Actions</h3>
-            <div class="stat-row">
-                <div class="stat-label">Move</div>
-                <div class="stat-value">{{ max(1, Dexterity + WoundPenalty + card.Mobility) }}y per tick/DV(0)</div>
-                <div class="stat-label">
-                    [DEX({{ Dexterity }}) + DOD({{ Dodge }}) + ESS({{ Essence }})]/2 - WP({{ WoundPenalty }}), min 1
-                </div>
-            </div>
-        </div>
-        <div class="stat-group">
-            <h3>Save Rolls</h3>
-            <div class="stat-row">
-                <div class="stat-label">Knockdown</div>
-                <div class="stat-value">{{ max(Dexterity, Stamina) + max(Resistance, Athletics) + WoundPenalty }} diff 2</div>
-                <div class="stat-label">
-                    DEX({{ Dexterity }})^STA({{ Stamina }}) + ATH({{ Athletics }})^RES({{ Resistance }}) - WP({{ WoundPenalty }}), min 1
-                </div>
-            </div>
-            <div class="stat-row">
-                <div class="stat-label">Stun</div>
-                <div class="stat-value">{{ Stamina + Resistance + WoundPenalty }} diff DMG</div>
-                <div class="stat-label">
-                    STA({{ Stamina }}) + RES({{ Resistance }} - WP({{ WoundPenalty }}), min 1
-                </div>
-            </div>
-        </div>
-    </div>
+    {% set MoveDistance = max(1, Dexterity + WoundPenalty + card.Mobility) %}
+    {% embed 'characters/_action.html.twig' with {'name': 'Move', 'penalty': 0, 'speed': 1} %}
+        {% block value %}{{ MoveDistance }}y{% endblock %}
+        {% block explanation %}
+            [DEX({{ Dexterity }}) + DOD({{ Dodge }}) + ESS({{ Essence }})]/2 - WP({{ WoundPenalty }}), min 1
+        {% endblock %}
+    {% endembed %}
+
+    {% embed 'characters/_action.html.twig' with {'name': 'Parry DV'} %}
+        {% block value %}{{ R.shields(DDV, FullDDV) }}{% endblock %}
+        {% block explanation %}
+            [DEX({{ Dexterity }}) + DOD({{ Dodge }}) + ESS({{ Essence }})]/2 - WP({{ WoundPenalty }}), min 1
+        {% endblock %}
+    {% endembed %}
 
     {% set BHard = card.BHard %}
     {% set BSoak = card.BSoak + Stamina %}
@@ -172,31 +150,33 @@
 
 {% macro damageTables(raw, StunLimit, hard, soak, index, extras) %}
     <table class="speed-table">
-    <tr>
-        <th>Pre S</th>
-        <th>Post S</th>
-        {% if extras == true %}<th>Calc</th>{% endif %}
-    </tr>
-
-    {% for raw in range(1, 20) %}
-        {% if raw > hard %}
-            {% set preSoak = raw %}
-        {% else %}
-            {% set preSoak = 0 %}
-        {% endif %}
-
-        {% if preSoak > soak %}
-            {% set postSoak = preSoak - soak %}
-        {% else %}
-            {% set postSoak = 1 %}
-        {% endif %}
-        {% set guessedRealDMG = (postSoak/3)|round(0, 'ceil') %}
-
-        <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
-            <td>{{ preSoak }}</td>
-            <td>{{ postSoak }}</td>
-            {% if extras == true %}<td>{{ guessedRealDMG }}</td>{% endif %}
+        <tr>
+            <th>Pre S</th>
+            <th>Post S</th>
+            {% if extras == true %}
+                <th>Calc</th>{% endif %}
         </tr>
-    {% endfor %}
+
+        {% for raw in range(1, 20) %}
+            {% if raw > hard %}
+                {% set preSoak = raw %}
+            {% else %}
+                {% set preSoak = 0 %}
+            {% endif %}
+
+            {% if preSoak > soak %}
+                {% set postSoak = preSoak - soak %}
+            {% else %}
+                {% set postSoak = 1 %}
+            {% endif %}
+            {% set guessedRealDMG = (postSoak/3)|round(0, 'ceil') %}
+
+            <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+                <td>{{ preSoak }}</td>
+                <td>{{ postSoak }}</td>
+                {% if extras == true %}
+                    <td>{{ guessedRealDMG }}</td>{% endif %}
+            </tr>
+        {% endfor %}
     </table>
 {% endmacro %}

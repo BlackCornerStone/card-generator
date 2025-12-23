@@ -8,16 +8,14 @@
    - mod: number|string (optional) — external penalty or bonus (e.g., -2 or +1)
    - explanation: string (optional) — explanation of the dice pool
 #}
-{#{% embed rollPanel(name, dice, difficulty, mod = null) %}#}
-  <div class="roll-panel">
-    <div class="roll-header">{{ name }}</div>
-    <div class="roll-stats">
-      <span class="roll-stat"><span class="label">Dice:</span> <span class="value">{{ dice }}</span></span>
-      <span class="roll-stat"><span class="label">Diff:</span> <span class="value">{{ difficulty }}</span></span>
-      {% if mod is not same as(null) and mod is not same as(false) and mod is not same as('') %}
-        <span class="roll-stat"><span class="label">Mod:</span> <span class="value">{{ mod }}</span></span>
-      {% endif %}
-    </div>
-    <div class="roll-expl">{% block explanation %}{% endblock %}</div>
+<div class="roll-panel">
+  <div class="roll-header">{{ name }}</div>
+  <div class="roll-stats">
+    <span class="roll-stat"><span class="label">Dice:</span> <span class="value">{{ dice }}</span></span>
+    <span class="roll-stat"><span class="label">Diff:</span> <span class="value">{{ difficulty }}</span></span>
+    {% if mod is not same as(null) and mod is not same as(false) and mod is not same as('') %}
+      <span class="roll-stat"><span class="label">Mod:</span> <span class="value">{{ mod }}</span></span>
+    {% endif %}
   </div>
-{#{% endembed %}#}
+  <div class="roll-expl">{% block explanation %}{% endblock %}</div>
+</div>
