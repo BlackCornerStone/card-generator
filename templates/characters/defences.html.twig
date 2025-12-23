@@ -17,11 +17,27 @@
     {% set Dodge = card.Character.Abilities.Dodge %}
     {% set Essence = card.Character.Essence %}
 
-    {% set KnockDownLimit = Stamina + Resistance + WoundPenalty %}
-    {% set StunLimit = Stamina + WoundPenalty %}
+
+
     {% set DDVDicePool = Dexterity + Dodge + Essence %}
     {% set DDV = max(0, DDVDicePool/2 + WoundPenalty) %}
     {% set FullDDV = max(0, DDVDicePool/2) %}
+
+    {% set KnockDownLimit = Stamina + Resistance + WoundPenalty %}
+    {% set KnockDownDicepool = max(Dexterity, Stamina) + max(Resistance, Athletics) + WoundPenalty  %}
+    {% embed 'characters/_roll.html.twig' with {'name': 'Knockdown resist', 'dice': KnockDownDicepool, 'difficulty': 2} %}
+        {% block explanation %}
+            DEX({{ Dexterity }})&uparrow;STA({{ Stamina }}) + ATH({{ Athletics }})&uparrow;RES({{ Resistance }}) - WP({{ WoundPenalty }}), min 1
+        {% endblock %}
+    {% endembed %}
+
+    {% set StunLimit = Stamina + WoundPenalty %}
+    {% set StunDicepool = Stamina + Resistance + WoundPenalty %}
+    {% embed 'characters/_roll.html.twig' with {'name': 'Stun resist', 'dice': StunDicepool, 'difficulty': 'table'} %}
+        {% block explanation %}
+            STA({{ Stamina }}) + RES({{ Resistance }} - WP({{ WoundPenalty }}), min 1
+        {% endblock %}
+    {% endembed %}
 
     <div class="stats-grid">
         <div class="stat-group">
