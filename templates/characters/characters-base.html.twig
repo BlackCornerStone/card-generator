@@ -25,21 +25,26 @@
             <div class="card {% block card_class %}size-big{% endblock %}">
                 <div class="card-content">
                     <div class="card-header default">
-                        <div class="card-title">{{ card.Name }}</div>
-                        {% block badges %}{% endblock %}
-                    </div>
-
-                    {% if card.Character is not null %}
-                        <div class="card-header default">
+                        <div class="slot-left">
                             <div class="card-title">{{ CharacterName }}</div>
+                        </div>
+                        <div class="slot-center">
                             {% for i in (0..WoundPenalty|abs)|filter(v => v > 0) %}
                                 <span class="filled">🩸</span>
                             {% endfor %}
                         </div>
-                    {% endif %}
+                        <div class="slot-right">
+                            {% block header_right %}{% endblock %}
+                        </div>
+                    </div>
 
                     <div class="card-body">{% block card_body %}{% endblock %}</div>
-                    {% block card_footer %}{% endblock %}
+
+                    <div class="card-footer default">
+                        <div class="slot-left">{% block footer_left %}{% endblock %}</div>
+                        <div class="slot-center">{% block footer_center %}{% endblock %}</div>
+                        <div class="slot-right">{% block footer_right %}{% endblock %}</div>
+                    </div>
                 </div>
             </div>
         {% endfor %}

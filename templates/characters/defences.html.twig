@@ -4,16 +4,8 @@
 
 {% import 'characters/_characters_macros.html.twig' as R %}
 
-{% block badges %}
-    {% set Dexterity = card.Character.Attributes.Dexterity %}
-    {% set Dodge = card.Character.Abilities.Dodge %}
-    {% set Essence = card.Character.Essence %}
-
-    {% set DDVDicePool = Dexterity + Dodge + Essence %}
-    {% set DDV = max(0, DDVDicePool/2 + WoundPenalty) %}
-    {% set FullDDV = max(0, DDVDicePool/2) %}
-
-    {{ R.shields(DDV, FullDDV) }}
+{% block header_right %}
+    <div class="card-title">{{ card.Name }}</div>
 {% endblock %}
 
 {% block card_body %}
@@ -134,6 +126,32 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block footer_left %}
+    {% set Dexterity = card.Character.Attributes.Dexterity %}
+    {% set Dodge = card.Character.Abilities.Dodge %}
+    {% set Essence = card.Character.Essence %}
+    {% set DDVDicePool = Dexterity + Dodge + Essence %}
+    {% set DDV = max(0, DDVDicePool/2 + WoundPenalty) %}
+    {% set FullDDV = max(0, DDVDicePool/2) %}
+    {{ R.shields(DDV, FullDDV) }}
+{% endblock %}
+
+{% block footer_center %}{% endblock %}
+
+{% block footer_right %}
+    {# Show soak values for three damage types #}
+    {% set Stamina = card.Character.Attributes.Stamina %}
+    {% set BHard = card.BHard %}
+    {% set BSoak = card.BSoak + Stamina %}
+    {% set LHard = card.LHard %}
+    {% set LSoak = card.LSoak + (Stamina/2)|round(0, 'floor') %}
+    {% set AHard = card.LHard %}
+    {% set ASoak = card.LSoak %}
+    <span class="badge tertiary">B: {{ R.soak(BHard, BSoak) }}</span>
+    <span class="badge tertiary">L: {{ R.soak(LHard, LSoak) }}</span>
+    <span class="badge tertiary">A: {{ R.soak(AHard, ASoak) }}</span>
 {% endblock %}
 
 {% macro damageTables(raw, StunLimit, hard, soak, index, extras) %}

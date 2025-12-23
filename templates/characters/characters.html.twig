@@ -4,11 +4,7 @@
 
 {#{% block card_class %}size-half-page{% endblock %}#}
 
-{% block badges %}
-  {% for i in (0..WoundPenalty|abs)|filter(v => v > 0) %}
-    <span class="filled">🩸</span>
-  {% endfor %}
-
+{% block header_right %}
   {% if card.Caste %}<div class="badge primary">{{ card.Caste }}</div>{% endif %}
   {% if card.Concept %}<div class="badge secondary">{{ card.Concept }}</div>{% endif %}
 {% endblock %}

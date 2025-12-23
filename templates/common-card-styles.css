@@ -120,13 +120,32 @@ body {
 }
 
 /* Footer content text style matching .card-title */
-.card-footer .footer-content {
+/* Three-slot layout helpers for header and footer */
+.card-header .slot-left,
+.card-footer .slot-left {
+    flex: 1 1 0;
+    text-align: left;
+}
+
+.card-header .slot-right,
+.card-footer .slot-right {
+    flex: 1 1 0;
+    text-align: right;
+}
+
+.card-header .slot-center,
+.card-footer .slot-center {
+    flex: 0 0 auto;
+    text-align: center;
+    min-width: 40px;
+}
+
+.card-title {
     font-size: 12px;
     font-weight: bold;
     margin: 0;
     padding: 0;
     border-radius: 4px;
-    flex: 1;
 }
 
 .card-body {

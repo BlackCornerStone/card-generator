@@ -2,7 +2,7 @@
 
 {% import 'characters/_characters_macros.html.twig' as R %}
 
-{% block badges %}
+{% block header_right %}
     {% set Dexterity = card.Character.Attributes.Dexterity %}
     {% set Melee = card.Character.Abilities.Melee %}
     {% set MA = card.Character.Abilities["Martial Arts"] %}
@@ -17,7 +17,8 @@
     {% set ParryDV = max(0, ParryDicepool/2 + card.Defense + WoundPenalty) %}
     {% set FullParryDV = max(0, ParryDicepool/2 + card.Defense) %}
 
-    {{ R.shields(ParryDV, FullParryDV) }}
+    {# badges or specific header content (right side) #}
+    <div class="card-title">{{ card.Name }}</div>
 
 {#    <div class="badge primary">Parry DV {{ ParryDV }}</div>#}
 {#    <div class="badge secondary">Attack {{ Accuracy }}d10</div>#}
@@ -143,8 +144,12 @@
 
 {% endblock %}
 
-{% block card_footer %}
-    <div class="card-footer default">
-        <div class="footer-content">{{ R.swords(Accuracy) }}</div>
-    </div>
+{% block footer_left %}
+    {{ R.shields(ParryDV, FullParryDV) }}
+{% endblock %}
+
+{% block footer_center %}{% endblock %}
+
+{% block footer_right %}
+    {{ R.swords(Accuracy) }}
 {% endblock %}
