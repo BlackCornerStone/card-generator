@@ -1,4 +1,3 @@
-{characters} Character;Name;Speed;Defense;Accuracy;Rate
-Richard;Knife;4;-1;1;2
-Richard;Fist;5;1;1;2
-Mei Li;Fist;5;1;1;2
+Name;Speed;Defense;Accuracy;Rate
+Knife;4;-1;1;2
+Fist;5;1;1;2

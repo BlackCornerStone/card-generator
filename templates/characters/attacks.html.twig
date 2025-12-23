@@ -18,7 +18,7 @@
     {% set FullParryDV = max(0, ParryDicepool/2 + card.Defense) %}
 
     {# badges or specific header content (right side) #}
-    <div class="card-title">{{ card.Name }}</div>
+    <div class="card-title">{{ card.Weapon.Name is defined ? card.Weapon.Name : card.Weapon }}</div>
 
 {#    <div class="badge primary">Parry DV {{ ParryDV }}</div>#}
 {#    <div class="badge secondary">Attack {{ Accuracy }}d10</div>#}

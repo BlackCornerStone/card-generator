@@ -5,10 +5,11 @@
 {% import 'characters/_characters_macros.html.twig' as R %}
 
 {% block header_right %}
-    <div class="card-title">{{ card.Name }}</div>
+    <div class="card-title">{{ card.Armor.Name is defined ? card.Armor.Name : card.Armor }}</div>
 {% endblock %}
 
 {% block card_body %}
+    {{ dump(card.Armor) }}
     {% import _self as local %}
     {% set Dexterity = card.Character.Attributes.Dexterity %}
     {% set Stamina = card.Character.Attributes.Stamina %}

@@ -1,3 +1,2 @@
-{characters} Character;Name;BSoak;LSoak;BHard;LHard;Mobility
-Richard;Unarmored1;0;0;0;0;0
-Mei Li;Unarmored2;0;0;0;0;0
+Name;BSoak;LSoak;BHard;LHard;Mobility;Fatigue
+Unarmored;0;0;0;0;0;0

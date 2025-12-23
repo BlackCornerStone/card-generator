@@ -127,8 +127,8 @@ $supportedCardTypes = [
     //'travel-times' => null,
     'characters/characters' => 'characters',
     'characters/attrition' => 'characters',
-    'characters/attacks' => 'weapons',
-    'characters/defences' => 'armors',
+    'characters/attacks' => 'attacks',
+    'characters/defences' => 'defences',
     'characters/social-combat' => 'characters',
     // Mass combat units
     'mass-combat/unit' => 'mass-combat-unit',
@@ -136,8 +136,8 @@ $supportedCardTypes = [
 
 // dataFile => anotherDataFile[]
 $additionalDatasets = [
-    'characters/attacks' => ['characters'],
-    'characters/defences' => ['characters'],
+    'characters/attacks' => ['characters', 'weapons'],
+    'characters/defences' => ['characters', 'armors'],
     'characters/social-combat' => ['characters'],
     // Mass combat unit needs access to NPCs and Characters
     'mass-combat/unit' => ['npcs', 'characters'],
