@@ -61,67 +61,50 @@
     {% set AHard = card.LHard %}
     {% set ASoak = card.LSoak %}
 
-    <div class="stats-grid">
-        <div class="stat-group">
-            <h3>Take Raw Hit</h3>
-            <table class="speed-table">
-                <tr>
-                    <th>Raw</th>
-                    <th>Fly</th>
-                </tr>
-
-                {% for raw in range(1, 20) %}
-                    {% set fly = (raw/3)|round(0, 'floor') %}
-                    <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
-                        <td>
-                            {{ raw }}
-                        </td>
-                        <td>
-                            {% if raw > KnockDownLimit %}K {% endif %}
-                            {% if fly > 0 %}{{ fly }}y{% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
+    <div class="col-8 border-start ps-2">
+        <div class="row g-1">
+            <div class="col-3">
+                <h6 class="border-bottom pb-1 mb-1 x-small-stats text-truncate">Take Hit</h6>
+                <table class="table table-sm table-striped x-small-stats mb-0">
+                    <thead><tr><th>Raw</th><th>Fly</th></tr></thead>
+                    <tbody>
+                        {% for raw in range(1, 15) %}
+                            {% set fly = (raw/3)|round(0, 'floor') %}
+                            <tr>
+                                <td>{{ raw }}</td>
+                                <td>
+                                    {% if fly > 0 %}{{ fly }}y{% endif %}
+                                    {% if raw > KnockDownLimit %}K{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-3">
+                <h6 class="border-bottom pb-1 mb-1 x-small-stats text-truncate">B: {{ BSoak }}/{{ BHard }}</h6>
+                {{ local.damageTables(StunLimit, BHard, BSoak) }}
+            </div>
+            <div class="col-3">
+                <h6 class="border-bottom pb-1 mb-1 x-small-stats text-truncate">L: {{ LSoak }}/{{ LHard }}</h6>
+                {{ local.damageTables(StunLimit, LHard, LSoak) }}
+            </div>
+            <div class="col-3">
+                <h6 class="border-bottom pb-1 mb-1 x-small-stats text-truncate">Stun</h6>
+                <table class="table table-sm table-striped x-small-stats mb-0">
+                    <thead><tr><th>DMG</th><th>Diff</th></tr></thead>
+                    <tbody>
+                        {% for raw in range(1, 15) %}
+                            <tr>
+                                <td>{{ raw }}</td>
+                                <td>{% if raw > StunLimit %}{{ raw - StunLimit }}{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <div class="stats-grid">
-        <div class="stat-group">
-            <h3>B: {{ R.soak(BHard, BSoak) }}</h3>
-            {{ local.damageTables(raw, StunLimit, BHard, BSoak, false) }}
-        </div>
-    </div>
-    <div class="stats-grid">
-        <div class="stat-group">
-            <h3>L: {{ R.soak(LHard, LSoak) }}</h3>
-            {{ local.damageTables(raw, StunLimit, LHard, LSoak, false) }}
-        </div>
-    </div>
-    <div class="stats-grid">
-        <div class="stat-group">
-            <h3>A: {{ R.soak(AHard, ASoak) }}</h3>
-            {{ local.damageTables(raw, StunLimit, AHard, ASoak, false) }}
-        </div>
-    </div>
-    <div class="stats-grid">
-        <div class="stat-group">
-            <h3>Stun</h3>
-            <table class="speed-table">
-                <tr>
-                    <th>DMG</th>
-                    <th>Difficulty</th>
-                </tr>
-
-                {% for raw in range(1, 20) %}
-                    <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
-                        <td>{{ raw }}</td>
-                        <td>{% if raw > StunLimit %}{{ raw - StunLimit }}{% endif %}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
-
 {% endblock %}
 
 {% block footer_left %}
@@ -145,20 +128,22 @@
     {% set LSoak = card.LSoak + (Stamina/2)|round(0, 'floor') %}
     {% set AHard = card.LHard %}
     {% set ASoak = card.LSoak %}
-    <span class="badge tertiary">B: {{ R.soak(BHard, BSoak) }}</span>
-    <span class="badge tertiary">L: {{ R.soak(LHard, LSoak) }}</span>
-    <span class="badge tertiary">A: {{ R.soak(AHard, ASoak) }}</span>
+    <span class="badge text-bg-light border text-dark">B: {{ R.soak(BHard, BSoak) }}</span>
+    <span class="badge text-bg-light border text-dark">L: {{ R.soak(LHard, LSoak) }}</span>
+    <span class="badge text-bg-light border text-dark">A: {{ R.soak(AHard, ASoak) }}</span>
 {% endblock %}
 
-{% macro damageTables(raw, StunLimit, hard, soak, extras) %}
-    <table class="speed-table">
+{% macro damageTables(StunLimit, hard, soak) %}
+    <table class="table table-sm table-striped x-small-stats mb-0">
+    <thead>
     <tr>
         <th>Post H.</th>
         <th>Post S.</th>
         {% if extras == true %}<th>Calc</th>{% endif %}
     </tr>
-
-    {% for raw in range(1, 20) %}
+    </thead>
+    <tbody>
+    {% for raw in range(1, 15) %}
         {% if raw > hard %}
             {% set postHardness = raw %}
         {% else %}
@@ -183,5 +168,6 @@
             {% endif %}
         </tr>
     {% endfor %}
+    </tbody>
     </table>
 {% endmacro %}
