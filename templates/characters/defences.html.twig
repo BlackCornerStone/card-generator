@@ -75,9 +75,11 @@
                     <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                         <td>
                             {{ raw }}
-                            {% if raw > KnockDownLimit %}K{% endif %}
                         </td>
-                        <td>{% if fly > 0 %}{{ fly }}y{% endif %}</td>
+                        <td>
+                            {% if raw > KnockDownLimit %}K {% endif %}
+                            {% if fly > 0 %}{{ fly }}y{% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -86,19 +88,19 @@
     <div class="stats-grid">
         <div class="stat-group">
             <h3>B: {{ R.soak(BHard, BSoak) }}</h3>
-            {{ local.damageTables(raw, StunLimit, card.BHard, card.BSoak, false) }}
+            {{ local.damageTables(raw, StunLimit, BHard, BSoak, false) }}
         </div>
     </div>
     <div class="stats-grid">
         <div class="stat-group">
             <h3>L: {{ R.soak(LHard, LSoak) }}</h3>
-            {{ local.damageTables(raw, StunLimit, card.LHard, card.LSoak, false) }}
+            {{ local.damageTables(raw, StunLimit, LHard, LSoak, false) }}
         </div>
     </div>
     <div class="stats-grid">
         <div class="stat-group">
             <h3>A: {{ R.soak(AHard, ASoak) }}</h3>
-            {{ local.damageTables(raw, StunLimit, card.AHard, card.ASoak, false) }}
+            {{ local.damageTables(raw, StunLimit, AHard, ASoak, false) }}
         </div>
     </div>
     <div class="stats-grid">
@@ -113,7 +115,7 @@
                 {% for raw in range(1, 20) %}
                     <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
                         <td>{{ raw }}</td>
-                        <td>{% if raw > StunLimit %}S diff {{ raw - StunLimit }}{% endif %}</td>
+                        <td>{% if raw > StunLimit %}{{ raw - StunLimit }}{% endif %}</td>
                     </tr>
                 {% endfor %}
             </table>
@@ -148,35 +150,38 @@
     <span class="badge tertiary">A: {{ R.soak(AHard, ASoak) }}</span>
 {% endblock %}
 
-{% macro damageTables(raw, StunLimit, hard, soak, index, extras) %}
+{% macro damageTables(raw, StunLimit, hard, soak, extras) %}
     <table class="speed-table">
-        <tr>
-            <th>Pre S</th>
-            <th>Post S</th>
-            {% if extras == true %}
-                <th>Calc</th>{% endif %}
+    <tr>
+        <th>Post H.</th>
+        <th>Post S.</th>
+        {% if extras == true %}<th>Calc</th>{% endif %}
+    </tr>
+
+    {% for raw in range(1, 20) %}
+        {% if raw > hard %}
+            {% set postHardness = raw %}
+        {% else %}
+            {% set postHardness = 0 %}
+        {% endif %}
+
+        {% if postHardness > soak %}
+            {% set postSoak = postHardness - soak %}
+        {% else %}
+            {% set postSoak = null %}
+        {% endif %}
+        {% set guessedRealDMG = (postSoak/3)|round(0, 'ceil') %}
+
+        <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
+            <td>{{ postHardness }}</td>
+            {% if postHardness > 0 %}
+                {% if postSoak != null %}<td>{{ postSoak }}</td>{% else %}<td>min</td>{% endif %}
+                {% if extras == true %}<td>{{ guessedRealDMG }}</td>{% endif %}
+            {% else %}
+                <td></td>
+                <td></td>
+            {% endif %}
         </tr>
-
-        {% for raw in range(1, 20) %}
-            {% if raw > hard %}
-                {% set preSoak = raw %}
-            {% else %}
-                {% set preSoak = 0 %}
-            {% endif %}
-
-            {% if preSoak > soak %}
-                {% set postSoak = preSoak - soak %}
-            {% else %}
-                {% set postSoak = 1 %}
-            {% endif %}
-            {% set guessedRealDMG = (postSoak/3)|round(0, 'ceil') %}
-
-            <tr class="{{ loop.index is odd ? 'odd' : 'even' }}">
-                <td>{{ preSoak }}</td>
-                <td>{{ postSoak }}</td>
-                {% if extras == true %}
-                    <td>{{ guessedRealDMG }}</td>{% endif %}
-            </tr>
-        {% endfor %}
+    {% endfor %}
     </table>
 {% endmacro %}

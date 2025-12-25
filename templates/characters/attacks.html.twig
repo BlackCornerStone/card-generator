@@ -35,15 +35,15 @@
     {% set Dash = max(2, Dexterity + 6 + WoundPenalty) %}
     {% set Move = max(1, Dexterity + WoundPenalty) %}
 
-    {% set ParryDicepool = Dexterity + Melee %}
-    {% set ParryDV = max(0, ParryDicepool/2 + card.Defense + WoundPenalty) %}
-    {% set FullParryDV = max(0, ParryDicepool/2 + card.Defense) %}
+    {% set ParryDicepool = (Dexterity + Melee)/2|round(0, 'ceil') %}
+    {% set FullParryDV = max(0, ParryDicepool + card.Defense) %}
+    {% set ParryDV = max(0, FullParryDV  + WoundPenalty) %}
     <div class="stats-grid">
         <div class="stat-group">
             <h3>Parry</h3>
             <div class="stat-row">
                 <div class="stat-title">{{ ParryDV }}</div>
-                <div class="stat-label">[DEX({{ Dexterity }}) + MEL({{ Melee }}) + Acc({{ card.Defense }})]/2 - WP({{ WoundPenalty }}), min 1</div>
+                <div class="stat-label">[DEX({{ Dexterity }}) + MEL({{ Melee }})]/2 + Def({{ card.Defense }}) - WP({{ WoundPenalty }}), min 1</div>
             </div>
             <h3>Grappling</h3>
             <div class="stat-row">
