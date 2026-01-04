@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CardGenerator\Utils;
 
 /**
@@ -32,7 +34,7 @@ class RepositoryUtils
         }
 
         while (($data = fgetcsv($handle, 2000, ';')) !== false) {
-            if ($data === null || $data === [null] || count($data) === 0) {
+            if ($data === [null] || count($data) === 0) {
                 continue;
             }
             if (count($data) !== count($header)) {

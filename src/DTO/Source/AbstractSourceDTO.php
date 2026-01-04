@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CardGenerator\DTO\Source;
 
 class AbstractSourceDTO
@@ -15,6 +17,9 @@ class AbstractSourceDTO
         $this->data = $data;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return $this->data;
@@ -25,7 +30,7 @@ class AbstractSourceDTO
         return array_key_exists($key, $this->data);
     }
 
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         return $this->data[$key] ?? null;
     }

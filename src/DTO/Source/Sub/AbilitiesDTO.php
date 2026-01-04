@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CardGenerator\DTO\Source\Sub;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,11 +15,11 @@ class AbilitiesDTO
         'Bureaucracy','Linguistics','Ride','Sail','Socialize'
     ];
 
+    /** @var array<string,int> */
     #[Assert\All([
         new Assert\Type('integer'),
         new Assert\GreaterThanOrEqual(0)
     ])]
-    /** @var array<string,int> */
     public array $values = [];
 
     /**
@@ -35,6 +37,9 @@ class AbilitiesDTO
         return $this->values[$name] ?? 0;
     }
 
+    /**
+     * @return array<string,int>
+     */
     public function toArray(): array
     {
         return $this->values;

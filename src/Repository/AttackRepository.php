@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CardGenerator\Repository;
 
 use CardGenerator\DTO\Model\Attack as ModelDTO;
@@ -51,7 +53,7 @@ class AttackRepository extends AbstractRepository
             $char = (string)($data['Character'] ?? '');
             $weap = (string)($data['Weapon'] ?? '');
             if ($char !== '' || $weap !== '') {
-                $model['Name'] = trim($char . ' - ' . $weap, ' -');
+                $model['Name'] = trim(sprintf('%s - %s', $char, $weap), ' -');
             }
         }
     }
@@ -70,7 +72,7 @@ class AttackRepository extends AbstractRepository
                 $model['Weapon'] = $wp;
                 // Fill any missing top-level convenience fields from linked weapon
                 foreach (['Speed', 'Defense', 'Accuracy', 'Rate'] as $k) {
-                    if (!isset($model[$k]) || $model[$k] === '' || $model[$k] === null) {
+                    if (!isset($model[$k]) || $model[$k] === '') {
                         /** @var WeaponModelDTO $wp */
                         $model[$k] = $wp[$k] ?? null;
                     }

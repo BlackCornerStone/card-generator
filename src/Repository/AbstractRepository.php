@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CardGenerator\Repository;
 
 use CardGenerator\DTO\Model\AbstractModelDTO;
@@ -8,8 +10,7 @@ use CardGenerator\Utils\RepositoryUtils;
 abstract class AbstractRepository
 {
     protected string $dataDir;
-    /** @var array<string, ModelDTO>|null */
-    private ?array $cache = null;
+    // caching intentionally removed to avoid hiding validation errors and unused properties
 
     public function __construct(string $dataDir = __DIR__ . '/../../data')
     {
@@ -75,7 +76,7 @@ abstract class AbstractRepository
         }
     }
 
-    public function findByName(string $name)
+    public function findByName(string $name): ?AbstractModelDTO
     {
         foreach ($this->findAll() as $key => $model) {
             if ($key === $name) {

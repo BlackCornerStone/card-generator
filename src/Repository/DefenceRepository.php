@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CardGenerator\Repository;
 
 use CardGenerator\DTO\Model\Defence as ModelDTO;
@@ -50,7 +52,7 @@ class DefenceRepository extends AbstractRepository
             $char = (string)($data['Character'] ?? '');
             $arm = (string)($data['Armor'] ?? '');
             if ($char !== '' || $arm !== '') {
-                $model['Name'] = trim($char . ' - ' . $arm, ' -');
+                $model['Name'] = trim(sprintf('%s - %s', $char, $arm), ' -');
             }
         }
     }
@@ -69,7 +71,7 @@ class DefenceRepository extends AbstractRepository
                 $model['Armor'] = $ar;
                 // Fill missing top-level fields from linked armor
                 foreach (['BSoak', 'LSoak', 'BHard', 'LHard', 'Mobility', 'Fatigue'] as $k) {
-                    if (!isset($model[$k]) || $model[$k] === '' || $model[$k] === null) {
+                    if (!isset($model[$k]) || $model[$k] === '') {
                         /** @var ArmorModelDTO $ar */
                         $model[$k] = $ar[$k] ?? null;
                     }
