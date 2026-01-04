@@ -1,0 +1,58 @@
+version: 1
+project:
+  name: card-generator
+  language: php
+  php:
+    min_version: "8.3"
+
+conventions:
+  psr4:
+    enabled: true
+    root_namespace: "CardGenerator\\"
+    src_dir: "src/"
+    checks:
+      - verify_composer_autoload
+      - verify_namespace_directory
+      - verify_class_filename_match
+
+architecture:
+  layers:
+    - name: DTO Source
+      namespace: "CardGenerator\\DTO\\Source"
+      can_depend_on: []
+    - name: DTO Model
+      namespace: "CardGenerator\\DTO\\Model"
+      can_depend_on:
+        - "CardGenerator\\DTO\\Source"
+    - name: Repository
+      namespace: "CardGenerator\\Repository"
+      class_suffix: "Repository"
+      can_depend_on:
+        - "CardGenerator\\DTO\\Source"
+        - "CardGenerator\\DTO\\Model"
+        - "CardGenerator\\Repository"
+        - "CardGenerator\\Utils"
+
+rules:
+  - name: DTOs are immutable
+    applies_to: "CardGenerator\\DTO\\Model"
+    checks:
+      - readonly_properties_preferred
+      - no_public_setters
+  - name: Repositories output valid DTOs
+    applies_to: "CardGenerator\\Repository"
+    checks:
+      - must_reference_dto_source_or_model
+
+quality_gates:
+  after_all_tasks:
+    - name: Validate datasets
+      run: "php validate.php"
+      on_fail:
+        action: "attempt_autofix_and_retry"
+        max_retries: 1
+        then: "fail_pipeline"
+
+reporting:
+  output: "stdout"
+  fail_on_violation: true
