@@ -6,125 +6,16 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-
-function loadCardsFromCSV($filename, bool $debug = false) {
-    $cards = [];
-    $line = 0;
-    if (($handle = fopen($filename, "r")) !== FALSE) {
-        // Expect semicolon-delimited CSV files
-        $header = fgetcsv($handle, 2000, ";");
-
-        if ($debug) { var_dump($header); }
-        while (($data = fgetcsv($handle, 2000, ";")) !== FALSE) {
-            $line++;
-            if ($debug) { var_dump($data); }
-            // Skip empty lines or malformed rows
-            if ($data === null || $data === [null]) {
-                echo "Line $line is empty or malformed. Skipping.\n";
-                continue;
-            }
-            if (count($data) !== count($header)) {
-                echo sprintf("Line %s has unexpected number of columns. Header has %s, line %s. Skipping.\n",
-                $line, count($header), count($data));
-                //var_dump($data);
-                continue;
-            }
-            $card = array_combine($header, $data);
-
-            if ($debug) { var_dump($card); }
-
-            $processed = groupCardData($line, $card);
-            replaceLinks($line, $processed);
-            replaceImagesInCardData($processed);
-            $cards[$processed['Name'] ?? $line] = $processed;
-        }
-        fclose($handle);
-    }
-    return $cards;
-}
-function groupCardData(int $line, array $card): array {
-    $processed = [];
-
-    foreach ($card as $key => $value) {
-        if (preg_match('/^\[(.+?)\]\s*(.+)$/', $key, $matches)) {
-            // Column has bracket format [Group] Subkey
-            $groupName = $matches[1];
-            $subKey = $matches[2];
-            $processed[$groupName][$subKey] = $value;
-        } else {
-            // Regular column without brackets
-            $processed[$key] = $value;
-        }
-    }
-
-    // Process groups with asterisk suffix - explode values into arrays
-    foreach ($processed as $groupName => $groupData) {
-        if (is_array($groupData) && substr($groupName, -1) === '*') {
-            $cleanGroupName = substr($groupName, 0, -1);
-            $explodedGroup = [];
-
-            foreach ($groupData as $subKey => $value) {
-                if ($value !== null || trim($value) !== '') {
-                    $items = explode('|', $value);
-                    foreach ($items as $index => $item) {
-                        $explodedGroup[$cleanGroupName][$index][$subKey] = trim($item);
-                    }
-                }
-            }
-
-            unset($processed[$groupName]);
-            $processed[$cleanGroupName] = $explodedGroup;
-        }
-    }
-
-    return $processed;
-}
-
-function replaceLinks(int $line, array &$processed): array {
-    $loadedLinks = [];
-
-    foreach ($processed as $key => $value) {
-        if (preg_match('/^\{(.+?)\}\s*(.+)$/', $key, $matches)) {
-            // Column has bracket format [Group] Subkey
-            $groupName = $matches[1];
-            $subKey = $matches[2];
-
-            if (!isset($loadedLinks[$groupName])) {
-                $linksFile = "data/{$groupName}.csv";
-                $loadedLinks[$groupName] = loadCardsFromCSV($linksFile);
-            }
-            $processed[$subKey] = $loadedLinks[$groupName][$value] ?? ['Name' => "404:".$value];
-        } else {
-            // Regular column without brackets
-            $processed[$key] = $value;
-        }
-    }
-
-    return $processed;
-}
-
-function replaceImagesInCardData(&$processed) {
-    // Add image filename based on landscape name (if present)
-    if (!empty($processed['Landscape'])) {
-        $filename = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($processed['Landscape']));
-        $filename = preg_replace('/_+/', '_', $filename);
-        $filename = trim($filename, '_');
-        $imagePath = __DIR__ . '/images/' . $filename . '.png';
-        
-        // For PDF generation, convert to base64 to avoid path issues
-        if (file_exists($imagePath)) {
-            $imageData = base64_encode(file_get_contents($imagePath));
-            $processed['ImageFile'] = 'data:image/png;base64,' . $imageData;
-            $processed['ImagePath'] = $imagePath; // Keep original path for HTML
-        }
-    }
-}
+use CardGenerator\Repository\CharacterRepository;
+use CardGenerator\Repository\WeaponRepository;
+use CardGenerator\Repository\ArmorRepository;
+use CardGenerator\Repository\AttackRepository;
+use CardGenerator\Repository\DefenceRepository;
+use CardGenerator\Repository\NpcRepository;
+use CardGenerator\Repository\MassCombatUnitRepository;
 
 // Always generate all supported card types in one run (hardcoded list)
 $supportedCardTypes = [
-    //'landscapes' => null,
-    //'weather' => null,
-    //'travel-times' => null,
     'characters/characters' => 'characters',
     'characters/attrition' => 'characters',
     'characters/attacks' => 'attacks',
@@ -134,12 +25,11 @@ $supportedCardTypes = [
     'mass-combat/unit' => 'mass-combat-unit',
 ];
 
-// dataFile => anotherDataFile[]
+// dataFile => anotherDataFile[] (contextual datasets to pass to templates)
 $additionalDatasets = [
     'characters/attacks' => ['characters', 'weapons'],
     'characters/defences' => ['characters', 'armors'],
     'characters/social-combat' => ['characters'],
-    // Mass combat unit needs access to NPCs and Characters
     'mass-combat/unit' => ['npcs', 'characters'],
 ];
 
@@ -156,28 +46,55 @@ try {
     ]);
     $twig->addExtension(new \Twig\Extension\DebugExtension());
 
-    foreach ($supportedCardTypes as $cardType => $dataSourceFilename) {
-        if ($dataSourceFilename === null) {
-            $dataSourceFilename = $cardType;
-        }
+    // Instantiate repositories (data dir defaults to ./data)
+    $dataDir = __DIR__ . '/data';
+    $characters = new CharacterRepository($dataDir);
+    $weapons = new WeaponRepository($dataDir);
+    $armors = new ArmorRepository($dataDir);
+    $attacks = new AttackRepository($characters, $weapons, $dataDir);
+    $defences = new DefenceRepository($characters, $armors, $dataDir);
+    $npcs = new NpcRepository($dataDir);
+    $units = new MassCombatUnitRepository($npcs, $characters, $dataDir);
 
-        $anotherDataSets = $additionalDatasets[$cardType] ?? [];
+    foreach ($supportedCardTypes as $cardType => $dataSourceKey) {
         $templateFile = "templates/{$cardType}.html.twig";
-        $dataFile = "data/{$dataSourceFilename}.csv";
-
         if (!file_exists($templateFile)) {
             echo "Skip: Template file '{$templateFile}' not found.\n";
             continue;
         }
-        if (!file_exists($dataFile)) {
-            echo "Skip: Data file '{$dataFile}' not found.\n";
-            continue;
+
+        // Prepare context using repositories
+        $templateData = [];
+        switch ($dataSourceKey) {
+            case 'characters':
+                $templateData['cards'] = iterator_to_array($characters->findAll());
+                break;
+            case 'attacks':
+                $templateData['cards'] = iterator_to_array($attacks->findAll());
+                break;
+            case 'defences':
+                $templateData['cards'] = iterator_to_array($defences->findAll());
+                break;
+            case 'mass-combat-unit':
+                $templateData['cards'] = iterator_to_array($units->findAll());
+                break;
+            default:
+                // Fallback (should not happen with current list)
+                $templateData['cards'] = [];
         }
 
-        $templateData = ['cards' => loadCardsFromCSV($dataFile)];
-
+        // Attach additional datasets when templates expect them
+        $anotherDataSets = $additionalDatasets[$cardType] ?? [];
         foreach ($anotherDataSets as $datasetName) {
-            $templateData[$datasetName] = loadCardsFromCSV("data/{$datasetName}.csv");
+            if ($datasetName === 'characters') {
+                $templateData['characters'] = iterator_to_array($characters->findAll());
+            } elseif ($datasetName === 'weapons') {
+                $templateData['weapons'] = iterator_to_array($weapons->findAll());
+            } elseif ($datasetName === 'armors') {
+                $templateData['armors'] = iterator_to_array($armors->findAll());
+            } elseif ($datasetName === 'npcs') {
+                $templateData['npcs'] = iterator_to_array($npcs->findAll());
+            }
         }
 
         $html = $twig->render("{$cardType}.html.twig", $templateData);

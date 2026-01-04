@@ -2,9 +2,10 @@
     "name": "card-generator/simple-playing-cards",
     "description": "Simple playing card generator using PHP, Twig, and PDF output",
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.3",
         "twig/twig": "^3.0",
-        "dompdf/dompdf": "^2.0"
+        "dompdf/dompdf": "^2.0",
+        "symfony/validator": "^7.0"
     },
     "autoload": {
         "psr-4": {
