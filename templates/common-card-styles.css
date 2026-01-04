@@ -46,6 +46,7 @@ body {
 }
 
 .card.size-half-page {
+    /* Default (screen) size approximation; overridden in print for exact A4 fit */
     width: 7.5in;
     height: 5.2in;
     min-width: 7.5in;
@@ -94,6 +95,103 @@ body {
 .card-footer-custom.default {
     background-color: rgba(255, 255, 255, 0.9) !important;
     color: #2c3e50 !important;
+}
+
+/* Print layout for A4 portrait — ensure two half-page cards per page */
+@media print {
+    /* Exact page size & margins for dompdf/print */
+    @page {
+        size: A4 portrait;
+        margin: 10mm; /* adjust if you need larger printer margins */
+    }
+
+    body {
+        padding: 0 !important; /* remove screen padding on print */
+        background: #fff !important;
+    }
+
+    /* Ensure grid doesn't introduce extra spacing on print */
+    .grid {
+        display: block;
+        gap: 0 !important; /* remove any row gaps that could push content */
+    }
+
+    /* Use border-box so set dimensions include borders/padding */
+    .card, .card * {
+        box-sizing: border-box;
+    }
+
+    /* Tighten visual chrome for print */
+    .card {
+        border: 1px solid #333 !important; /* thinner border to fit exact height */
+        box-shadow: none !important;
+    }
+
+    /* A4 portrait: 210mm x 297mm, with 10mm margins -> content 190mm x 277mm
+       We want two equal cards stacked vertically: height = 277mm / 2 = 138.5mm.
+       Add a tiny epsilon to accommodate Chromium rounding. */
+    .card.size-half-page {
+        width: 190mm;               /* full printable width */
+        min-width: 190mm;
+        height: calc(138.5mm - 3px);      /* 1px extra epsilon beyond borders to avoid overflow */
+        min-height: calc(138.5mm - 3px);
+        max-height: calc(138.5mm - 3px);
+        page-break-inside: avoid;
+        break-inside: avoid;
+        display: block;
+        margin: 0;                  /* rely on exact sizing; no gaps */
+        border-radius: 0;           /* cleaner edge alignment for print */
+        overflow: hidden;           /* prevent any accidental overflow from pushing size */
+    }
+
+    /* Force page break after every second half-page card to keep 2 per page */
+    .card.size-half-page:nth-of-type(2n) {
+        page-break-after: always;
+        break-after: page;
+    }
+
+    /* Stronger specificity for direct children of the grid container */
+    .grid > .card.size-half-page:nth-of-type(2n) {
+        page-break-after: always;
+        break-after: page;
+    }
+
+    /* Normalize margins/paddings that can push height unexpectedly in print */
+    .card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
+    .card p, .card ul, .card ol {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Tables: collapse borders and reduce padding/margins for consistent sizing */
+    .table {
+        border-collapse: collapse !important;
+        margin-bottom: 0 !important;
+    }
+    .table th, .table td {
+        padding: 2px 4px !important;
+    }
+
+    /* Ensure card content fills the height but can shrink without overflow */
+    .card-content {
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    .card-header, .card-footer, .card-header-custom, .card-footer-custom {
+        flex: 0 0 auto !important;
+    }
+    .card-body, .card-body-custom {
+        flex: 1 1 auto !important;
+        min-height: 0 !important; /* allow flex child to shrink within fixed-height parent */
+        overflow: hidden !important;
+    }
+
+    /* Print color fidelity (Chromium/WebKit) */
+    .card {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
 }
 
 .border-bottom-dotted {
