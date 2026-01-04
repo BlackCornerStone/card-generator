@@ -6,6 +6,7 @@ namespace CardGenerator\Repository;
 
 use CardGenerator\DTO\Model\Defence as ModelDTO;
 use CardGenerator\DTO\Model\Armor as ArmorModelDTO;
+use CardGenerator\DTO\Source\Armor as ArmorSourceDTO;
 use CardGenerator\DTO\Source\Defence as SourceDTO;
 
 class DefenceRepository extends AbstractRepository
@@ -37,15 +38,6 @@ class DefenceRepository extends AbstractRepository
 
     protected function applyComputed($model, array $data): void
     {
-        if (isset($data['Armor']) && is_array($data['Armor'])) {
-            foreach (['BSoak', 'LSoak', 'BHard', 'LHard', 'Mobility', 'Fatigue'] as $k) {
-                $v = $data['Armor'][$k] ?? null;
-                if ($v !== null && $v !== '' && $v !== '""') {
-                    $model[$k] = $v;
-                }
-            }
-        }
-
         // Compute a default Name if missing: "<Character> - <Armor>"
         $name = (string)($model['Name'] ?? '');
         if ($name === '' || $name === '0') {
@@ -68,13 +60,51 @@ class DefenceRepository extends AbstractRepository
         if (isset($links['Armor']) && $links['Armor']['dataset'] === 'armors') {
             $ar = $this->armors->findByName($links['Armor']['key']);
             if ($ar) {
+                // Linked armor exists: ignore inline values and take everything from linked armor
                 $model['Armor'] = $ar;
-                // Fill missing top-level fields from linked armor
                 foreach (['BSoak', 'LSoak', 'BHard', 'LHard', 'Mobility', 'Fatigue'] as $k) {
-                    if (!isset($model[$k]) || $model[$k] === '') {
-                        /** @var ArmorModelDTO $ar */
-                        $model[$k] = $ar[$k] ?? null;
+                    /** @var ArmorModelDTO $ar */
+                    $model[$k] = $ar[$k] ?? null;
+                }
+            } else {
+                // Linked armor missing: build a placeholder using values stored inside Defence source
+                $source = $model->getSource();
+                if ($source instanceof SourceDTO) {
+                    $ov = $source->ArmorOverrides;
+                    $placeholderData = [
+                        'Name' => $source->Armor,
+                        'BSoak' => $ov?->BSoak ?? 0,
+                        'LSoak' => $ov?->LSoak ?? 0,
+                        'BHard' => $ov?->BHard ?? 0,
+                        'LHard' => $ov?->LHard ?? 0,
+                        'Mobility' => $ov?->Mobility ?? 0,
+                        'Fatigue' => $ov?->Fatigue ?? 0,
+                    ];
+                    $placeholder = new ArmorModelDTO(new ArmorSourceDTO($placeholderData));
+                    $model['Armor'] = $placeholder;
+                    foreach (['BSoak', 'LSoak', 'BHard', 'LHard', 'Mobility', 'Fatigue'] as $k) {
+                        $model[$k] = $placeholder[$k] ?? null;
                     }
+                }
+            }
+        } else {
+            // No link declared: still try to create placeholder from source overrides
+            $source = $model->getSource();
+            if ($source instanceof SourceDTO && $source->ArmorOverrides !== null) {
+                $ov = $source->ArmorOverrides;
+                $placeholderData = [
+                    'Name' => $source->Armor,
+                    'BSoak' => $ov->BSoak,
+                    'LSoak' => $ov->LSoak,
+                    'BHard' => $ov->BHard,
+                    'LHard' => $ov->LHard,
+                    'Mobility' => $ov->Mobility,
+                    'Fatigue' => $ov->Fatigue,
+                ];
+                $placeholder = new ArmorModelDTO(new ArmorSourceDTO($placeholderData));
+                $model['Armor'] = $placeholder;
+                foreach (['BSoak', 'LSoak', 'BHard', 'LHard', 'Mobility', 'Fatigue'] as $k) {
+                    $model[$k] = $placeholder[$k] ?? null;
                 }
             }
         }
