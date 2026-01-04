@@ -5,7 +5,7 @@
 {% import 'characters/_characters_macros.html.twig' as R %}
 
 {% block header_right %}
-    <div class="card-title">{{ card.Armor.Name is defined ? card.Armor.Name : card.Armor }}</div>
+    <div class="card-title">{{ card.Armor.Name }}</div>
 {% endblock %}
 
 {% block card_body %}

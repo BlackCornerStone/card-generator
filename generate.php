@@ -93,7 +93,7 @@ function replaceLinks(int $line, array &$processed): array {
                 $linksFile = "data/{$groupName}.csv";
                 $loadedLinks[$groupName] = loadCardsFromCSV($linksFile);
             }
-            $processed[$subKey] = $loadedLinks[$groupName][$value] ?? "404:".$value;
+            $processed[$subKey] = $loadedLinks[$groupName][$value] ?? ['Name' => "404:".$value];
         } else {
             // Regular column without brackets
             $processed[$key] = $value;

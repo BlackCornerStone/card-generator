@@ -23,14 +23,14 @@
     {% set Melee = card.Abilities.Melee %}
     {% set Awareness = card.Attributes.Awareness %}
     {% set Wits = card.Attributes.Wits %}
-    {% set Stamina = card.Attributes.Wits %}
-    {% set Resistance = card.Attributes.Wits %}
-    {% set SteRes = Stamina + Resistance + WoundPenalty %}
+    {% set Stamina = card.Attributes.Stamina %}
+    {% set Resistance = card.Abilities.Resistance %}
+    {% set StaRes = Stamina + Resistance + WoundPenalty %}
 
     <div class="stat-group">
         <h3>Per Day</h3>
 
-        {% set Infected = SteRes %}
+        {% set Infected = StaRes %}
         {% set DyingOnInfection = Stamina %}
         <div class="stat-row">
             <div class="stat-label">Infection</div>
