@@ -2,6 +2,7 @@
 
 namespace CardGenerator\Repository;
 
+use CardGenerator\DTO\Model\AbstractModelDTO;
 use CardGenerator\Utils\RepositoryUtils;
 
 abstract class AbstractRepository
@@ -16,7 +17,7 @@ abstract class AbstractRepository
     }
 
     /** @return string CSV file name (with extension) inside dataDir */
-    abstract protected function getCsvFile(): string;
+    abstract public function getCsvFile(): string;
 
     /**
      * Create a Source DTO instance.
@@ -56,21 +57,21 @@ abstract class AbstractRepository
      * Return an iterator yielding name => ModelDTO without caching, so callers can discover
      * the exact row that fails (e.g., during validation) without hiding exceptions.
      *
-     * @return \Generator<string, mixed> yields ModelDTO
+     * @return \Generator<string, AbstractModelDTO> yields ModelDTO
      */
     public function findAll(): \Generator
     {
         $path = rtrim($this->dataDir, '/').'/'.$this->getCsvFile();
         $rows = RepositoryUtils::readCsv($path);
 
-        foreach ($rows as $row) {
+        foreach ($rows as $index => $row) {
             [$data, $links] = RepositoryUtils::normalizeRow($row);
             $source = $this->createSource($data);
             $model = $this->createModel($source);
             $this->applyComputed($model, $data);
             $this->applyLinks($model, $links);
             $name = (string)($data['Name'] ?? '');
-            yield $name !== '' ? $name : spl_object_hash($model) => $model;
+            yield $name !== '' ? $name : $index => $model;
         }
     }
 

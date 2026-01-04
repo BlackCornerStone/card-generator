@@ -17,7 +17,7 @@ class MassCombatUnitRepository extends AbstractRepository
         $this->characters = $characters;
     }
 
-    protected function getCsvFile(): string
+    public function getCsvFile(): string
     {
         return 'mass-combat-unit.csv';
     }

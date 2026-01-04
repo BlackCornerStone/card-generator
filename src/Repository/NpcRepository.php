@@ -7,7 +7,7 @@ use CardGenerator\DTO\Source\Npc as SourceDTO;
 
 class NpcRepository extends AbstractRepository
 {
-    protected function getCsvFile(): string
+    public function getCsvFile(): string
     {
         return 'npcs.csv';
     }

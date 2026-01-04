@@ -6,7 +6,7 @@ use CardGenerator\DTO\Model\Armor as ModelDTO;
 use CardGenerator\DTO\Source\Armor as SourceDTO;
 class ArmorRepository extends AbstractRepository
 {
-    protected function getCsvFile(): string
+    public function getCsvFile(): string
     {
         return 'armors.csv';
     }

@@ -18,7 +18,7 @@ class AttackRepository extends AbstractRepository
         $this->weapons = $weapons;
     }
 
-    protected function getCsvFile(): string
+    public function getCsvFile(): string
     {
         return 'attacks.csv';
     }
@@ -42,6 +42,16 @@ class AttackRepository extends AbstractRepository
                 if ($v !== null && $v !== '' && $v !== '""') {
                     $model[$k] = $v;
                 }
+            }
+        }
+
+        // Compute a default Name if missing: "<Character> - <Weapon>"
+        $name = (string)($model['Name'] ?? '');
+        if ($name === '' || $name === '0') {
+            $char = (string)($data['Character'] ?? '');
+            $weap = (string)($data['Weapon'] ?? '');
+            if ($char !== '' || $weap !== '') {
+                $model['Name'] = trim($char . ' - ' . $weap, ' -');
             }
         }
     }

@@ -61,21 +61,47 @@ class RepositoryUtils
     {
         $processed = [];
         $links = [];
+        // Temporarily collect non-star bracket groups to avoid key collisions
+        $pendingGroups = [];
 
         foreach ($row as $key => $value) {
-            if (preg_match('/^\[(.+?)\]\s*(.+)$/', (string)$key, $m)) {
+            $rawKey = (string)$key;
+            // Normalize value: keep as-is, but trim strings
+            if (is_string($value)) {
+                $value = trim($value);
+            }
+
+            if (preg_match('/^\[(.+?)\]\s*(.+)$/', $rawKey, $m)) {
                 $group = $m[1];
                 $sub = $m[2];
-                $processed[$group][$sub] = $value;
-            } elseif (preg_match('/^\{(.+?)\}\s*(.+)$/', (string)$key, $m)) {
+                if (substr($group, -1) === '*') {
+                    // Star groups can be accumulated directly; they will be expanded later
+                    if (!isset($processed[$group]) || !is_array($processed[$group])) {
+                        $processed[$group] = [];
+                    }
+                    $processed[$group][$sub] = $value;
+                } else {
+                    // Collect non-star groups for post-processing (to optionally rename when a link with same name exists)
+                    if (!isset($pendingGroups[$group])) {
+                        $pendingGroups[$group] = [];
+                    }
+                    $pendingGroups[$group][$sub] = $value;
+                }
+            } elseif (preg_match('/^\{(.+?)\}\s*(.+)$/', $rawKey, $m)) {
                 $dataset = $m[1];
                 $sub = $m[2];
                 $links[$sub] = ['dataset' => $dataset, 'key' => (string)$value];
-                // Keep the original raw key value around at top-level for reference too
-                $processed[$sub] = $value;
+                // Mirror link raw value at top-level for DTOs that expect it (e.g., Attack/Defence)
+                $processed[$sub] = (string)$value;
             } else {
-                $processed[$key] = $value;
+                $processed[$rawKey] = $value;
             }
+        }
+
+        // Resolve pending non-star groups, renaming to <Group>Overrides when a link of the same name exists
+        foreach ($pendingGroups as $groupName => $groupData) {
+            $target = isset($links[$groupName]) ? ($groupName . 'Overrides') : $groupName;
+            $processed[$target] = $groupData;
         }
 
         // Expand groups ending with asterisk into arrays of objects by splitting values by '|'

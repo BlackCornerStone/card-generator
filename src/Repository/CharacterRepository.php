@@ -7,7 +7,7 @@ use CardGenerator\DTO\Source\Character as SourceDTO;
 
 class CharacterRepository extends AbstractRepository
 {
-    protected function getCsvFile(): string
+    public function getCsvFile(): string
     {
         return 'characters.csv';
     }

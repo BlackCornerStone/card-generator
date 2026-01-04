@@ -24,9 +24,16 @@ class Defence extends AbstractSourceDTO
     public function __construct(array $data)
     {
         parent::__construct($data);
-        $this->Name = (string)($data['Name'] ?? '');
+        $this->Name = (string)($data['Character'] ?? '') . ' ' . (string)($data['Armor'] ?? '');
         $this->Character = (string)($data['Character'] ?? '');
         $this->Armor = (string)($data['Armor'] ?? '');
-        $this->ArmorOverrides = isset($data['Armor']) && is_array($data['Armor']) ? new ArmorStatsDTO($data['Armor']) : null;
+        // Prefer explicit Overrides key produced by normalization; fallback to legacy array-under-Armor behavior
+        if (isset($data['ArmorOverrides']) && is_array($data['ArmorOverrides'])) {
+            $this->ArmorOverrides = new ArmorStatsDTO($data['ArmorOverrides']);
+        } elseif (isset($data['Armor']) && is_array($data['Armor'])) {
+            $this->ArmorOverrides = new ArmorStatsDTO($data['Armor']);
+        } else {
+            $this->ArmorOverrides = null;
+        }
     }
 }

@@ -35,11 +35,11 @@ class Npc extends AbstractSourceDTO
     public VirtuesDTO $Virtues;
 
     /** @var WeaponStatsDTO[] */
-    #[Assert\All([new Assert\Valid()])]
+    #[Assert\Valid]
     public array $Weapons = [];
 
     /** @var ArmorStatsDTO[] */
-    #[Assert\All([new Assert\Valid()])]
+    #[Assert\Valid]
     public array $Armors = [];
 
     /**

@@ -18,7 +18,7 @@ class DefenceRepository extends AbstractRepository
         $this->armors = $armors;
     }
 
-    protected function getCsvFile(): string
+    public function getCsvFile(): string
     {
         return 'defences.csv';
     }
@@ -41,6 +41,16 @@ class DefenceRepository extends AbstractRepository
                 if ($v !== null && $v !== '' && $v !== '""') {
                     $model[$k] = $v;
                 }
+            }
+        }
+
+        // Compute a default Name if missing: "<Character> - <Armor>"
+        $name = (string)($model['Name'] ?? '');
+        if ($name === '' || $name === '0') {
+            $char = (string)($data['Character'] ?? '');
+            $arm = (string)($data['Armor'] ?? '');
+            if ($char !== '' || $arm !== '') {
+                $model['Name'] = trim($char . ' - ' . $arm, ' -');
             }
         }
     }

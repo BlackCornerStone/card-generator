@@ -27,6 +27,7 @@ $validator = Validation::createValidatorBuilder()
     ->enableAttributeMapping()
     ->getValidator();
 
+/** @var array<string, \CardGenerator\Repository\AbstractRepository> $repos */
 $repos = [
     'characters' => $characters,
     'weapons' => $weapons,
@@ -39,7 +40,7 @@ $repos = [
 
 $errorCount = 0;
 foreach ($repos as $name => $repo) {
-    echo "Validating {$name}...\n";
+    echo "Validating {$name}: {$repo->getCsvFile()}...\n";
     $models = $repo->findAll();
     foreach ($models as $key => $model) {
         $source = $model->getSource();

@@ -7,7 +7,7 @@ use CardGenerator\DTO\Source\Weapon as SourceDTO;
 
 class WeaponRepository extends AbstractRepository
 {
-    protected function getCsvFile(): string
+    public function getCsvFile(): string
     {
         return 'weapons.csv';
     }

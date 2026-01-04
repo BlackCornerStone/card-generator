@@ -25,9 +25,16 @@ class Attack extends AbstractSourceDTO
     public function __construct(array $data)
     {
         parent::__construct($data);
-        $this->Name = (string)($data['Name'] ?? '');
+        $this->Name = (string)($data['Character'] ?? '') . ' ' . (string)($data['Weapon'] ?? '');
         $this->Character = (string)($data['Character'] ?? '');
         $this->Weapon = (string)($data['Weapon'] ?? '');
-        $this->WeaponOverrides = isset($data['Weapon']) && is_array($data['Weapon']) ? new WeaponStatsDTO($data['Weapon']) : null;
+        // Prefer explicit Overrides key produced by normalization; fallback to legacy array-under-Weapon behavior
+        if (isset($data['WeaponOverrides']) && is_array($data['WeaponOverrides'])) {
+            $this->WeaponOverrides = new WeaponStatsDTO($data['WeaponOverrides']);
+        } elseif (isset($data['Weapon']) && is_array($data['Weapon'])) {
+            $this->WeaponOverrides = new WeaponStatsDTO($data['Weapon']);
+        } else {
+            $this->WeaponOverrides = null;
+        }
     }
 }
