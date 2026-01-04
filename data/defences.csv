@@ -1,3 +1,4 @@
-{characters} Character;{armors} Armor;BSoak;LSoak;BHard;LHard;Mobility
-Richard;Unarmored;0;0;0;0;0
-Mei Li;Unarmored;0;0;0;0;0
+{characters} Character;{armors} Armor;[Armor] BSoak;[Armor] LSoak;[Armor] BHard;[Armor] LHard;[Armor] Mobility;[Armor] Fatigue
+Richard;Unarmored;;;;;;
+Mei Li;Unarmored;1;"";1;1;1;
+Amber;Winter Buff Jacket;6;4;1;1;-2;3
