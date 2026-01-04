@@ -25,31 +25,25 @@
     {% set Wits = card.Attributes.Wits %}
     {% set Stamina = card.Attributes.Stamina %}
     {% set Resistance = card.Abilities.Resistance %}
-    {% set StaRes = Stamina + Resistance + WoundPenalty %}
+    {% set SteRes = Stamina + Resistance + WoundPenalty %}
 
-    <div class="stat-group">
-        <h3>Per Day</h3>
+    <div class="row g-2">
+        <div class="col-6">
+            <h6 class="border-bottom pb-1 mb-1">Per Day</h6>
+            <div class="mb-2">
+                <strong>Infection Resist:</strong>
+                <div class="small fw-bold">{{ SteRes }}d</div>
+                <div class="x-small-stats text-muted">STA({{ Stamina }}) + RES({{ Resistance }}) + WP({{ WoundPenalty }})</div>
+            </div>
+        </div>
 
-        {% set Infected = StaRes %}
-        {% set DyingOnInfection = Stamina %}
-        <div class="stat-row">
-            <div class="stat-label">Infection</div>
-            <div class="stat-value">{{ JoinBattle }}d</div>
-            <div class="stat-label">
-                WITS({{ Wits }}) + AWA({{ Awareness }}) - Wound Penalty ({{ WoundPenalty }}), min 1
+        <div class="col-6 border-start ps-2">
+            <h6 class="border-bottom pb-1 mb-1">Per Hour</h6>
+            <div class="mb-2">
+                <strong>Fatigue Resist:</strong>
+                <div class="small fw-bold">{{ SteRes }}d</div>
+                <div class="x-small-stats text-muted">STA({{ Stamina }}) + RES({{ Resistance }}) + WP({{ WoundPenalty }})</div>
             </div>
         </div>
     </div>
-
-    <div class="stat-group">
-        <h3>Per Hour</h3>
-        <div class="stat-row">
-            <div class="stat-label">Dash</div>
-            <div class="stat-value">{{ Dash }}y, no parry, 3 ticks, DV-2</div>
-            <div class="stat-label">
-                DEX({{ Dexterity }}) + 6 - Wound Penalty ({{ WoundPenalty }}), min 2
-            </div>
-        </div>
-    </div>
-
 {% endblock %}

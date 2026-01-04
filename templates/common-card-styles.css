@@ -8,26 +8,13 @@ body {
     background-color: #f5f5f5;
 }
 
-/* Grid Layout */
-.grid {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    /* Use margin-based spacing for broad engine support (fallback for flex gap) */
-    margin: -4px;
-}
-
-/* Create consistent gaps between cards inside the grid */
-.grid > .card {
-    margin: 4px;
-}
 
 /* Base Card Styles */
 .card {
     background-color: white;
     border: 2px solid #333;
     border-radius: 8px;
-    padding: 8px;
+    padding: 0;
     margin: 0; /* rely on .grid gap for spacing to avoid extra right-edge margin */
     vertical-align: top;
     page-break-inside: avoid;
@@ -36,108 +23,81 @@ body {
     position: relative;
 }
 
-/* Card Size Variants */
+/* Card Size Variants - refined for Bootstrap 5 integration */
 .card.size-small {
-    display: inline-block;
     width: 1.75in;
     height: 2.5in;
+    min-width: 1.75in;
+    min-height: 2.5in;
 }
 
 .card.size-medium {
-    display: inline-flex;
     width: 3.5in;
     height: 2.5in;
+    min-width: 3.5in;
+    min-height: 2.5in;
 }
 
 .card.size-big {
-    display: inline-flex;
     width: 3.5in;
     height: 2.5in;
+    min-width: 3.5in;
+    min-height: 2.5in;
 }
 
 .card.size-half-page {
-    display: flex;
     width: 7.5in;
     height: 5.2in;
+    min-width: 7.5in;
+    min-height: 5.2in;
 }
 
 /* Card Layout Components */
-.card-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    position: relative;
-    z-index: 1; /* ensure content sits above .card-background */
-}
-
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 8px;
-    padding: 4px;
-    border-radius: 4px;
+.card-header-custom {
     /* Ensure header font-size matches title so icons sized with em align to title height */
     font-size: 12px;
 }
 
-/* Header background variants (moved from title) */
-.card-header.day {
-    background-color: white;
-    color: #2c3e50;
-    border: 1px solid #ddd;
+/* Header background variants */
+.card-header-custom.day {
+    background-color: white !important;
+    color: #2c3e50 !important;
+    border: 1px solid #ddd !important;
 }
 
-.card-header.night {
-    background-color: black;
-    color: white;
+.card-header-custom.night {
+    background-color: black !important;
+    color: white !important;
 }
 
-.card-header.default {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #2c3e50;
-    border: 1px solid #ddd;
+.card-header-custom.default {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    color: #2c3e50 !important;
 }
 
-/* Footer panel — styled to visually match the header/title */
-.card-footer {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    /* push footer to the bottom of the card-content column */
-    margin-top: auto;
-    padding: 4px;
-    border-radius: 4px;
-    /* Keep footer text/icon sizing aligned with header/title */
-    font-size: 12px;
+/* Footer panel */
+.card-footer-custom {
+    font-size: 10px;
 }
 
-.card-footer.default {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #2c3e50;
-    border: 1px solid #ddd;
+.card-footer-custom.day {
+    background-color: white !important;
+    color: #2c3e50 !important;
+    border-top: 1px solid #ddd !important;
 }
 
-/* Footer content text style matching .card-title */
-/* Three-slot layout helpers for header and footer */
-.card-header .slot-left,
-.card-footer .slot-left {
-    flex: 1 1 0;
-    text-align: left;
+.card-footer-custom.night {
+    background-color: black !important;
+    color: white !important;
 }
 
-.card-header .slot-right,
-.card-footer .slot-right {
-    flex: 1 1 0;
-    text-align: right;
+.card-footer-custom.default {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    color: #2c3e50 !important;
 }
 
-.card-header .slot-center,
-.card-footer .slot-center {
-    flex: 0 0 auto;
-    text-align: center;
-    min-width: 40px;
+.border-bottom-dotted {
+    border-bottom: 1px dotted #ccc;
 }
 
 .card-title {
@@ -148,7 +108,7 @@ body {
     border-radius: 4px;
 }
 
-.card-body {
+.card-body-custom {
     display: flex;
     flex: 1;
     /* allow body content to scroll while footer stays fixed at bottom */
@@ -524,7 +484,6 @@ body {
     padding: 6px;
     margin: 4px 4px 0 0; /* small gap when multiple panels in a row */
     color: #2c3e50;
-    width: 100%; /* default: take full width unless overridden by card size rules */
     box-sizing: border-box;
 }
 
@@ -560,3 +519,8 @@ body {
 .card.size-small .roll-panel { width: 100%; }
 .card.size-big .roll-panel { width: calc(50% - 4px); }
 .card.size-half-page .roll-panel { width: 25%; }
+
+.x-small-stats {
+    font-size: 7pt;
+    line-height: 1.1;
+}

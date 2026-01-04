@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Characters{% endblock %}</title>
-  <link rel="stylesheet" href="../templates/common-card-styles.css">
+  <title>Social Combat</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../templates/common-card-styles.css">
 </head>
 <body>
 
@@ -14,87 +15,94 @@
   {% set m = m|round(0, 'ceil') %}
   <span class="rating">
     {% for i in 1..m %}
-      {% if i <= v %}<span class="filled">●</span>{% else %}<span class="empty">○</span>{% endif %}
+      {% if i <= v %}<span class="filled">●</span>{% else %}<span class="empty text-muted">○</span>{% endif %}
     {% endfor %}
   </span>
 {% endmacro %}
 
 {% import _self as R %}
 
-<div class="grid">
+<div class="container-fluid py-4">
+  <div class="row row-cols-auto g-4">
   {% for card in cards %}
-  {% set max_rating = max(5, card.Essence) %}
-  {% set max_essence = max(5, card.Essence) %}
-  {% set max_willpower = 10 %}
-  {% set max_virtue = 5 %}
-  <div class="card size-big">
-    <div class="card-content">
-      <div class="card-header default">
-        <div class="card-title">{{ card.Name }}</div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-group">
-          <div class="section-title">Core</div>
-          <div class="kv">
-            <div class="k">Essence</div>
-            <div class="v">{{ R.dots(card.Essence, max_essence) }}</div>
-            <div class="k">Willpower</div>
-            <div class="v">{{ R.dots(card.Willpower, max_willpower) }}</div>
+    {% set max_rating = max(5, card.Essence) %}
+    {% set max_essence = max(5, card.Essence) %}
+    {% set max_willpower = 10 %}
+    {% set max_virtue = 5 %}
+    <div class="col">
+      <div class="card size-big h-100">
+        <div class="card-body p-2 d-flex flex-column">
+          <div class="card-header-custom default d-flex align-items-center mb-2 p-2 border rounded">
+            <h5 class="card-title mb-0 fs-6">{{ card.Name }}</h5>
           </div>
 
-          <div class="kv4">
-            <div class="col">
-              <div class="subtitle">Physical</div>
-              <div class="kv">
-                <div class="k">Strength</div><div class="v">{{ R.dots(card.Attributes.Strength, max_rating) }}</div>
-                <div class="k">Dexterity</div><div class="v">{{ R.dots(card.Attributes.Dexterity, max_rating) }}</div>
-                <div class="k">Stamina</div><div class="v">{{ R.dots(card.Attributes.Stamina, max_rating) }}</div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="subtitle">Social</div>
-              <div class="kv">
-                <div class="k">Charisma</div><div class="v">{{ R.dots(card.Attributes.Charisma, max_rating) }}</div>
-                <div class="k">Manipulation</div><div class="v">{{ R.dots(card.Attributes.Manipulation, max_rating) }}</div>
-                <div class="k">Appearance</div><div class="v">{{ R.dots(card.Attributes.Appearance, max_rating) }}</div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="subtitle">Mental</div>
-              <div class="kv">
-                <div class="k">Perception</div><div class="v">{{ R.dots(card.Attributes.Perception, max_rating) }}</div>
-                <div class="k">Intelligence</div><div class="v">{{ R.dots(card.Attributes.Intelligence, max_rating) }}</div>
-                <div class="k">Wits</div><div class="v">{{ R.dots(card.Attributes.Wits, max_rating) }}</div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="subtitle">Virtues</div>
-              <div class="kv">
-                <div class="k">Compassion</div><div class="v">{{ R.dots(card.Virtues.Compassion, max_virtue) }}</div>
-                <div class="k">Conviction</div><div class="v">{{ R.dots(card.Virtues.Conviction, max_virtue) }}</div>
-                <div class="k">Temperance</div><div class="v">{{ R.dots(card.Virtues.Temperance, max_virtue) }}</div>
-                <div class="k">Valor</div><div class="v">{{ R.dots(card.Virtues.Valor, max_virtue) }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="stat-group">
-          <div class="section-title">Abilities <span class="pill">dots</span></div>
-          <div class="abilities">
-            {% for name, val in card.Abilities %}
-              {% if val is not same as('') %}
-                <div class="ability">
-                  <span>{{ name }}</span>
-                  <span>{{ R.dots(val, max_rating) }}</span>
+          <div class="flex-grow-1 overflow-auto">
+            <div class="row g-2">
+              <div class="col-12">
+                <div class="d-flex justify-content-between small border-bottom pb-1 mb-1">
+                  <strong>Essence:</strong> <span>{{ R.dots(card.Essence, max_essence) }}</span>
                 </div>
-              {% endif %}
-            {% endfor %}
+                <div class="d-flex justify-content-between small border-bottom pb-1 mb-1">
+                  <strong>Willpower:</strong> <span>{{ R.dots(card.Willpower, max_willpower) }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-2 mt-1">
+              <div class="col-3">
+                <h6 class="x-small-stats border-bottom pb-1 mb-1">Physical</h6>
+                <div class="x-small-stats">
+                  <div class="d-flex justify-content-between"><span>Str:</span> <span>{{ card.Attributes.Strength }}</span></div>
+                  <div class="d-flex justify-content-between"><span>Dex:</span> <span>{{ card.Attributes.Dexterity }}</span></div>
+                  <div class="d-flex justify-content-between"><span>Sta:</span> <span>{{ card.Attributes.Stamina }}</span></div>
+                </div>
+              </div>
+              <div class="col-3">
+                <h6 class="x-small-stats border-bottom pb-1 mb-1">Social</h6>
+                <div class="x-small-stats">
+                  <div class="d-flex justify-content-between"><span>Cha:</span> <span>{{ card.Attributes.Charisma }}</span></div>
+                  <div class="d-flex justify-content-between"><span>Man:</span> <span>{{ card.Attributes.Manipulation }}</span></div>
+                  <div class="d-flex justify-content-between"><span>App:</span> <span>{{ card.Attributes.Appearance }}</span></div>
+                </div>
+              </div>
+              <div class="col-3">
+                <h6 class="x-small-stats border-bottom pb-1 mb-1">Mental</h6>
+                <div class="x-small-stats">
+                  <div class="d-flex justify-content-between"><span>Per:</span> <span>{{ card.Attributes.Perception }}</span></div>
+                  <div class="d-flex justify-content-between"><span>Int:</span> <span>{{ card.Attributes.Intelligence }}</span></div>
+                  <div class="d-flex justify-content-between"><span>Wit:</span> <span>{{ card.Attributes.Wits }}</span></div>
+                </div>
+              </div>
+              <div class="col-3">
+                <h6 class="x-small-stats border-bottom pb-1 mb-1">Virtues</h6>
+                <div class="x-small-stats">
+                  <div class="d-flex justify-content-between"><span>Com:</span> <span>{{ card.Virtues.Compassion }}</span></div>
+                  <div class="d-flex justify-content-between"><span>Con:</span> <span>{{ card.Virtues.Conviction }}</span></div>
+                  <div class="d-flex justify-content-between"><span>Tem:</span> <span>{{ card.Virtues.Temperance }}</span></div>
+                  <div class="d-flex justify-content-between"><span>Val:</span> <span>{{ card.Virtues.Valor }}</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2">
+              <h6 class="x-small-stats border-bottom pb-1 mb-1">Abilities</h6>
+              <div class="row g-1">
+                {% for name, val in card.Abilities %}
+                  {% if val is not same as('') %}
+                    <div class="col-4">
+                      <div class="d-flex justify-content-between x-small-stats border-bottom-dotted">
+                        <span class="text-truncate me-1">{{ name }}</span>
+                        <strong>{{ val }}</strong>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   {% endfor %}
+  </div>
 </div>

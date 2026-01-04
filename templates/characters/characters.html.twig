@@ -15,7 +15,7 @@
   {% set max_willpower = 10 %}
   {% set max_virtue = 5 %}
 
-  <div class="grid grid-3">
+  <div class="row row-cols-3 g-2">
     {{ R.columnBlockStats("Core", card, ["Essence", "Willpower"], 10, true) }}
     {{ R.columnBlockStats("Physical", card.Attributes, ["Strength", "Dexterity", "Stamina"], max_rating) }}
     {{ R.columnBlockStats("Social", card.Attributes, ["Charisma", "Manipulation", "Appearance"], max_rating) }}

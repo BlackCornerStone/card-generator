@@ -6,9 +6,9 @@
     {% if twoLines and val <= 5 %}
         {% set m = 5 %}
     {% endif %}
-    <span class="rating">
+    <span class="rating x-small-stats">
     {% for i in 1..m %}
-      {% if i <= v %}<span class="filled">●</span>{% else %}<span class="empty">○</span>{% endif %}
+      {% if i <= v %}<span class="filled text-dark">●</span>{% else %}<span class="empty text-muted">○</span>{% endif %}
         {% if i == 5 and not loop.last %}
             {% if twoLines %}<br>{% else %}&nbsp;{% endif %}
         {% endif %}
@@ -17,14 +17,14 @@
 {% endmacro %}
 
 {% macro columnBlockStats(title, data, stats, maxRatings, twoLines = false) %}
-  <div class="stat-group col">
-    <h3>{{ title }}</h3>
-    <div class="stat-row">
-      {% for statName in stats %}
-        <div class="stat-label">{{ statName }}</div>
-        <div class="stat-value">{{ _self.dots(data[statName], maxRatings, twoLines) }}</div>
-      {% endfor %}
-    </div>
+  <div class="col">
+    <h6 class="border-bottom pb-1 mb-1 x-small-stats">{{ title }}</h6>
+    {% for statName in stats %}
+      <div class="d-flex justify-content-between x-small-stats">
+        <span class="text-truncate me-1">{{ statName }}</span>
+        <span>{{ _self.dots(data[statName], maxRatings, twoLines) }}</span>
+      </div>
+    {% endfor %}
   </div>
 {% endmacro %}
 
@@ -54,9 +54,10 @@
     {% set v = (val is defined and val is not same as(false) and val is not same as('')) ? (val) : 0 %}
     {% set m = maxval is defined ? max(val, maxval) : val %}
     {% set m = m|round(0, 'ceil') %}
-    <span class="rating shields">
-    {% for i in 1..m %}
-        {% if i <= v %}<span class="filled">🛡</span>{% else %}<span class="empty">⬜</span>{% endif %}
-    {% endfor %}
-  </span>
+    Hardness {{ val }}, Soak {{ maxval }}
+{#    <span class="rating shields">#}
+{#    {% for i in 1..m %}#}
+{#        {% if i <= v %}<span class="filled">🛡</span>{% else %}<span class="empty">⬜</span>{% endif %}#}
+{#    {% endfor %}#}
+{#    </span>#}
 {% endmacro %}
