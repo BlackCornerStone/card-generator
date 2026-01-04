@@ -2,4 +2,6 @@
 
 namespace CardGenerator\DTO\Model;
 
-class MassCombatUnit extends AbstractModelDTO {}
+class MassCombatUnit extends AbstractModelDTO
+{
+}

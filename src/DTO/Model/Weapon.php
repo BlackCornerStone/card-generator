@@ -2,4 +2,6 @@
 
 namespace CardGenerator\DTO\Model;
 
-class Weapon extends AbstractModelDTO {}
+class Weapon extends AbstractModelDTO
+{
+}

@@ -1,0 +1,14 @@
+parameters:
+  level: 6
+  paths:
+    - src
+  tmpDir: var/phpstan
+  reportUnmatchedIgnoredErrors: false
+  scanDirectories:
+    - vendor
+  bootstrapFiles:
+    - vendor/autoload.php
+  excludePaths:
+    - vendor/*
+    - templates/*
+  # No global ignores by default; raise issues explicitly in code if needed

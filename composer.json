@@ -7,9 +7,29 @@
         "dompdf/dompdf": "^2.0",
         "symfony/validator": "^7.0"
     },
+    "require-dev": {
+        "phpstan/phpstan": "^1.11",
+        "squizlabs/php_codesniffer": "^3.10"
+    },
     "autoload": {
         "psr-4": {
             "CardGenerator\\": "src/"
         }
-    }
+    },
+    "scripts": {
+    "analyse": [
+      "@php -d detect_unicode=0 vendor/bin/phpstan analyse --level=6 --no-progress --memory-limit=1G"
+    ],
+    "fix": [
+      "@php vendor/bin/phpcbf --standard=phpcs.xml src"
+    ],
+    "validate:all": [
+      "@php validate.php",
+      "@analyse",
+      "@fix"
+    ],
+    "code-check": [
+      "@validate:all"
+    ]
+  }
 }

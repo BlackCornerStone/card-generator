@@ -2,4 +2,6 @@
 
 namespace CardGenerator\DTO\Model;
 
-class Armor extends AbstractModelDTO {}
+class Armor extends AbstractModelDTO
+{
+}

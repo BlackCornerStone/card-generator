@@ -53,6 +53,17 @@ quality_gates:
         max_retries: 1
         then: "fail_pipeline"
 
+    - name: Code check quality gate
+      run: "composer run code-check"
+      on_fail:
+        action: "attempt_autofix_and_retry"
+        max_retries: 1
+        then: "fail_pipeline"
+
 reporting:
   output: "stdout"
   fail_on_violation: true
+
+commands:
+  code-check:
+    run: "composer run code-check"

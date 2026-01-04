@@ -61,7 +61,7 @@ abstract class AbstractRepository
      */
     public function findAll(): \Generator
     {
-        $path = rtrim($this->dataDir, '/').'/'.$this->getCsvFile();
+        $path = rtrim($this->dataDir, '/') . '/' . $this->getCsvFile();
         $rows = RepositoryUtils::readCsv($path);
 
         foreach ($rows as $index => $row) {

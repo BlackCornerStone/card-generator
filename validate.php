@@ -55,10 +55,45 @@ foreach ($repos as $name => $repo) {
     }
 }
 
+// Report dataset validation result but continue to run code checks afterwards
 if ($errorCount === 0) {
     echo "All datasets are valid.\n";
-    exit(0);
+} else {
+    echo "Validation finished with {$errorCount} issue(s).\n";
 }
 
-echo "Validation finished with {$errorCount} issue(s).\n";
+// After data validation, run static analysis (PHPStan level 6) and auto-fix coding style (PHPCBF)
+$projectRoot = __DIR__;
+$phpstan = PHP_OS_FAMILY === 'Windows' ? 'vendor\\bin\\phpstan.bat' : 'vendor/bin/phpstan';
+$phpcbf = PHP_OS_FAMILY === 'Windows' ? 'vendor\\bin\\phpcbf.bat' : 'vendor/bin/phpcbf';
+
+$overallExit = 0;
+
+// Run PHPStan
+if (file_exists($projectRoot . '/' . $phpstan)) {
+    echo "\nRunning PHPStan (level 6)...\n";
+    passthru(sprintf('php %s analyse --level=6 --no-progress --memory-limit=1G', escapeshellarg($phpstan)), $stanExit);
+    if ((int)$stanExit !== 0) {
+        $overallExit = 1;
+    }
+} else {
+    echo "PHPStan not installed. Run 'composer install' to install dev tools.\n";
+}
+
+// Run PHPCBF to auto-fix style issues
+if (file_exists($projectRoot . '/' . $phpcbf)) {
+    echo "\nRunning PHPCBF (auto-fix) using phpcs.xml...\n";
+    passthru(sprintf('php %s --standard=phpcs.xml src', escapeshellarg($phpcbf)), $cbfExit);
+    if ((int)$cbfExit !== 0) {
+        // phpcbf returns non-zero when not all issues could be fixed; keep track but do not fail hard
+        $overallExit = 1;
+    }
+} else {
+    echo "PHPCBF not installed. Run 'composer install' to install dev tools.\n";
+}
+
+// Final exit code indicates whether any step found issues
+if ($errorCount === 0 && $overallExit === 0) {
+    exit(0);
+}
 exit(1);

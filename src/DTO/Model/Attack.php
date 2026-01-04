@@ -2,4 +2,6 @@
 
 namespace CardGenerator\DTO\Model;
 
-class Attack extends AbstractModelDTO {}
+class Attack extends AbstractModelDTO
+{
+}
