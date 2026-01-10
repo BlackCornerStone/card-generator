@@ -9,6 +9,11 @@
         <span class="roll-stat"><span class="label">Speed:</span> <span class="value">{{ speed }}</span></span>
     {% endif %}
 
+    {% if difficulty is not same as(null) and difficulty is not same as(false) and difficulty is not same as('') %}
+        <span class="roll-stat"><span class="label">Diff:</span> <span
+                class="value">{{ difficulty }}</span></span>
+    {% endif %}
+
     {% if penalty is not same as(null) and penalty is not same as(false) and penalty is not same as('') %}
         <span class="roll-stat"><span class="label">DV:</span> <span
                 class="value">{{ penalty }}</span></span>
