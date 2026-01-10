@@ -1,0 +1,17 @@
+{#
+  Roll Panel Embeddable
+  Renders a compact panel with roll information.
+  Parameters:
+   - name: string — roll name
+   - dice: number|string — number of dice in the pool
+   - difficulty: number|string — target difficulty
+   - mod: number|string (optional) — external penalty or bonus (e.g., -2 or +1)
+   - explanation: string (optional) — explanation of the dice pool
+#}
+<div class="col-3">
+  <div class="roll-panel w-100 h-100">
+  <div class="roll-header">{{ name }}</div>
+  {% block table %}{% endblock %}
+  <div class="roll-expl">{% block explanation %}{% endblock %}</div>
+  </div>
+</div>

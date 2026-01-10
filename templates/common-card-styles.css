@@ -606,6 +606,12 @@ body {
     margin-right: 2px;
 }
 
+
+.roll-panel .roll-stat.stat-wound-penalties {
+    width: 6em;
+    text-align: right;
+}
+
 .roll-panel .roll-expl {
     margin-top: 4px;
     font-size: 7px;
@@ -616,7 +622,16 @@ body {
 /* Width rules by card size */
 .card.size-small .roll-panel { width: 100%; }
 .card.size-big .roll-panel { width: calc(50% - 4px); }
-.card.size-half-page .roll-panel { width: 25%; }
+.card.size-half-page .roll-panel {
+    /* sizing now handled by Bootstrap grid; keep visual style only */
+}
+
+/* When used inside a Bootstrap row/col grid, let the column control sizing */
+.row .roll-panel {
+    display: block;
+    width: 100%;
+    margin: 0; /* rely on Bootstrap gutters */
+}
 
 .x-small-stats {
     font-size: 7pt;

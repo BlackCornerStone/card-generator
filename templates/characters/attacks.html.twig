@@ -1,5 +1,7 @@
 {% extends "characters/characters-base.html.twig" %}
 
+{% block card_class %}size-half-page{% endblock %}
+
 {% import 'characters/_characters_macros.html.twig' as R %}
 
 {% block header_right %}
@@ -27,64 +29,167 @@
 {% block card_body %}
     {% set Dexterity = card.Character.Attributes.Dexterity %}
     {% set Melee = card.Character.Abilities.Melee %}
+    {% set Archery = card.Character.Abilities.Archery %}
     {% set MA = card.Character.Abilities["Martial Arts"] %}
-    {% set Awareness = card.Character.Attributes.Awareness %}
+    {% set Awareness = card.Character.Abilities.Awareness %}
     {% set Wits = card.Character.Attributes.Wits %}
+    {% set isClinched = true %}
+    {% set isMartial = true %}
+    {% set isMelee = true %}
+    {% set isClose = true %}
     {% set isRanged = true %}
 
-    {% set Dash = max(2, Dexterity + 6 + WoundPenalty) %}
+
     {% set Move = max(1, Dexterity + WoundPenalty) %}
 
-    {% set ParryDicepool = (Dexterity + Melee)/2|round(0, 'ceil') %}
-    {% set FullParryDV = max(0, ParryDicepool + card.Defense) %}
-    {% set ParryDV = max(0, FullParryDV  + WoundPenalty) %}
+    {% set BaseAttackDicepool = Dexterity + MA + card.Accuracy %}
+    {% set BaseRangedAttackDicepool = Dexterity + Archery + card.Accuracy %}
+
     <div class="row g-2">
-        <div class="col-6">
-            <h6 class="border-bottom pb-1 mb-1">Combat Info</h6>
-            <div class="mb-2">
-                <strong>Parry DV:</strong> <span class="fs-5 fw-bold text-primary">{{ ParryDV }}</span>
-                <div class="x-small-stats text-muted">[DEX({{ Dexterity }}) + MEL({{ Melee }})]/2 + Def({{ card.Defense }}) - WP({{ WoundPenalty }}), min 1</div>
-            </div>
+        {% embed 'characters/_roll_table.html.twig' with {'name': 'Parry DV'} %}
+            {% block explanation %}
+                [DEX({{ Dexterity }}) + MEL({{ Melee }})]/2 + Def({{ card.Defense }}) - Wnd({{ WoundPenalty }}), min 1
+            {% endblock %}
 
-            <div class="mb-1 d-flex justify-content-between">
-                <strong>Grab:</strong>
-                <span>{{ max(Dexterity, Strength) + MA }}</span>
-            </div>
+            {% block table %}
+                {% for WoundPenalty in WoundPenalties %}
+                    {% set ParryDicepool = (Dexterity + Melee)/2|round(0, 'ceil') %}
+                    {% set FullParryDV = max(0, ParryDicepool + card.Defense) %}
+                    {% set ParryDV = max(0, FullParryDV + WoundPenalty) %}
+                    {% embed 'characters/_action.html.twig' with {
+                        'woundPenalty': WoundPenalty
+                    } %}
+                        {% block value %}{{ ParryDV }}{{ R.shields(ParryDV) }}{% endblock %}
+                    {% endembed %}
+                {% endfor %}
+            {% endblock %}
+        {% endembed %}
 
-            <div class="mb-1 d-flex justify-content-between">
-                <strong>Disarm:</strong>
-                <span>{{ Dexterity + Melee }}</span>
-            </div>
+        {% embed 'characters/_roll_table.html.twig' with {'name': 'Join Battle'} %}
+            {% block explanation %}
+                WITS({{ Wits }}) + AWA({{ Awareness }}) - Wnd({{ WoundPenalty }}), min 1
+            {% endblock %}
 
-            <div class="mb-1 d-flex justify-content-between">
-                <strong>Join Battle:</strong>
-                <span>{{ JoinBattle }}d</span>
-            </div>
-        </div>
+            {% block table %}
+                {% for WoundPenalty in WoundPenalties %}
+                    {% set JoinBattle = max(1, Wits + Awareness + WoundPenalty) %}
+                    {% embed 'characters/_action.html.twig' with {
+                        'woundPenalty': WoundPenalty,
+                        'penalty': -1,
+                        'speed': card.Speed,
+                        'ext': -2
+                    } %}
+                        {% block value %}{{ JoinBattle }}d{% endblock %}
+                    {% endembed %}
+                {% endfor %}
+            {% endblock %}
+        {% endembed %}
 
-        <div class="col-6 border-start ps-2">
-            <h6 class="border-bottom pb-1 mb-1">Actions & Attacks</h6>
-            <div class="mb-2">
-                <strong>Attack:</strong> <span class="fs-6 fw-bold text-danger">{{ Accuracy }}d</span>
-                <div class="x-small-stats">{{ card.Speed }} ticks, DV-1</div>
-            </div>
+        {% if isClose %}
+            {% embed 'characters/_roll_table.html.twig' with {'name': 'Close Attack'} %}
+                {% block explanation %}
+                    DEX({{ Dexterity }}) + MEL({{ Melee }}) + Acc({{ card.Accuracy }}) - Wnd({{ WoundPenalty }}), min 0
+                {% endblock %}
 
-            <div class="mb-2">
-                <strong>Dash:</strong> <span>{{ Dash }}y</span>
-                <div class="x-small-stats">3 ticks, DV-2</div>
-            </div>
+                {% block table %}
+                    {% for WoundPenalty in WoundPenalties %}
+                        {% set AttackDicepool = BaseAttackDicepool + WoundPenalty %}
+                        {% embed 'characters/_action.html.twig' with {
+                            'woundPenalty': WoundPenalty,
+                            'penalty': -1,
+                            'speed': card.Speed
+                        } %}
+                            {% block value %}{{ AttackDicepool }}{{ R.swords(AttackDicepool) }}{% endblock %}
+                        {% endembed %}
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
 
-            <h6 class="border-bottom pb-1 mb-1 mt-2">Special Attacks</h6>
-            <div class="x-small-stats">
-                <div class="d-flex justify-content-between"><span>Pull Blow:</span> <span>ext -1</span></div>
-                <div class="d-flex justify-content-between"><span>Showing Off:</span> <span>ext -1/-4</span></div>
-                <div class="d-flex justify-content-between">
-                    <span>Disarm:</span>
-                    <span>ext {% if isRanged %}-4{% else %}-2{% endif %}</span>
-                </div>
-                <div class="d-flex justify-content-between"><span>Fierce Blow:</span> <span>ext -1</span></div>
-            </div>
-        </div>
+            {% embed 'characters/_roll_table.html.twig' with {'name': 'Special Close Attacks'} %}
+                {% block table %}
+                    <div class="x-small-stats">
+                        <div class="d-flex justify-content-between"><span>Pull Blow:</span> <span>ext -1</span></div>
+                        <div class="d-flex justify-content-between"><span>Showing Off:</span> <span>ext -1 to -4</span></div>
+                        <div class="d-flex justify-content-between"><span>Disarm:</span><span>ext -2</span></div>
+                        <div class="d-flex justify-content-between"><span>Fierce Blow:</span> <span>ext -1</span></div>
+                        <div class="d-flex justify-content-between"><span>Disarm:</span> <span>ext -2</span></div>
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
+
+        {% if isRanged %}
+            {% embed 'characters/_roll_table.html.twig' with {'name': 'Ranged Attack'} %}
+                {% block explanation %}
+                    DEX({{ Dexterity }}) + ARC({{ Archery }}) + Acc({{ card.Accuracy }}) - Wnd({{ WoundPenalty }}), min 0
+                {% endblock %}
+
+                {% block table %}
+                    {% for WoundPenalty in WoundPenalties %}
+                        {% set AttackDicepool = BaseRangedAttackDicepool + WoundPenalty %}
+                        {% embed 'characters/_action.html.twig' with {
+                            'woundPenalty': WoundPenalty,
+                            'penalty': -1,
+                            'speed': card.Speed
+                        } %}
+                            {% block value %}{{ AttackDicepool }}{{ R.swords(AttackDicepool) }}{% endblock %}
+                        {% endembed %}
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
+
+            {% embed 'characters/_roll_table.html.twig' with {'name': 'Special Ranged Attacks'} %}
+                {% block table %}
+                    <div class="x-small-stats">
+                        <div class="d-flex justify-content-between"><span>Pull Blow:</span> <span>ext -1</span></div>
+                        <div class="d-flex justify-content-between"><span>Showing Off:</span> <span>ext -1 to -4</span></div>
+                        <div class="d-flex justify-content-between"><span>Disarm:</span><span>ext -4</span></div>
+                        <div class="d-flex justify-content-between"><span>Fierce Blow:</span> <span>ext -1</span></div>
+                        <div class="d-flex justify-content-between"><span>Disarm:</span> <span>ext -4</span></div>
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
+
+        {% if isClinched %}
+            {% embed 'characters/_roll_table.html.twig' with {'name': 'Clinch'} %}
+                {% block explanation %}
+                    DEX({{ Dexterity }}) + MA({{ MA }}) + Acc({{ card.Accuracy }}) - Wnd({{ WoundPenalty }}), min 0
+                {% endblock %}
+
+                {% block table %}
+                    {% for WoundPenalty in WoundPenalties %}
+                        {% set AttackDicepool = BaseAttackDicepool + WoundPenalty %}
+                        {% embed 'characters/_action.html.twig' with {
+                            'woundPenalty': WoundPenalty,
+                            'penalty': -1,
+                            'speed': card.Speed
+                        } %}
+                            {% block value %}{{ AttackDicepool }}{{ R.swords(AttackDicepool) }}{% endblock %}
+                        {% endembed %}
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
+
+        {% embed 'characters/_roll_table.html.twig' with {'name': 'Dash'} %}
+            {% block explanation %}
+                WITS({{ Wits }}) + AWA({{ Awareness }}) - Wnd({{ WoundPenalty }}), min 1
+            {% endblock %}
+
+            {% block table %}
+                {% for WoundPenalty in WoundPenalties %}
+                    {% set Dash = max(2, Dexterity + 6 + WoundPenalty) %}
+                    {% embed 'characters/_action.html.twig' with {
+                        'woundPenalty': WoundPenalty,
+                        'penalty': -2,
+                        'speed': 3,
+                    } %}
+                        {% block value %}{{ Dash }}y{% endblock %}
+                    {% endembed %}
+                {% endfor %}
+            {% endblock %}
+        {% endembed %}
     </div>
 
 {% endblock %}

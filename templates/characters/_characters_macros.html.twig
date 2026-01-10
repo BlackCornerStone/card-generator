@@ -28,7 +28,16 @@
   </div>
 {% endmacro %}
 
-{% macro shields(val, maxval) %}
+{% macro shields(val) %}
+    {% set v = (val is defined and val is not same as(false) and val is not same as('')) ? (val) : 0 %}
+    <span class="rating shields">
+    {% for i in 1..v %}
+        <span class="filled">🛡</span>
+    {% endfor %}
+  </span>
+{% endmacro %}
+
+{% macro shieldsBar(val, maxval) %}
     {% set v = (val is defined and val is not same as(false) and val is not same as('')) ? (val) : 0 %}
     {% set m = maxval is defined ? max(val, maxval) : val %}
     {% set m = m|round(0, 'ceil') %}
@@ -60,4 +69,12 @@
 {#        {% if i <= v %}<span class="filled">🛡</span>{% else %}<span class="empty">⬜</span>{% endif %}#}
 {#    {% endfor %}#}
 {#    </span>#}
+{% endmacro %}
+
+{% macro woundPenalty(WoundPenalty) %}
+    {% for i in (0..WoundPenalty|abs)|filter(v => v > 0) %}
+        <span class="filled">🩸</span>
+    {% else %}
+        <span class="filled">✚</span>
+    {% endfor %}
 {% endmacro %}

@@ -1,4 +1,8 @@
 {characters} Character;{armors} Armor;[Armor] BSoak;[Armor] LSoak;[Armor] BHard;[Armor] LHard;[Armor] Mobility;[Armor] Fatigue
 Richard;Unarmored;;;;;;
 Mei Li;Unarmored;1;"";1;1;1;
+Jasper;Unarmored;;;;;;
+Jasper;Winter Buff Jacket;6;4;1;1;-2;3
+Amber;Unarmored;;;;;;
 Amber;Winter Buff Jacket;6;4;1;1;-2;3
+Drone;Exoskelet;4;2;2;2;0;0

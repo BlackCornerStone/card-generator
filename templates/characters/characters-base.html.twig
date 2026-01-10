@@ -23,35 +23,31 @@
             {% set CharacterName = card.Name %}
         {% endif %}
 
-        {% for WoundPenalty in WoundPenalties %}
-            <div class="col">
-                <div class="card h-100 {% block card_class %}size-big{% endblock %}">
-                    <div class="card-body p-2 d-flex flex-column">
-                        <div class="card-header-custom default d-flex align-items-center mb-2 p-2 border rounded">
-                            <div class="me-auto">
-                                <h5 class="card-title mb-0 fs-6">{{ CharacterName }}</h5>
-                            </div>
-                            <div class="text-center px-2">
-                                {% for i in (0..WoundPenalty|abs)|filter(v => v > 0) %}
-                                    <span class="filled">🩸</span>
-                                {% endfor %}
-                            </div>
-                            <div class="ms-auto">
-                                {% block header_right %}{% endblock %}
-                            </div>
+        <div class="col">
+            <div class="card h-100 {% block card_class %}size-big{% endblock %}">
+                <div class="card-body p-2 d-flex flex-column">
+                    <div class="card-header-custom default d-flex align-items-center mb-2 p-2 border rounded">
+                        <div class="me-auto">
+                            <h5 class="card-title mb-0 fs-6">{{ CharacterName }}</h5>
                         </div>
+                        <div class="text-center px-2">
 
-                        <div class="flex-grow-1">{% block card_body %}{% endblock %}</div>
-
-                        <div class="card-footer-custom default d-flex align-items-center mt-auto pt-2 border-top">
-                            <div class="me-auto">{% block footer_left %}{% endblock %}</div>
-                            <div class="mx-auto">{% block footer_center %}{% endblock %}</div>
-                            <div class="ms-auto">{% block footer_right %}{% endblock %}</div>
                         </div>
+                        <div class="ms-auto">
+                            {% block header_right %}{% endblock %}
+                        </div>
+                    </div>
+
+                    <div class="flex-grow-1">{% block card_body %}{% endblock %}</div>
+
+                    <div class="card-footer-custom default d-flex align-items-center mt-auto pt-2 border-top">
+                        <div class="me-auto">{% block footer_left %}{% endblock %}</div>
+                        <div class="mx-auto">{% block footer_center %}{% endblock %}</div>
+                        <div class="ms-auto">{% block footer_right %}{% endblock %}</div>
                     </div>
                 </div>
             </div>
-        {% endfor %}
+        </div>
     {% endfor %}
     </div>
 </div>

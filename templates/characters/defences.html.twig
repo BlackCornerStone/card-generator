@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block card_body %}
-    {{ dump(card.Armor) }}
     {% import _self as local %}
     {% set Dexterity = card.Character.Attributes.Dexterity %}
     {% set Stamina = card.Character.Attributes.Stamina %}
@@ -18,42 +17,89 @@
     {% set Dodge = card.Character.Abilities.Dodge %}
     {% set Essence = card.Character.Essence %}
 
-
-
     {% set DDVDicePool = Dexterity + Dodge + Essence %}
-    {% set DDV = max(0, DDVDicePool/2 + WoundPenalty) %}
+
     {% set FullDDV = max(0, DDVDicePool/2) %}
 
     {% set KnockDownLimit = Stamina + Resistance + WoundPenalty %}
     {% set KnockDownDicepool = max(Dexterity, Stamina) + max(Resistance, Athletics) + WoundPenalty %}
-    {% embed 'characters/_roll.html.twig' with {'name': 'Knockdown resist', 'dice': KnockDownDicepool, 'difficulty': 2} %}
-        {% block explanation %}
-            DEX({{ Dexterity }})&uparrow;STA({{ Stamina }}) + ATH({{ Athletics }})&uparrow;RES({{ Resistance }}) - WP({{ WoundPenalty }}), min 1
-        {% endblock %}
-    {% endembed %}
+    <div class="row row-cols-4 g-1 align-items-stretch">
+        {% embed 'characters/_roll_table.html.twig' with {'name': 'Knockdown resist'} %}
+            {% block explanation %}
+                DEX({{ Dexterity }})&uparrow;STA({{ Stamina }}) + ATH({{ Athletics }})&uparrow;RES({{ Resistance }}) - Wnd({{ WoundPenalty }}), min 1
+            {% endblock %}
 
-    {% set StunLimit = Stamina + WoundPenalty %}
-    {% set StunDicepool = Stamina + Resistance + WoundPenalty %}
-    {% embed 'characters/_roll.html.twig' with {'name': 'Stun resist', 'dice': StunDicepool, 'difficulty': 'table'} %}
-        {% block explanation %}
-            STA({{ Stamina }}) + RES({{ Resistance }} - WP({{ WoundPenalty }}), min 1
-        {% endblock %}
-    {% endembed %}
+            {% block table %}
+                {% for WoundPenalty in WoundPenalties %}
+                    {% embed 'characters/_roll.html.twig' with {
+                        'dice': KnockDownDicepool+WoundPenalty,
+                        'difficulty': 2,
+                        'woundPenalty': WoundPenalty
+                    } %}
+                    {% endembed %}
+                {% endfor %}
+            {% endblock %}
+        {% endembed %}
 
-    {% set MoveDistance = max(1, Dexterity + WoundPenalty + card.Mobility) %}
-    {% embed 'characters/_action.html.twig' with {'name': 'Move', 'penalty': 0, 'speed': 1} %}
-        {% block value %}{{ MoveDistance }}y{% endblock %}
-        {% block explanation %}
-            [DEX({{ Dexterity }}) + DOD({{ Dodge }}) + ESS({{ Essence }})]/2 - WP({{ WoundPenalty }}), min 1
-        {% endblock %}
-    {% endembed %}
 
-    {% embed 'characters/_action.html.twig' with {'name': 'Parry DV'} %}
-        {% block value %}{{ R.shields(DDV, FullDDV) }}{% endblock %}
-        {% block explanation %}
-            [DEX({{ Dexterity }}) + DOD({{ Dodge }}) + ESS({{ Essence }})]/2 - WP({{ WoundPenalty }}), min 1
-        {% endblock %}
-    {% endembed %}
+        {% set StunLimit = Stamina + WoundPenalty %}
+        {% set StunDicepool = Stamina + Resistance + WoundPenalty %}
+        {% embed 'characters/_roll_table.html.twig' with {'name': 'Stun resist'} %}
+            {% block explanation %}
+                STA({{ Stamina }}) + RES({{ Resistance }} - Wnd({{ WoundPenalty }}), min 1
+            {% endblock %}
+
+            {% block table %}
+                {% for WoundPenalty in WoundPenalties %}
+                    {% embed 'characters/_roll.html.twig' with {
+                        'dice': StunDicepool+WoundPenalty,
+                        'difficulty': 'see table',
+                        'woundPenalty': WoundPenalty
+                    } %}
+                    {% endembed %}
+                {% endfor %}
+            {% endblock %}
+        {% endembed %}
+
+
+        {% embed 'characters/_roll_table.html.twig' with {'name': 'Move'} %}
+            {% block explanation %}
+                DEX({{ Dexterity }} - Wnd({{ WoundPenalty }}), min 1
+            {% endblock %}
+
+            {% block table %}
+                {% for WoundPenalty in WoundPenalties %}
+                    {% set MoveDistance = max(1, Dexterity + WoundPenalty + card.Mobility) %}
+                    {% embed 'characters/_action.html.twig' with {
+                        'penalty': '-0',
+                        'speed': 1,
+                        'woundPenalty': WoundPenalty
+                    } %}
+                        {% block value %}{{ MoveDistance }}y{% endblock %}
+                    {% endembed %}
+                {% endfor %}
+            {% endblock %}
+        {% endembed %}
+
+        {% embed 'characters/_roll_table.html.twig' with {'name': 'Dodge DV'} %}
+            {% block explanation %}
+                [DEX({{ Dexterity }}) + DOD({{ Dodge }}) + ESS({{ Essence }})]/2 - Wnd({{ WoundPenalty }}), min 1
+            {% endblock %}
+
+            {% block table %}
+                {% for WoundPenalty in WoundPenalties %}
+                    {% set DDVpool = (DDVDicePool/2)|round(0, 'ceil') %}
+                    {% set DDV = max(0, DDVpool + WoundPenalty) %}
+                    {% set MoveDistance = max(1, Dexterity + WoundPenalty + card.Mobility) %}
+                    {% embed 'characters/_action.html.twig' with {
+                        'woundPenalty': WoundPenalty
+                    } %}
+                        {% block value %}{{ DDV }}{{ R.shields(DDV, 10) }}{% endblock %}
+                    {% endembed %}
+                {% endfor %}
+            {% endblock %}
+        {% endembed %}
+    </div>
 
     {% set BHard = card.BHard %}
     {% set BSoak = card.BSoak + Stamina %}
@@ -62,7 +108,7 @@
     {% set AHard = card.LHard %}
     {% set ASoak = card.LSoak %}
 
-    <div class="col-8 border-start ps-2">
+    <div class="col-12 border-start ps-2">
         <div class="row g-1">
             <div class="col-3">
                 <h6 class="border-bottom pb-1 mb-1 x-small-stats text-truncate">Take Hit</h6>

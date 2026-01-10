@@ -1,21 +1,10 @@
-{#
-  Roll Panel Embeddable
-  Renders a compact panel with roll information.
-  Parameters:
-   - name: string — roll name
-   - dice: number|string — number of dice in the pool
-   - difficulty: number|string — target difficulty
-   - mod: number|string (optional) — external penalty or bonus (e.g., -2 or +1)
-   - explanation: string (optional) — explanation of the dice pool
-#}
-<div class="roll-panel col-4">
-  <div class="roll-header">{{ name }}</div>
-  <div class="roll-stats">
-    <span class="roll-stat"><span class="label">Dice:</span> <span class="value">{{ dice }}</span></span>
-    <span class="roll-stat"><span class="label">Diff:</span> <span class="value">{{ difficulty }}</span></span>
-    {% if mod is not same as(null) and mod is not same as(false) and mod is not same as('') %}
-      <span class="roll-stat"><span class="label">Mod:</span> <span class="value">{{ mod }}</span></span>
-    {% endif %}
-  </div>
-  <div class="roll-expl">{% block explanation %}{% endblock %}</div>
+{% import 'characters/_characters_macros.html.twig' as R %}
+
+<div class="roll-stats">
+  <span class="roll-stat stat-wound-penalties"><span class="value">{{ R.woundPenalty(woundPenalty) }}</span></span>
+  <span class="roll-stat"><span class="label">Dice:</span> <span class="value">{{ dice }}</span></span>
+  <span class="roll-stat"><span class="label">Diff:</span> <span class="value">{{ difficulty }}</span></span>
+  {% if mod is not same as(null) and mod is not same as(false) and mod is not same as('') %}
+    <span class="roll-stat"><span class="label">Mod:</span> <span class="value">{{ mod }}</span></span>
+  {% endif %}
 </div>

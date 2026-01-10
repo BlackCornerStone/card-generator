@@ -1,26 +1,21 @@
-{#
-Action Panel Embeddable
-Renders a compact panel with roll information.
-Parameters:
- - name: string — roll name
- - value: number|string — the base value
- - speed: number|string — speed rating
- - penalty: number|string (optional) — DV penalty
- - explanation: string (optional) — explanation of the dice pool
-#}
-<div class="roll-panel col-4">
-    <div class="roll-header">{{ name }}</div>
-    <div class="roll-stats">
-        <span class="roll-stat">{% block value %}{% endblock %}</span>
+{% import 'characters/_characters_macros.html.twig' as R %}
 
-        {% if speed is not same as(null) and speed is not same as(false) and speed is not same as('') %}
-            <span class="roll-stat"><span class="label">Speed:</span> <span class="value">{{ speed }}</span></span>
-        {% endif %}
+<div class="roll-stats">
+    <span class="roll-stat stat-wound-penalties"><span class="value">{{ R.woundPenalty(woundPenalty) }}</span></span>
 
-        {% if penalty is not same as(null) and penalty is not same as(false) and penalty is not same as('') %}
-            <span class="roll-stat"><span class="label">DV:</span> <span
-                    class="value">{{ penalty }}</span></span>
-        {% endif %}
-    </div>
-    <div class="roll-expl">{% block explanation %}{% endblock %}</div>
+    <span class="roll-stat">{% block value %}{% endblock %}</span>
+
+    {% if speed is not same as(null) and speed is not same as(false) and speed is not same as('') %}
+        <span class="roll-stat"><span class="label">Speed:</span> <span class="value">{{ speed }}</span></span>
+    {% endif %}
+
+    {% if penalty is not same as(null) and penalty is not same as(false) and penalty is not same as('') %}
+        <span class="roll-stat"><span class="label">DV:</span> <span
+                class="value">{{ penalty }}</span></span>
+    {% endif %}
+
+    {% if external is not same as(null) and external is not same as(false) and external is not same as('') %}
+        <span class="roll-stat"><span class="label">Ext:</span> <span
+                class="value">{{ external }}</span></span>
+    {% endif %}
 </div>
